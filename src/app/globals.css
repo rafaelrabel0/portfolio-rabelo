@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* ============ Dark Premium Tech — design tokens ============ */
+@theme {
+  --color-bg: #0a0a0b;
+  --color-surface: #141417;
+  --color-surface-2: #1c1c21;
+  --color-border: #26262b;
+  --color-border-strong: #34343b;
+
+  --color-fg: #ededef;
+  --color-muted: #a1a1aa;
+  --color-faint: #71717a;
+
+  --color-accent: #34d399;
+  --color-accent-2: #3b82f6;
+  --color-cyan: #7dd3fc;
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-card: 1rem;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle radial glow + grid backdrop */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-border) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 60%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, var(--color-accent), var(--color-cyan) 55%, var(--color-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow {
+  box-shadow: 0 0 0 1px var(--color-border), 0 24px 64px -32px color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  color: #fff;
+}
+
+/* Thin scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 999px; }
