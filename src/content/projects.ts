@@ -52,7 +52,7 @@ export const projects: Project[] = [
   },
   {
     slug: "kelly-rag-beauty",
-    name: "Kelly — Agente RAG de Beleza",
+    name: "Agente RAG de Agendamento",
     company: "Rabelo Co. / Rise Doc",
     status: "producao",
     featured: true,
@@ -69,7 +69,7 @@ export const projects: Project[] = [
   },
   {
     slug: "ativos-gtm-suite",
-    name: "Ativos Digitais — Suíte GTM no CRM",
+    name: "Suíte GTM no CRM",
     company: "Ativos Digitais",
     status: "producao",
     featured: true,
@@ -117,7 +117,7 @@ export const projects: Project[] = [
   },
   {
     slug: "vetlideres",
-    name: "VetLíderes — Plataforma de Atendimento Inteligente",
+    name: "Plataforma de Atendimento Inteligente",
     company: "Rabelo Co.",
     status: "producao",
     featured: false,

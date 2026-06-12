@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowDownToLine, Mail } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
+import { ScrollHint } from "@/components/ScrollHint";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -13,8 +14,8 @@ export function Hero({ locale }: { locale: Locale }) {
     <section className="relative flex min-h-screen items-center overflow-hidden pt-16">
       <div className="bg-grid pointer-events-none absolute inset-0 -z-10" />
       <div
-        className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full opacity-25 blur-[120px]"
-        style={{ background: "radial-gradient(closest-side, #34d399, transparent)" }}
+        className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full opacity-30 blur-[120px]"
+        style={{ background: "radial-gradient(closest-side, var(--color-accent), transparent)" }}
       />
 
       <div className="mx-auto w-full max-w-6xl px-5">
@@ -83,6 +84,8 @@ export function Hero({ locale }: { locale: Locale }) {
           </dl>
         </Reveal>
       </div>
+
+      <ScrollHint label={ui.labels.scrollToExplore} />
     </section>
   );
 }

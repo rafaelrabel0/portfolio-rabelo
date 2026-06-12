@@ -1,20 +1,21 @@
 @import "tailwindcss";
 
-/* ============ Dark Premium Tech — design tokens ============ */
+/* ============ Dark Premium Ember — design tokens ============ */
+/* Paleta extraída das referências: preto quente, laranja vivo, vermelho e roxo. */
 @theme {
-  --color-bg: #0a0a0b;
-  --color-surface: #141417;
-  --color-surface-2: #1c1c21;
-  --color-border: #26262b;
-  --color-border-strong: #34343b;
+  --color-bg: #0b0908;
+  --color-surface: #161210;
+  --color-surface-2: #1f1916;
+  --color-border: #2b231e;
+  --color-border-strong: #3d322a;
 
-  --color-fg: #ededef;
-  --color-muted: #a1a1aa;
-  --color-faint: #71717a;
+  --color-fg: #f2ede9;
+  --color-muted: #a8a29e;
+  --color-faint: #7a7268;
 
-  --color-accent: #34d399;
-  --color-accent-2: #3b82f6;
-  --color-cyan: #7dd3fc;
+  --color-accent: #ff6d2e;
+  --color-accent-2: #ef3b2d;
+  --color-cyan: #fcb46b;
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
@@ -51,8 +52,20 @@ body {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
 }
 
+/* Vidro canelado — linhas verticais finas sobre os blobs (referências "reeded glass") */
+.bg-ribs {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 13px
+  );
+  mix-blend-mode: overlay;
+}
+
 .text-gradient {
-  background: linear-gradient(120deg, var(--color-accent), var(--color-cyan) 55%, var(--color-accent-2));
+  background: linear-gradient(120deg, var(--color-accent), var(--color-accent-2) 48%, #b14ae2 95%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -63,7 +76,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 35%, transparent);
   color: #fff;
 }
 

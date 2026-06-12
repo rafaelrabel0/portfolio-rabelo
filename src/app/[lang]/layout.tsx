@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { isLocale, locales } from "@/lib/i18n";
 import { profile } from "@/content/profile";
+import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
 const sans = Inter({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
@@ -38,7 +40,11 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
 
   return (
     <html lang={lang === "pt" ? "pt-BR" : "en"} className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased">
+        <AnimatedBackground />
+        <ScrollProgress />
+        {children}
+      </body>
     </html>
   );
 }

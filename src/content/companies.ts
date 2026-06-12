@@ -5,11 +5,11 @@ import type { Localized } from "./profile";
 
 export type ClientStatus = "ativo" | "onboarding" | "parcial" | "proposta" | "planejamento";
 
-export type Client = {
-  name: string;
+// Entrega por cliente, sem expor nomes — apenas o que foi fornecido e em que estado.
+export type Delivery = {
+  label: Localized;
+  count?: number;
   status: ClientStatus;
-  segment?: Localized;
-  notes?: Localized;
 };
 
 export type Company = {
@@ -20,7 +20,8 @@ export type Company = {
   isHolding?: boolean;
   stack: string[];
   services: Localized[];
-  clients: Client[];
+  clientCount: number;
+  deliveries: Delivery[];
   links?: { label: string; url: string }[];
 };
 
@@ -41,8 +42,10 @@ export const companies: Company[] = [
       { pt: "RAG híbrido + APIs (busca vetorial + ao vivo)", en: "Hybrid RAG + APIs (vector + live search)" },
       { pt: "Web apps de IA ponta a ponta", en: "End-to-end AI web apps" },
     ],
-    clients: [
-      { name: "VetLíderes (Letícia Broerman Cazes LTDA)", status: "proposta", segment: { pt: "Veterinária", en: "Veterinary" }, notes: { pt: "Primeiro cliente independente. Plataforma web (SaaS) em produção; aditivo de canal WhatsApp em proposta.", en: "First independent client. Web platform (SaaS) live; WhatsApp channel addendum proposed." } },
+    clientCount: 1,
+    deliveries: [
+      { label: { pt: "Plataforma SaaS de atendimento com IA", en: "AI service SaaS platform" }, count: 1, status: "ativo" },
+      { label: { pt: "Canal WhatsApp (aditivo)", en: "WhatsApp channel (addendum)" }, count: 1, status: "proposta" },
     ],
   },
   {
@@ -62,13 +65,12 @@ export const companies: Company[] = [
       { pt: "Triagem de candidatos por IA com pontuação e task no ClickUp", en: "AI candidate screening with scoring and ClickUp task" },
       { pt: "Ingestão de Meta Lead Ads no CRM com disparo segmentado no WhatsApp", en: "Meta Lead Ads ingestion into CRM with segmented WhatsApp dispatch" },
     ],
-    clients: [
-      { name: "Decor Colors Três Lagoas", status: "ativo", segment: { pt: "Varejo de tintas", en: "Paint retail" }, notes: { pt: "Agente de IA + Follow Up em produção", en: "AI agent + Follow Up live" } },
-      { name: "Decor Colors Águas Claras", status: "ativo", segment: { pt: "Varejo de tintas", en: "Paint retail" }, notes: { pt: "Agente de IA + Follow Up em produção", en: "AI agent + Follow Up live" } },
-      { name: "Decor Colors Santa Cruz", status: "ativo", segment: { pt: "Varejo de tintas", en: "Paint retail" }, notes: { pt: "Onboarding completo (2026-05-28)", en: "Onboarding complete (2026-05-28)" } },
-      { name: "Decor Colors Ipiranga", status: "onboarding", segment: { pt: "Varejo de tintas", en: "Paint retail" } },
-      { name: "Decor Colors Penha", status: "onboarding", segment: { pt: "Varejo de tintas", en: "Paint retail" } },
-      { name: "KGV", status: "parcial", segment: { pt: "Varejo de tintas", en: "Paint retail" }, notes: { pt: "Webhook no Kommo + agente principal; restante do fluxo pendente", en: "Kommo webhook + main agent; rest of flow pending" } },
+    clientCount: 6,
+    deliveries: [
+      { label: { pt: "Agente de IA + Follow Up", en: "AI agent + Follow Up" }, count: 3, status: "ativo" },
+      { label: { pt: "Agente de IA + Follow Up", en: "AI agent + Follow Up" }, count: 2, status: "onboarding" },
+      { label: { pt: "Agente principal + webhook no CRM", en: "Main agent + CRM webhook" }, count: 1, status: "parcial" },
+      { label: { pt: "Dashboard de Vendas IA", en: "AI Sales Dashboard" }, count: 1, status: "ativo" },
     ],
     links: [
       { label: "CRM (produção)", url: "https://ativos-digitais-crm.vercel.app" },
@@ -91,17 +93,10 @@ export const companies: Company[] = [
       { pt: "Respostas a perguntas frequentes e triagem inicial", en: "FAQ answering and initial triage" },
       { pt: "Agente SDR customizado por profissional", en: "Custom SDR agent per professional" },
     ],
-    clients: [
-      { name: "Dr. Yasel Hernandez", status: "ativo", segment: { pt: "Médico", en: "Physician" }, notes: { pt: "Agente de IA em produção", en: "AI agent live" } },
-      { name: "Dra. Raquel Granja", status: "ativo", segment: { pt: "Médica", en: "Physician" }, notes: { pt: "Agente Juliana (SDR)", en: "Juliana agent (SDR)" } },
-      { name: "Dr. Rafael Vivas", status: "onboarding", segment: { pt: "Médico", en: "Physician" } },
-      { name: "Dr. Sérgio Rubens", status: "onboarding", segment: { pt: "Médico", en: "Physician" } },
-      { name: "Dra. Gabriela", status: "onboarding", segment: { pt: "Médica", en: "Physician" } },
-      { name: "Dr. Túlio Castro", status: "onboarding", segment: { pt: "Médico", en: "Physician" } },
-      { name: "Dr. Miguel Carvalho", status: "onboarding", segment: { pt: "Médico", en: "Physician" } },
-      { name: "Dr. Diego", status: "onboarding", segment: { pt: "Médico", en: "Physician" } },
-      { name: "Dr. João Paulo", status: "onboarding", segment: { pt: "Médico", en: "Physician" } },
-      { name: "Dr. Alan", status: "onboarding", segment: { pt: "Médico", en: "Physician" } },
+    clientCount: 10,
+    deliveries: [
+      { label: { pt: "Agente de IA (SDR + agendamento)", en: "AI agent (SDR + scheduling)" }, count: 2, status: "ativo" },
+      { label: { pt: "Agente de IA (SDR + agendamento)", en: "AI agent (SDR + scheduling)" }, count: 8, status: "onboarding" },
     ],
   },
   {
@@ -117,7 +112,8 @@ export const companies: Company[] = [
       { pt: "Solid App — gestão de loja, catálogo, pedidos, estoque e cálculo de custo", en: "Solid App — store, catalog, orders, inventory and cost management" },
       { pt: "Busca semântica sobre bibliotecas 3D do Telegram", en: "Semantic search over Telegram 3D libraries" },
     ],
-    clients: [],
+    clientCount: 0,
+    deliveries: [],
     links: [{ label: "solidapp.shop", url: "https://solidapp.shop" }],
   },
 ];

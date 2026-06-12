@@ -34,7 +34,7 @@ export const profile = {
   stats: [
     { value: "7+", label: { pt: "Negócios B2B atendidos", en: "B2B clients served" } },
     { value: "20+", label: { pt: "Contas em onboarding", en: "Accounts onboarded" } },
-    { value: "1.266", label: { pt: "Bibliotecas 3D indexadas", en: "3D libraries indexed" } },
+    { value: "40+", label: { pt: "Skills & ferramentas", en: "Skills & tools" } },
     { value: "C2", label: { pt: "Inglês (EF SET)", en: "English (EF SET)" } },
   ],
   languages: [

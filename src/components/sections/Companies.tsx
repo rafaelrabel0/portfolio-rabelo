@@ -2,17 +2,10 @@ import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
-import { companies, type ClientStatus } from "@/content/companies";
+import { DeliveryList } from "@/components/DeliveryList";
+import { companies } from "@/content/companies";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
-
-const statusDot: Record<ClientStatus, string> = {
-  ativo: "bg-accent",
-  onboarding: "bg-amber-400",
-  parcial: "bg-cyan",
-  proposta: "bg-blue-400",
-  planejamento: "bg-faint",
-};
 
 export function Companies({ locale }: { locale: Locale }) {
   const ui = getUi(locale);
@@ -67,27 +60,15 @@ export function Companies({ locale }: { locale: Locale }) {
                   </div>
                 </div>
 
-                {/* Clientes */}
+                {/* Entregas por cliente (sem nomes) */}
                 <div>
                   <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
-                    {ui.labels.clients} {c.clients.length > 0 && <span className="text-faint">({c.clients.length})</span>}
+                    {ui.labels.clients} {c.clientCount > 0 && <span className="text-faint">({c.clientCount})</span>}
                   </p>
-                  {c.clients.length === 0 ? (
+                  {c.deliveries.length === 0 ? (
                     <p className="text-sm text-faint">{locale === "pt" ? "Produtos próprios da marca." : "In-house brand products."}</p>
                   ) : (
-                    <ul className="space-y-1.5">
-                      {c.clients.map((cl) => (
-                        <li key={cl.name} className="flex items-start gap-2.5 rounded-lg border border-transparent px-2 py-1.5 text-sm transition-colors hover:border-border hover:bg-bg/40">
-                          <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${statusDot[cl.status]}`} />
-                          <span className="min-w-0">
-                            <span className="text-fg/90">{cl.name}</span>
-                            {cl.segment && <span className="ml-2 text-xs text-faint">{cl.segment[locale]}</span>}
-                            {cl.notes && <span className="block text-xs text-muted">{cl.notes[locale]}</span>}
-                          </span>
-                          <span className="ml-auto shrink-0 font-mono text-[10px] uppercase text-faint">{ui.status[cl.status]}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <DeliveryList deliveries={c.deliveries} statusLabels={ui.status} locale={locale} />
                   )}
                 </div>
               </div>

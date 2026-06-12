@@ -15,7 +15,7 @@ export function Contact({ locale }: { locale: Locale }) {
         <div className="glow relative overflow-hidden rounded-3xl border border-border bg-surface/60 px-6 py-16 text-center md:px-16">
           <div
             className="pointer-events-none absolute left-1/2 top-0 -z-10 h-72 w-[600px] -translate-x-1/2 rounded-full opacity-20 blur-[100px]"
-            style={{ background: "radial-gradient(closest-side, #34d399, transparent)" }}
+            style={{ background: "radial-gradient(closest-side, var(--color-accent), transparent)" }}
           />
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{ui.cta.availableForWork}</p>
           <h2 className="mx-auto mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight md:text-5xl">
