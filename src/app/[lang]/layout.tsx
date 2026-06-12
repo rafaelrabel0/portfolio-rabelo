@@ -21,6 +21,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   const title = `${profile.shortName} — ${profile.role[locale]}`;
   const description = profile.summary[locale];
   return {
+    metadataBase: new URL("https://rabelo.company"),
+    alternates: { canonical: `/${locale}`, languages: { "pt-BR": "/pt", en: "/en" } },
     title,
     description,
     keywords: [
