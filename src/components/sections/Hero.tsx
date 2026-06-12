@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowDownToLine, Mail } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
@@ -30,10 +31,13 @@ export function Hero({ locale }: { locale: Locale }) {
         </Reveal>
 
         <Reveal delay={0.05}>
-          <h1 className="mt-6 max-w-4xl font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
-            {profile.shortName.split(" ")[0]}{" "}
-            <span className="text-gradient">{profile.shortName.split(" ").slice(1).join(" ")}</span>
-          </h1>
+          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <Image src="/logo-rc.png" alt="Rabelo Co." width={120} height={50} priority className="h-10 w-auto md:h-14" />
+            <h1 className="max-w-4xl font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+              {profile.shortName.split(" ")[0]}{" "}
+              <span className="text-gradient">{profile.shortName.split(" ").slice(1).join(" ")}</span>
+            </h1>
+          </div>
         </Reveal>
 
         <Reveal delay={0.1}>

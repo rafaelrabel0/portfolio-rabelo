@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowDownToLine, Mail, Phone } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
@@ -17,6 +18,7 @@ export function Contact({ locale }: { locale: Locale }) {
             className="pointer-events-none absolute left-1/2 top-0 -z-10 h-72 w-[600px] -translate-x-1/2 rounded-full opacity-20 blur-[100px]"
             style={{ background: "radial-gradient(closest-side, var(--color-accent), transparent)" }}
           />
+          <Image src="/logo-rc.png" alt="Rabelo Co." width={86} height={36} className="mx-auto mb-6 h-9 w-auto" />
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{ui.cta.availableForWork}</p>
           <h2 className="mx-auto mt-4 max-w-2xl font-display text-3xl font-bold tracking-tight md:text-5xl">
             {ui.sections.contactTitle}

@@ -1,7 +1,7 @@
 "use client";
 
 // Background animado global — blobs ember (laranja/vermelho/roxo) desfocados em
-// deriva lenta, com textura de vidro canelado por cima. Paleta das referências.
+// deriva lenta, com granulado fino por cima. Paleta das referências.
 
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -56,8 +56,8 @@ export function AnimatedBackground() {
           transition={{ duration: b.duration, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
-      {/* vidro canelado por cima dos blobs */}
-      <div className="bg-ribs absolute inset-0" />
+      {/* granulado fino por cima dos blobs */}
+      <div className="bg-grain absolute inset-0" />
       {/* vinheta para manter o conteúdo legível */}
       <div
         className="absolute inset-0"
