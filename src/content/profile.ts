@@ -8,8 +8,8 @@ export const profile = {
   shortName: "Rafael Rabelo",
   company: "Rabelo Co.",
   role: {
-    pt: "Engenheiro de Automação com IA — Agentes de IA · Automação de Workflows · Ferramentas de GTM",
-    en: "AI Automation Engineer — AI Agents · Workflow Automation · GTM Tooling",
+    pt: "Engenheiro de AI Ops / Automação — Agentes de IA · Automação de Workflows · Ferramentas de GTM",
+    en: "AI Ops / Automation Engineer — AI Agents · Workflow Automation · GTM Tooling",
   } satisfies Localized,
   headline: {
     pt: "Construo agentes de IA e automações em produção que viram receita.",
