@@ -32,7 +32,7 @@ export function Hero({ locale }: { locale: Locale }) {
 
         <Reveal delay={0.05}>
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <Image src="/logo-rc.png" alt="Rabelo Co." width={120} height={50} priority className="h-10 w-auto md:h-14" />
+            <Image src="/logo-rc.png" alt="Rabelo Co." width={120} height={50} priority className="logo-adaptive h-10 w-auto md:h-14" />
             <h1 className="max-w-4xl font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
               {profile.shortName.split(" ")[0]}{" "}
               <span className="text-gradient">{profile.shortName.split(" ").slice(1).join(" ")}</span>

@@ -41,7 +41,14 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   if (!isLocale(lang)) notFound();
 
   return (
-    <html lang={lang === "pt" ? "pt-BR" : "en"} className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang={lang === "pt" ? "pt-BR" : "en"} className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t==="light")document.documentElement.dataset.theme="light"}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-screen antialiased">
         <AnimatedBackground />
         <ScrollProgress />

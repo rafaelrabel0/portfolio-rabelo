@@ -28,6 +28,35 @@
   color-scheme: dark;
 }
 
+/* ============ Tema claro (toggle via data-theme) ============ */
+/* Mesmo ember sobre base creme quente; marca preta via invert na logo. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #faf6f2;
+  --color-surface: #ffffff;
+  --color-surface-2: #f3ece5;
+  --color-border: #e8ddd2;
+  --color-border-strong: #d5c5b6;
+
+  --color-fg: #1d1410;
+  --color-muted: #5d534a;
+  --color-faint: #968878;
+
+  --color-accent: #e8501a;
+  --color-accent-2: #d42c1f;
+  --color-cyan: #b45a13;
+}
+
+/* Logo branca vira preta no tema claro */
+:root[data-theme="light"] .logo-adaptive {
+  filter: invert(1);
+}
+
+:root[data-theme="light"] .bg-grain {
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
 * {
   border-color: var(--color-border);
 }
