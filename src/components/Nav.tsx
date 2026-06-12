@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { otherLocale, type Locale } from "@/lib/i18n";
@@ -40,9 +41,12 @@ export function Nav({ locale }: { locale: Locale }) {
       )}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <Link href={`/${locale}`} className="font-display text-sm font-bold tracking-tight">
-          <span className="text-gradient">Rabelo</span>
-          <span className="text-muted"> Co.</span>
+        <Link href={`/${locale}`} className="flex items-center gap-2.5 font-display text-sm font-bold tracking-tight">
+          <Image src="/logo-rc.png" alt="Rabelo Co." width={38} height={16} priority className="h-4 w-auto transition-transform duration-300 hover:scale-105" />
+          <span>
+            <span className="text-gradient">Rabelo</span>
+            <span className="text-muted"> Co.</span>
+          </span>
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
