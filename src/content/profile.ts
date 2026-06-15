@@ -25,7 +25,7 @@ export const profile = {
     en: "Open to opportunities",
   } satisfies Localized,
   contact: {
-    email: "dev.rabelo03@gmail.com",
+    email: "rafael@rabelo.company",
     phone: "+55 62 99207-9570",
     github: "https://github.com/rafaelrabel0",
     githubHandle: "rafaelrabel0",
