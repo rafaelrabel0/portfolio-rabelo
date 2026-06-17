@@ -13,7 +13,6 @@ export function Hero({ locale }: { locale: Locale }) {
 
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden pt-16">
-      <div className="bg-grid pointer-events-none absolute inset-0 -z-10" />
       <div
         className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full opacity-30 blur-[120px]"
         style={{ background: "radial-gradient(closest-side, var(--color-accent), transparent)" }}
