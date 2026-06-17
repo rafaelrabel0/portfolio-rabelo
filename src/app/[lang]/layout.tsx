@@ -31,8 +31,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
       "automação de workflows", "prompt engineering", "AI engineer Brazil",
     ],
     authors: [{ name: profile.name }],
-    openGraph: { title, description, type: "website", locale: locale === "pt" ? "pt_BR" : "en_US" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, type: "website", locale: locale === "pt" ? "pt_BR" : "en_US", url: `/${locale}`, siteName: "Rabelo Co.", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Rabelo Co. — AI agents & automation that turn into revenue" }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
   };
 }
 
