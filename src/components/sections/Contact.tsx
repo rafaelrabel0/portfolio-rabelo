@@ -15,8 +15,9 @@ export function Contact({ locale }: { locale: Locale }) {
       <Reveal>
         <div className="glow relative overflow-hidden rounded-3xl border border-border bg-surface/60 px-6 py-16 text-center md:px-16">
           <div
-            className="pointer-events-none absolute left-1/2 top-0 -z-10 h-72 w-[600px] -translate-x-1/2 rounded-full opacity-20 blur-[100px]"
-            style={{ background: "radial-gradient(closest-side, var(--color-accent), transparent)" }}
+            aria-hidden
+            className="bg-reed pointer-events-none absolute inset-x-0 top-0 -z-10 h-1/2"
+            style={{ maskImage: "linear-gradient(to bottom, #000 35%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 35%, transparent)" }}
           />
           <Image src="/logo-rc.png" alt="Rabelo Co." width={86} height={36} className="logo-adaptive mx-auto mb-6 h-9 w-auto" />
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{ui.cta.availableForWork}</p>

@@ -44,7 +44,7 @@ export function Nav({ locale }: { locale: Locale }) {
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link href={`/${locale}`} className="flex items-center gap-2.5 font-display text-sm font-bold tracking-tight">
           <Image src="/logo-rc.png" alt="Rabelo Co." width={38} height={16} priority className="logo-adaptive h-4 w-auto transition-transform duration-300 hover:scale-105" />
-          <span>
+          <span className="hidden sm:inline">
             <span className="text-gradient">Rabelo</span>
             <span className="text-muted"> Co.</span>
           </span>
