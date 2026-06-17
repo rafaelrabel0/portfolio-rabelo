@@ -83,7 +83,7 @@ body {
 
 /* Padrão de marca no fundo global — símbolo RC tesselado, bem sutil.
    Blend screen: só as formas (cinza) clareiam levemente; o preto não soma. */
-.bg-pattern { opacity: 0.06; mix-blend-mode: screen; }
+.bg-pattern { opacity: 0.10; mix-blend-mode: screen; }
 :root[data-theme="light"] .bg-pattern { opacity: 0.04; mix-blend-mode: multiply; }
 
 /* Wallpaper Ember — vidro canelado (reeded) sobre glow ember, estilo wallpaper iPhone.
