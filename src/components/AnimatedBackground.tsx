@@ -45,7 +45,8 @@ export function AnimatedBackground() {
         className="bg-pattern absolute inset-0"
         style={{
           backgroundImage: "url(/bg-pattern.jpg)",
-          backgroundSize: "cover",
+          backgroundSize: "50% auto",
+          backgroundRepeat: "repeat",
           backgroundPosition: "center",
         }}
       />
