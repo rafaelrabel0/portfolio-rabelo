@@ -40,6 +40,15 @@ export function AnimatedBackground() {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-50 overflow-hidden">
+      {/* padrão do wallpaper (símbolo RC tesselado) — camada base bem sutil */}
+      <div
+        className="bg-pattern absolute inset-0"
+        style={{
+          backgroundImage: "url(/bg-pattern.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
       {blobs.map((b, i) => (
         <motion.div
           key={i}

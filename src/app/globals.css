@@ -81,6 +81,10 @@ body {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
 }
 
+/* Padrão de marca no fundo global — símbolo RC tesselado, bem sutil. */
+.bg-pattern { opacity: 0.10; }
+:root[data-theme="light"] .bg-pattern { opacity: 0.04; filter: invert(1); }
+
 /* Wallpaper Ember — vidro canelado (reeded) sobre glow ember, estilo wallpaper iPhone.
    Uso contido (ex.: topo do card de contato), não no fundo global. */
 .bg-reed {
