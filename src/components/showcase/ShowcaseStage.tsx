@@ -26,8 +26,9 @@ type Packet = {
 
 export type FeedEvent = DemoEvent & { id: number };
 
-export function ShowcaseStage({ locale }: { locale: Locale }) {
+export function ShowcaseStage({ locale, ctaHref }: { locale: Locale; ctaHref?: string }) {
   const ui = getUi(locale);
+  const cta = ctaHref ?? `/${locale}/servicos#proposta`;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const chatRef = useRef<HTMLDivElement>(null);
@@ -251,7 +252,7 @@ export function ShowcaseStage({ locale }: { locale: Locale }) {
               <p className="mt-2 text-sm text-muted">{ui.showcase.doneSubtitle}</p>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
                 <a
-                  href="#contact"
+                  href={cta}
                   className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
                 >
                   {ui.showcase.cta} <ArrowRight className="h-4 w-4" />

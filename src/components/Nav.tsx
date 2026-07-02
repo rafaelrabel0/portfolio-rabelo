@@ -24,14 +24,16 @@ export function Nav({ locale }: { locale: Locale }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links = [
-    { href: "#about", label: ui.nav.about },
-    { href: "#experience", label: ui.nav.experience },
-    { href: "#projects", label: ui.nav.projects },
-    { href: "#showcase", label: ui.nav.showcase },
-    { href: "#companies", label: ui.nav.companies },
-    { href: "#skills", label: ui.nav.skills },
-    { href: "#contact", label: ui.nav.contact },
+  const base = `/${locale}`;
+  const links: { href: string; label: string; accent?: boolean }[] = [
+    { href: `${base}#about`, label: ui.nav.about },
+    { href: `${base}#experience`, label: ui.nav.experience },
+    { href: `${base}#projects`, label: ui.nav.projects },
+    { href: `${base}#showcase`, label: ui.nav.showcase },
+    { href: `${base}#companies`, label: ui.nav.companies },
+    { href: `${base}#skills`, label: ui.nav.skills },
+    { href: `${base}#contact`, label: ui.nav.contact },
+    { href: `${base}/servicos`, label: ui.nav.services, accent: true },
   ];
 
   const swapLocale = otherLocale(locale);
@@ -55,7 +57,11 @@ export function Nav({ locale }: { locale: Locale }) {
 
         <div className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm text-muted transition-colors hover:text-fg">
+            <a
+              key={l.href}
+              href={l.href}
+              className={cn("text-sm transition-colors hover:text-fg", l.accent ? "font-medium text-accent" : "text-muted")}
+            >
               {l.label}
             </a>
           ))}
@@ -96,7 +102,10 @@ export function Nav({ locale }: { locale: Locale }) {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm text-muted transition-colors hover:bg-surface hover:text-fg"
+                  className={cn(
+                    "rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-surface hover:text-fg",
+                    l.accent ? "font-medium text-accent" : "text-muted"
+                  )}
                 >
                   {l.label}
                 </a>

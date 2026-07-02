@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowDownToLine, Mail } from "lucide-react";
+import { ArrowDownToLine, Handshake } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import { ScrollHint } from "@/components/ScrollHint";
@@ -51,19 +51,19 @@ export function Hero({ locale }: { locale: Locale }) {
 
         <Reveal delay={0.2}>
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            <a
-              href="/cv.pdf"
+            <Link
+              href={`/${locale}/servicos`}
               className="group inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
             >
-              <ArrowDownToLine className="h-4 w-4" />
-              {ui.cta.downloadCv}
-            </a>
+              <Handshake className="h-4 w-4" />
+              {ui.cta.workTogether}
+            </Link>
             <a
-              href="#contact"
+              href="/cv.pdf"
               className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-fg transition-colors hover:border-border-strong hover:bg-surface"
             >
-              <Mail className="h-4 w-4" />
-              {ui.cta.contact}
+              <ArrowDownToLine className="h-4 w-4" />
+              {ui.cta.recruiterCv}
             </a>
             <Link
               href={profile.contact.github}

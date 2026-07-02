@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowDownToLine, Mail, Phone } from "lucide-react";
+import { ArrowDownToLine, FileText, Mail, Phone } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
@@ -30,6 +30,9 @@ export function Contact({ locale }: { locale: Locale }) {
             <a href={`mailto:${profile.contact.email}`} className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-bg transition-transform hover:scale-[1.02]">
               <Mail className="h-4 w-4" /> {profile.contact.email}
             </a>
+            <Link href={`/${locale}/servicos#proposta`} className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-5 py-3 text-sm font-medium text-fg transition-colors hover:bg-accent/20">
+              <FileText className="h-4 w-4 text-accent" /> {ui.cta.requestProposal}
+            </Link>
             <a href="/cv.pdf" className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-fg transition-colors hover:border-border-strong hover:bg-surface">
               <ArrowDownToLine className="h-4 w-4" /> {ui.cta.downloadCv}
             </a>
