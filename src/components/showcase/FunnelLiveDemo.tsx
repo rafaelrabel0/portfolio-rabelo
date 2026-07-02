@@ -1,42 +1,14 @@
 "use client";
 
-// Demo auto-reproduzida do dashboard de funil: eventos chegando do n8n em tempo real.
-// Sequência roteirizada (determinística) — espelha o contrato real de eventos.
+// Card do dashboard de funil — apresentação pura, dirigida pelo ShowcaseStage.
+// Recebe os eventos já entregues (os do agente da demo chegam como `hero` e
+// ganham destaque no feed). Contagens derivam de BASE + eventos.
 
-import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Activity, Trophy } from "lucide-react";
+import { BASE, type EventKind } from "@/components/showcase/script";
+import type { FeedEvent } from "@/components/showcase/ShowcaseStage";
 import type { Locale } from "@/lib/i18n";
-
-type EventKind = "lead_created" | "conversation_started" | "lead_qualified" | "followup_sent" | "deal_won";
-
-type Ev = { kind: EventKind; meta?: string };
-
-const SEQUENCE: Ev[] = [
-  { kind: "lead_created", meta: "Meta Ads" },
-  { kind: "conversation_started" },
-  { kind: "lead_created", meta: "Google" },
-  { kind: "followup_sent", meta: "FUP1" },
-  { kind: "lead_qualified" },
-  { kind: "conversation_started" },
-  { kind: "lead_created", meta: "Meta Ads" },
-  { kind: "lead_qualified" },
-  { kind: "deal_won" },
-  { kind: "followup_sent", meta: "FUP 30min" },
-  { kind: "conversation_started" },
-  { kind: "lead_created", meta: "Indicação" },
-  { kind: "lead_qualified" },
-  { kind: "followup_sent", meta: "FUP3" },
-  { kind: "deal_won" },
-];
-
-const BASE: Record<EventKind, number> = {
-  lead_created: 128,
-  conversation_started: 94,
-  lead_qualified: 47,
-  followup_sent: 211,
-  deal_won: 21,
-};
 
 const eventStyle: Record<EventKind, string> = {
   lead_created: "text-cyan border-cyan/30 bg-cyan/10",
@@ -46,12 +18,12 @@ const eventStyle: Record<EventKind, string> = {
   deal_won: "text-accent border-accent/40 bg-accent/15",
 };
 
-const eventLabel: Record<EventKind, { pt: string; en: string }> = {
-  lead_created: { pt: "lead_created", en: "lead_created" },
-  conversation_started: { pt: "conversation_started", en: "conversation_started" },
-  lead_qualified: { pt: "lead_qualified", en: "lead_qualified" },
-  followup_sent: { pt: "followup_sent", en: "followup_sent" },
-  deal_won: { pt: "deal_won 🎉", en: "deal_won 🎉" },
+const eventLabel: Record<EventKind, string> = {
+  lead_created: "lead_created",
+  conversation_started: "conversation_started",
+  lead_qualified: "lead_qualified",
+  followup_sent: "followup_sent",
+  deal_won: "deal_won 🎉",
 };
 
 const STAGES: { kind: EventKind; label: { pt: string; en: string }; color: string }[] = [
@@ -61,22 +33,11 @@ const STAGES: { kind: EventKind; label: { pt: string; en: string }; color: strin
   { kind: "deal_won", label: { pt: "Vendas", en: "Deals won" }, color: "bg-accent" },
 ];
 
-export function FunnelLiveDemo({ locale }: { locale: Locale }) {
-  const [tick, setTick] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(() => setTick((v) => v + 1), 1500);
-    return () => clearInterval(t);
-  }, []);
-
-  // Contagens derivadas dos eventos já processados (reinicia a cada volta da sequência)
-  const loop = Math.floor(tick / SEQUENCE.length);
-  const pos = tick % SEQUENCE.length;
-  const processed = SEQUENCE.slice(0, pos + 1);
+export function FunnelLiveDemo({ locale, events, name }: { locale: Locale; events: FeedEvent[]; name: string }) {
   const counts = { ...BASE };
-  for (const e of processed) counts[e.kind] += 1;
+  for (const e of events) counts[e.kind] += 1;
 
-  const feed = processed.slice(-4).map((e, i) => ({ ...e, id: loop * SEQUENCE.length + (pos - (processed.slice(-4).length - 1)) + i }));
+  const feed = events.slice(-4);
   const max = counts.lead_created;
   const fupCount = counts.followup_sent;
 
@@ -149,15 +110,17 @@ export function FunnelLiveDemo({ locale }: { locale: Locale }) {
               <motion.div
                 key={e.id}
                 layout
-                initial={{ opacity: 0, x: -16, scale: 0.96 }}
+                initial={e.hero ? { opacity: 0, scale: 1.08 } : { opacity: 0, x: -16, scale: 0.96 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.35 }}
                 className="flex items-center gap-2"
               >
                 {e.kind === "deal_won" ? <Trophy className="h-3 w-3 shrink-0 text-accent" /> : <span className="h-1 w-1 shrink-0 rounded-full bg-faint" />}
-                <span className={`rounded-md border px-2 py-0.5 font-mono text-[10px] ${eventStyle[e.kind]}`}>{eventLabel[e.kind][locale]}</span>
-                {e.meta && <span className="font-mono text-[10px] text-faint">· {e.meta}</span>}
+                <span className={`rounded-md border px-2 py-0.5 font-mono text-[10px] ${eventStyle[e.kind]} ${e.hero ? "ring-1 ring-accent/50" : ""}`}>
+                  {eventLabel[e.kind]}
+                </span>
+                {e.meta && <span className="font-mono text-[10px] text-faint">· {e.meta.replace("{name}", name)}</span>}
                 <span className="ml-auto font-mono text-[10px] text-faint">n8n → POST /ingest-event</span>
               </motion.div>
             ))}

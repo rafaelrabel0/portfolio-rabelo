@@ -5,6 +5,7 @@ import "../globals.css";
 import { isLocale, locales } from "@/lib/i18n";
 import { profile } from "@/content/profile";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
@@ -40,6 +41,18 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profile.name,
+    alternateName: profile.shortName,
+    url: `https://rabelo.company/${lang}`,
+    email: `mailto:${profile.contact.email}`,
+    jobTitle: profile.role[lang],
+    sameAs: [profile.contact.github],
+    worksFor: { "@type": "Organization", name: profile.company, url: "https://rabelo.company" },
+  };
+
   return (
     <html lang={lang === "pt" ? "pt-BR" : "en"} className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
@@ -50,9 +63,12 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         />
       </head>
       <body className="min-h-screen antialiased">
-        <AnimatedBackground />
-        <ScrollProgress />
-        {children}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <MotionProvider>
+          <AnimatedBackground />
+          <ScrollProgress />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   );
