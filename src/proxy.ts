@@ -10,6 +10,8 @@ function getLocale(request: NextRequest): string {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  // Subdomínio de propostas: sem locale, o rewrite do next.config resolve
+  if (request.nextUrl.hostname.startsWith("proposta.")) return;
   const hasLocale = locales.some((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`));
   if (hasLocale) return;
 
