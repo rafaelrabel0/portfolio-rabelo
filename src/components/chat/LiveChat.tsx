@@ -140,12 +140,22 @@ export function LiveChat({
         if (!res.ok) throw new Error("upstream");
         const data: AgentReply = await res.json();
 
-        // Simulação de digitação proporcional à resposta.
-        setPhase("typing");
-        await new Promise((r) => setTimeout(r, Math.min(2600, 500 + (data.reply?.length ?? 0) * 14)));
-
         if (data.tool) push({ role: "tool", text: data.tool });
-        if (data.reply) push({ role: "agent", text: data.reply });
+
+        // Resposta pode vir em várias "bolhas" separadas por linha em branco;
+        // cada uma ganha sua simulação de digitação, como numa conversa real.
+        const parts = (data.reply ?? "")
+          .split(/\n{2,}/)
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .slice(0, 4);
+        for (const part of parts) {
+          setPhase("typing");
+          await new Promise((r) => setTimeout(r, Math.min(2200, 450 + part.length * 14)));
+          push({ role: "agent", text: part });
+          setPhase("idle");
+          await new Promise((r) => setTimeout(r, 260));
+        }
         if (data.stage) setStage(data.stage);
         setPhase("idle");
         setStatus(data.status);
