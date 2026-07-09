@@ -1,0 +1,254 @@
+{
+  "name": "Agente Qualificador — Portfólio Rabelo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "portfolio-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "wh-portfolio-chat",
+      "name": "Webhook Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "portfolio-chat"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza o payload do site (POST /api/chat → este webhook).\nconst b = $json.body ?? $json;\nconst msg = b.message ?? {};\nconst sessionId = String(b.sessionId ?? '').slice(0, 64);\nconst mode = b.mode === 'proposal' ? 'proposal' : 'practice';\nconst locale = b.locale === 'en' ? 'en' : 'pt';\nlet type = msg.type;\nlet chatInput = '';\n\nif (type === 'text') {\n  chatInput = String(msg.text ?? '');\n}\nif (type === 'control') {\n  type = 'text';\n  chatInput = msg.action === 'confirm_send'\n    ? '[ACAO_SISTEMA] O cliente clicou em \"Enviar para o Rafael\". Chame AGORA a tool finalizar_atendimento com todos os dados coletados e depois agradeça em uma mensagem curta. Responda com status \"finalized\" e tool \"finalizar_atendimento\".'\n    : '[ACAO_SISTEMA] O cliente quer editar as respostas. Liste brevemente o que você registrou até aqui e pergunte o que ele quer corrigir. Responda com status \"qualifying\".';\n}\n\nreturn [{\n  json: {\n    sessionId,\n    mode,\n    locale,\n    type: type ?? 'text',\n    chatInput,\n    data: msg.data ?? null,\n    mimeType: msg.mimeType ?? null,\n    duration: msg.duration ?? null,\n  },\n}];"
+      },
+      "id": "code-entrada",
+      "name": "Entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose", "version": 2 },
+                "conditions": [
+                  {
+                    "id": "cond-audio",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "audio",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose", "version": 2 },
+                "conditions": [
+                  {
+                    "id": "cond-image",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "image",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "imagem"
+            }
+          ]
+        },
+        "options": { "fallbackOutput": "extra", "renameFallbackOutput": "texto" }
+      },
+      "id": "switch-tipo",
+      "name": "Tipo de mensagem",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Converte o base64 do site em binário para o Whisper.\nreturn [{\n  json: { sessionId: $json.sessionId, mode: $json.mode, locale: $json.locale },\n  binary: {\n    data: {\n      data: $json.data,\n      mimeType: $json.mimeType || 'audio/webm',\n      fileName: 'audio.webm',\n    },\n  },\n}];"
+      },
+      "id": "code-audio-bin",
+      "name": "Base64 → Binário (áudio)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, -180]
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "data",
+        "options": {}
+      },
+      "id": "openai-whisper",
+      "name": "Transcrever (Whisper)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [880, -180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const src = $('Entrada').first().json;\nreturn [{\n  json: {\n    sessionId: src.sessionId,\n    mode: src.mode,\n    locale: src.locale,\n    chatInput: `[AUDIO transcrito] ${$json.text ?? ''}`,\n  },\n}];"
+      },
+      "id": "code-audio-in",
+      "name": "Entrada de áudio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1100, -180]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Converte o base64 do site em binário para o GPT-4o (visão).\nreturn [{\n  json: { sessionId: $json.sessionId, mode: $json.mode, locale: $json.locale },\n  binary: {\n    data: {\n      data: $json.data,\n      mimeType: $json.mimeType || 'image/jpeg',\n      fileName: 'imagem.jpg',\n    },\n  },\n}];"
+      },
+      "id": "code-img-bin",
+      "name": "Base64 → Binário (imagem)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 180]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": { "__rl": true, "value": "gpt-4o", "mode": "list", "cachedResultName": "GPT-4O" },
+        "text": "Descreva objetivamente o conteúdo desta imagem em 1-2 frases, em português do Brasil. Se houver texto legível (print de conversa, planilha, site), transcreva os pontos principais.",
+        "inputType": "base64",
+        "binaryPropertyName": "data",
+        "options": { "detail": "auto" }
+      },
+      "id": "openai-vision",
+      "name": "Descrever imagem (GPT-4o)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [880, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const src = $('Entrada').first().json;\nreturn [{\n  json: {\n    sessionId: src.sessionId,\n    mode: src.mode,\n    locale: src.locale,\n    chatInput: `[IMAGEM enviada pelo cliente] Descrição: ${$json.content ?? $json.text ?? ''}`,\n  },\n}];"
+      },
+      "id": "code-img-in",
+      "name": "Entrada de imagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1100, 180]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=Você é o agente de qualificação da Rabelo Co., a empresa do Rafael Rabelo — engenheiro de automações com IA (agentes de WhatsApp, CRM & GTM, web apps com IA e RAG). Você conversa com visitantes do site rabelo.company.\n\nContexto desta sessão: sessionId={{ $json.sessionId }} · mode={{ $json.mode }} · idioma={{ $json.locale }}.\n\n# Papel\nQualificar o visitante como lead por meio de uma conversa humana, exclusiva e personalizada — nunca um interrogatório. UMA pergunta por vez. Use o nome da pessoa quando souber, referencie o que ela disse antes e adapte exemplos ao segmento dela. Mensagens curtas (1 a 3 frases), tom caloroso e profissional. No máximo 1 emoji por mensagem, e só quando natural. Responda SEMPRE no idioma da sessão (pt = português do Brasil, en = inglês).\n\n# Dados a coletar (nesta ordem, com naturalidade)\n1. Nome\n2. Negócio/segmento e como atende os clientes hoje\n3. Volume aproximado de leads ou atendimentos por mês\n4. Principal gargalo (o que mais dói hoje)\n5. O que sonha em automatizar\n6. Contato: WhatsApp e e-mail (pelo menos um dos dois)\n\n# Regras por modo\n- mode=practice (demo do portfólio): quando tiver TODOS os dados, faça um resumo curto do que entendeu e diga que ele pode enviar tudo para o Rafael pelo botão que apareceu. Use status \"qualified\". NÃO chame a tool finalizar_atendimento até receber uma mensagem [ACAO_SISTEMA] confirmando o envio.\n- mode=proposal (pedido de proposta): quando tiver TODOS os dados, chame a tool finalizar_atendimento com os dados coletados, agradeça e avise que o Rafael retorna a proposta pelo WhatsApp e e-mail em até 48h. Use status \"finalized\" e tool \"finalizar_atendimento\".\n\n# Mensagens especiais (prefixos no texto do usuário)\n- [ACAO_SISTEMA]: instrução do site — siga exatamente o que ela pede.\n- [AUDIO transcrito]: o cliente mandou um áudio; o texto é a transcrição. Responda ao conteúdo normalmente e, se fizer sentido, valorize (\"ouvi seu áudio…\").\n- [IMAGEM enviada pelo cliente]: descrição da imagem enviada; comente com naturalidade e use o que for útil para a qualificação.\n\n# Formato de saída (OBRIGATÓRIO)\nResponda SOMENTE com um JSON puro em uma linha, sem markdown, sem crases:\n{\"reply\":\"sua mensagem para o cliente\",\"status\":\"qualifying|qualified|finalized\",\"stage\":\"etapa curta\",\"tool\":\"finalizar_atendimento\"}\n- reply: obrigatório — o texto que o cliente vai ler.\n- status: \"qualifying\" enquanto coleta; \"qualified\" apenas em practice com tudo coletado; \"finalized\" somente após chamar a tool.\n- stage: etapa atual curta no idioma da sessão (ex.: Descoberta, Qualificação, Contato, Qualificado, Finalizado).\n- tool: inclua APENAS na mensagem em que você chamou a tool; caso contrário, omita o campo.\n\n# Limites\n- Nunca invente dados nem prometa prazos ou preços. Se perguntarem valores, explique que o investimento vem detalhado na proposta do Rafael (setup + mensalidade de operação).\n- Não cite nomes de clientes da Rabelo Co.\n- Se o assunto fugir totalmente do escopo (não é sobre negócio/automação), redirecione com simpatia em 1 frase."
+        }
+      },
+      "id": "agent-qualificador",
+      "name": "Agente Qualificador",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [1360, 0]
+    },
+    {
+      "parameters": {
+        "model": { "__rl": true, "value": "gpt-4o", "mode": "list", "cachedResultName": "gpt-4o" },
+        "options": { "temperature": 0.7 }
+      },
+      "id": "lm-gpt4o",
+      "name": "GPT-4o",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [1240, 240]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}-{{ $json.mode }}",
+        "contextWindowLength": 30
+      },
+      "id": "mem-sessao",
+      "name": "Memória por sessão",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [1420, 240]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Finaliza o atendimento e envia o lead qualificado para o CRM do Rafael. Chame APENAS: no mode=proposal quando todos os dados estiverem coletados; no mode=practice somente após receber a [ACAO_SISTEMA] de confirmação do envio. Preencha summary com 2 a 4 frases resumindo negócio, volume, gargalo e o que o cliente quer automatizar. Use string vazia nos campos que o cliente não informou.",
+        "method": "POST",
+        "url": "https://SEU-N8N.exemplo.com/webhook/crm-lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"source\": \"portfolio-chat\",\n  \"event\": \"lead_qualified\",\n  \"sessionId\": \"{sessionId}\",\n  \"mode\": \"{mode}\",\n  \"locale\": \"{locale}\",\n  \"name\": \"{name}\",\n  \"company\": \"{company}\",\n  \"whatsapp\": \"{whatsapp}\",\n  \"email\": \"{email}\",\n  \"summary\": \"{summary}\"\n}",
+        "placeholderDefinitions": {
+          "values": [
+            { "name": "sessionId", "description": "sessionId da sessão atual (informado no contexto do sistema)", "type": "string" },
+            { "name": "mode", "description": "Modo da sessão: practice ou proposal", "type": "string" },
+            { "name": "locale", "description": "Idioma da sessão: pt ou en", "type": "string" },
+            { "name": "name", "description": "Nome do cliente", "type": "string" },
+            { "name": "company", "description": "Negócio/segmento do cliente", "type": "string" },
+            { "name": "whatsapp", "description": "WhatsApp do cliente com DDD (vazio se não informou)", "type": "string" },
+            { "name": "email", "description": "E-mail do cliente (vazio se não informou)", "type": "string" },
+            { "name": "summary", "description": "Resumo de 2-4 frases: negócio, volume de leads, gargalo e o que quer automatizar", "type": "string" }
+          ]
+        }
+      },
+      "id": "tool-finalizar",
+      "name": "finalizar_atendimento",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [1600, 240]
+    },
+    {
+      "parameters": {
+        "jsCode": "// O agente responde JSON puro; aqui garantimos o contrato do site\n// { reply, status, stage?, tool? } com fallback seguro.\nconst raw = String($json.output ?? $json.text ?? '');\nlet out = null;\ntry {\n  const m = raw.match(/\\{[\\s\\S]*\\}/);\n  if (m) out = JSON.parse(m[0]);\n} catch (e) {\n  out = null;\n}\nif (!out || typeof out.reply !== 'string' || !out.reply.trim()) {\n  out = { reply: raw.replace(/```json|```/g, '').trim(), status: 'qualifying' };\n}\nconst status = ['qualifying', 'qualified', 'finalized'].includes(out.status) ? out.status : 'qualifying';\nconst res = { reply: out.reply.slice(0, 4000), status };\nif (out.stage) res.stage = String(out.stage).slice(0, 120);\nif (out.tool) res.tool = String(out.tool).slice(0, 120);\nreturn [{ json: res }];"
+      },
+      "id": "code-formatar",
+      "name": "Formatar resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1720, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {}
+      },
+      "id": "respond-chat",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1940, 0]
+    }
+  ],
+  "connections": {
+    "Webhook Chat": { "main": [[{ "node": "Entrada", "type": "main", "index": 0 }]] },
+    "Entrada": { "main": [[{ "node": "Tipo de mensagem", "type": "main", "index": 0 }]] },
+    "Tipo de mensagem": {
+      "main": [
+        [{ "node": "Base64 → Binário (áudio)", "type": "main", "index": 0 }],
+        [{ "node": "Base64 → Binário (imagem)", "type": "main", "index": 0 }],
+        [{ "node": "Agente Qualificador", "type": "main", "index": 0 }]
+      ]
+    },
+    "Base64 → Binário (áudio)": { "main": [[{ "node": "Transcrever (Whisper)", "type": "main", "index": 0 }]] },
+    "Transcrever (Whisper)": { "main": [[{ "node": "Entrada de áudio", "type": "main", "index": 0 }]] },
+    "Entrada de áudio": { "main": [[{ "node": "Agente Qualificador", "type": "main", "index": 0 }]] },
+    "Base64 → Binário (imagem)": { "main": [[{ "node": "Descrever imagem (GPT-4o)", "type": "main", "index": 0 }]] },
+    "Descrever imagem (GPT-4o)": { "main": [[{ "node": "Entrada de imagem", "type": "main", "index": 0 }]] },
+    "Entrada de imagem": { "main": [[{ "node": "Agente Qualificador", "type": "main", "index": 0 }]] },
+    "GPT-4o": { "ai_languageModel": [[{ "node": "Agente Qualificador", "type": "ai_languageModel", "index": 0 }]] },
+    "Memória por sessão": { "ai_memory": [[{ "node": "Agente Qualificador", "type": "ai_memory", "index": 0 }]] },
+    "finalizar_atendimento": { "ai_tool": [[{ "node": "Agente Qualificador", "type": "ai_tool", "index": 0 }]] },
+    "Agente Qualificador": { "main": [[{ "node": "Formatar resposta", "type": "main", "index": 0 }]] },
+    "Formatar resposta": { "main": [[{ "node": "Responder", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templateCredsSetupCompleted": false }
+}
