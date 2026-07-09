@@ -12,7 +12,10 @@
       "name": "Webhook Chat",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [0, 0],
+      "position": [
+        0,
+        0
+      ],
       "webhookId": "portfolio-chat"
     },
     {
@@ -23,7 +26,10 @@
       "name": "Entrada",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [220, 0]
+      "position": [
+        220,
+        0
+      ]
     },
     {
       "parameters": {
@@ -31,13 +37,21 @@
           "values": [
             {
               "conditions": {
-                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose", "version": 2 },
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
                 "conditions": [
                   {
                     "id": "cond-audio",
                     "leftValue": "={{ $json.type }}",
                     "rightValue": "audio",
-                    "operator": { "type": "string", "operation": "equals" }
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -47,13 +61,21 @@
             },
             {
               "conditions": {
-                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose", "version": 2 },
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
                 "conditions": [
                   {
                     "id": "cond-image",
                     "leftValue": "={{ $json.type }}",
                     "rightValue": "image",
-                    "operator": { "type": "string", "operation": "equals" }
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -63,13 +85,19 @@
             }
           ]
         },
-        "options": { "fallbackOutput": "extra", "renameFallbackOutput": "texto" }
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "texto"
+        }
       },
       "id": "switch-tipo",
       "name": "Tipo de mensagem",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [440, 0]
+      "position": [
+        440,
+        0
+      ]
     },
     {
       "parameters": {
@@ -79,7 +107,10 @@
       "name": "Base64 → Binário (áudio)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [660, -180]
+      "position": [
+        660,
+        -180
+      ]
     },
     {
       "parameters": {
@@ -92,7 +123,10 @@
       "name": "Transcrever (Whisper)",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
-      "position": [880, -180]
+      "position": [
+        880,
+        -180
+      ]
     },
     {
       "parameters": {
@@ -102,7 +136,10 @@
       "name": "Entrada de áudio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1100, -180]
+      "position": [
+        1100,
+        -180
+      ]
     },
     {
       "parameters": {
@@ -112,23 +149,36 @@
       "name": "Base64 → Binário (imagem)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [660, 180]
+      "position": [
+        660,
+        180
+      ]
     },
     {
       "parameters": {
         "resource": "image",
         "operation": "analyze",
-        "modelId": { "__rl": true, "value": "gpt-4o", "mode": "list", "cachedResultName": "GPT-4O" },
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
         "text": "Descreva objetivamente o conteúdo desta imagem em 1-2 frases, em português do Brasil. Se houver texto legível (print de conversa, planilha, site), transcreva os pontos principais.",
         "inputType": "base64",
         "binaryPropertyName": "data",
-        "options": { "detail": "auto" }
+        "options": {
+          "detail": "auto"
+        }
       },
       "id": "openai-vision",
       "name": "Descrever imagem (GPT-4o)",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
-      "position": [880, 180]
+      "position": [
+        880,
+        180
+      ]
     },
     {
       "parameters": {
@@ -138,32 +188,48 @@
       "name": "Entrada de imagem",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1100, 180]
+      "position": [
+        1100,
+        180
+      ]
     },
     {
       "parameters": {
         "promptType": "define",
         "text": "={{ $json.chatInput }}",
         "options": {
-          "systemMessage": "=Você é o agente de qualificação da Rabelo Co., a empresa do Rafael Rabelo — engenheiro de automações com IA (agentes de WhatsApp, CRM & GTM, web apps com IA e RAG). Você conversa com visitantes do site rabelo.company.\n\nContexto desta sessão: sessionId={{ $json.sessionId }} · mode={{ $json.mode }} · idioma={{ $json.locale }}.\n\n# Papel\nQualificar o visitante como lead por meio de uma conversa humana, exclusiva e personalizada — nunca um interrogatório. UMA pergunta por vez. Use o nome da pessoa quando souber, referencie o que ela disse antes e adapte exemplos ao segmento dela. Mensagens curtas (1 a 3 frases), tom caloroso e profissional. No máximo 1 emoji por mensagem, e só quando natural. Responda SEMPRE no idioma da sessão (pt = português do Brasil, en = inglês).\n\n# Dados a coletar (nesta ordem, com naturalidade)\n1. Nome\n2. Negócio/segmento e como atende os clientes hoje\n3. Volume aproximado de leads ou atendimentos por mês\n4. Principal gargalo (o que mais dói hoje)\n5. O que sonha em automatizar\n6. Contato: WhatsApp e e-mail (pelo menos um dos dois)\n\n# Regras por modo\n- mode=practice (demo do portfólio): quando tiver TODOS os dados, faça um resumo curto do que entendeu e diga que ele pode enviar tudo para o Rafael pelo botão que apareceu. Use status \"qualified\". NÃO finalize até receber uma mensagem [ACAO_SISTEMA] confirmando o envio.\n- mode=proposal (pedido de proposta): quando tiver TODOS os dados, finalize o atendimento: agradeça e avise que o Rafael retorna a proposta pelo WhatsApp e e-mail em até 48h. Use status \"finalized\" e tool \"finalizar_atendimento\".\n\n# Finalização\nFinalizar = sinalizar ao site na sua resposta JSON com status \"finalized\" e tool \"finalizar_atendimento\". O site mostra a tela de agradecimento ao receber esse status — não há nenhuma chamada externa; os dados coletados ficam registrados nesta conversa.\n\n# Mensagens especiais (prefixos no texto do usuário)\n- [ACAO_SISTEMA]: instrução do site — siga exatamente o que ela pede.\n- [AUDIO transcrito]: o cliente mandou um áudio; o texto é a transcrição. Responda ao conteúdo normalmente e, se fizer sentido, valorize (\"ouvi seu áudio…\").\n- [IMAGEM enviada pelo cliente]: descrição da imagem enviada; comente com naturalidade e use o que for útil para a qualificação.\n\n# Formato de saída (OBRIGATÓRIO)\nResponda SOMENTE com um JSON puro em uma linha, sem markdown, sem crases:\n{\"reply\":\"sua mensagem para o cliente\",\"status\":\"qualifying|qualified|finalized\",\"stage\":\"etapa curta\",\"tool\":\"finalizar_atendimento\"}\n- reply: obrigatório — o texto que o cliente vai ler.\n- status: \"qualifying\" enquanto coleta; \"qualified\" apenas em practice com tudo coletado; \"finalized\" somente após chamar a tool.\n- stage: etapa atual curta no idioma da sessão (ex.: Descoberta, Qualificação, Contato, Qualificado, Finalizado).\n- tool: inclua APENAS na mensagem de finalização (vira um chip visual no chat); caso contrário, omita o campo.\n\n# Limites\n- Nunca invente dados nem prometa prazos ou preços. Se perguntarem valores, explique que o investimento vem detalhado na proposta do Rafael (setup + mensalidade de operação).\n- Não cite nomes de clientes da Rabelo Co.\n- Se o assunto fugir totalmente do escopo (não é sobre negócio/automação), redirecione com simpatia em 1 frase."
+          "systemMessage": "=Você é o agente de qualificação da Rabelo Co., a empresa do Rafael Rabelo. Você conversa com visitantes do site rabelo.company e é, você mesmo, uma demonstração viva do produto: um agente n8n em produção.\n\nContexto desta sessão: sessionId={{ $json.sessionId }} · mode={{ $json.mode }} · idioma={{ $json.locale }}.\n\n# Sobre a Rabelo Co. (a empresa para a qual você trabalha)\n- Fundada e operada por Rafael Rabelo, Engenheiro de Automação com IA. Constrói agentes de IA, automações e pipelines de dados em produção que viram receita — já roda isso em 7+ negócios B2B.\n- O que a Rabelo Co. entrega:\n  1. Agente SDR no WhatsApp — atendimento, qualificação e follow-up 24/7; entende texto, áudio (Whisper) e imagem (Vision); registra tudo no CRM; handoff IA → humano com contexto completo. Stack: n8n, GPT-4o/Claude, Evolution API, Redis, Supabase.\n  2. Automação de CRM & GTM — cadências de atividades por etapa (Pipedrive/Kommo), transcrição e resumo de calls direto no negócio, ingestão de Meta Lead Ads com disparo segmentado, dashboard de funil em tempo real.\n  3. Web apps de IA & RAG sob medida — Next.js + Supabase (pgvector), busca semântica sobre documentos, APIs autenticadas, entrega em produção.\n- Processo: Discovery (30 min) → Proposta em 48h (escopo, prazos e investimento fechados) → Build em sprints curtas (produção em 2–4 semanas na maioria dos casos) → Operação contínua (monitoramento, ajuste de prompts e melhorias).\n- Investimento: setup do projeto + mensalidade de operação. O valor exato vai na proposta, conforme o escopo — nunca cite números.\n- A Rabelo Co. integra com o que o cliente já usa (CRM e número de WhatsApp atuais) e mantém dados isolados por cliente.\n- Identidade visual: logo com monograma \"RC\" geométrico, visual escuro premium com laranja (ember). Se o cliente enviar essa logo ou materiais do site rabelo.company, reconheça na hora que é a marca da Rabelo Co. — a empresa para a qual você trabalha — e reaja com bom humor.\n\n# Papel\nQualificar o visitante como lead por meio de uma conversa humana, exclusiva e personalizada — nunca um interrogatório. UMA pergunta por vez. Use o nome da pessoa quando souber, referencie o que ela disse antes e adapte exemplos ao segmento dela. Mensagens curtas (1 a 3 frases), tom caloroso e profissional. No máximo 1 emoji por mensagem, e só quando natural. Responda SEMPRE no idioma da sessão (pt = português do Brasil, en = inglês).\n\n# Fluxo da conversa\n1. Abertura: pergunte o NOME da pessoa e como você pode ajudar.\n2. Descoberta (uma pergunta por vez, sempre validando a resposta):\n   - Negócio/segmento e como atende os clientes hoje\n   - Volume aproximado de leads ou atendimentos por mês\n   - Principal gargalo (o que mais dói hoje)\n   - O que sonha em automatizar\n3. Fechamento (obrigatório antes de finalizar): peça o nome da EMPRESA, o E-MAIL comercial e o TELEFONE/WhatsApp — explique que é por onde o Rafael vai enviar a proposta. Peça os três; se o cliente insistir em dar só um contato, aceite ao menos e-mail ou telefone.\n\n# Validação de respostas (crítico)\n- Só avance para a próxima pergunta quando a resposta realmente responder o que você perguntou.\n- Se o cliente responder fora do tema (elogio, imagem, piada, outra pergunta), reaja com naturalidade ao que ele mandou e, NA MESMA mensagem, retome a pergunta em aberto com outras palavras.\n- Nunca deixe uma pergunta para trás sem resposta: cada dado coletado corretamente é o que garante que o Rafael entregue uma proposta precisa e exclusiva.\n- Resposta vaga (\"muitos\", \"um monte\") → peça uma estimativa aproximada.\n\n# Regras por modo\n- mode=practice (demo do portfólio): quando tiver TODOS os dados (descoberta + fechamento), faça um resumo curto do que entendeu e diga que ele pode enviar tudo para o Rafael pelo botão que apareceu. Use status \"qualified\". NÃO finalize até receber uma mensagem [ACAO_SISTEMA] confirmando o envio.\n- mode=proposal (pedido de proposta): quando tiver TODOS os dados, finalize o atendimento: agradeça e avise que o Rafael retorna a proposta pelo WhatsApp e e-mail em até 48h. Use status \"finalized\" e tool \"finalizar_atendimento\".\n\n# Mensagens especiais (prefixos no texto do usuário)\n- [ACAO_SISTEMA]: instrução do site — siga exatamente o que ela pede.\n- [AUDIO transcrito]: o cliente mandou um áudio; o texto é a transcrição. Responda ao conteúdo normalmente e, se fizer sentido, valorize (\"ouvi seu áudio…\").\n- [IMAGEM enviada pelo cliente]: descrição da imagem enviada. Comente com naturalidade e use o que for útil — e lembre: se for a logo/material da Rabelo Co., reconheça. Uma imagem quase nunca responde sozinha a pergunta em aberto; retome-a na mesma mensagem.\n\n# Finalização\nFinalizar = sinalizar ao site na sua resposta JSON com status \"finalized\" e tool \"finalizar_atendimento\". O site mostra a tela de agradecimento ao receber esse status — não há chamada externa; os dados coletados ficam registrados nesta conversa.\n\n# Formato de saída (OBRIGATÓRIO)\nResponda SOMENTE com um JSON puro em uma linha, sem markdown, sem crases:\n{\"reply\":\"sua mensagem para o cliente\",\"status\":\"qualifying|qualified|finalized\",\"stage\":\"etapa curta\",\"tool\":\"finalizar_atendimento\"}\n- reply: obrigatório — o texto que o cliente vai ler.\n- status: \"qualifying\" enquanto coleta; \"qualified\" apenas em practice com tudo coletado; \"finalized\" somente na finalização.\n- stage: etapa atual curta no idioma da sessão (ex.: Descoberta, Qualificação, Contato, Qualificado, Finalizado).\n- tool: inclua APENAS na mensagem de finalização (vira um chip visual no chat); caso contrário, omita o campo.\n\n# Limites\n- Nunca invente dados nem prometa prazos ou preços específicos. Se perguntarem valores, explique que o investimento vem detalhado na proposta do Rafael (setup + mensalidade de operação).\n- Não cite nomes de clientes da Rabelo Co.\n- Se o assunto fugir totalmente do escopo (não é sobre negócio/automação), redirecione com simpatia em 1 frase."
         }
       },
       "id": "agent-qualificador",
       "name": "Agente Qualificador",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
-      "position": [1360, 0]
+      "position": [
+        1360,
+        0
+      ]
     },
     {
       "parameters": {
-        "model": { "__rl": true, "value": "gpt-4o", "mode": "list", "cachedResultName": "gpt-4o" },
-        "options": { "temperature": 0.7 }
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {
+          "temperature": 0.7
+        }
       },
       "id": "lm-gpt4o",
       "name": "GPT-4o",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
-      "position": [1240, 240]
+      "position": [
+        1240,
+        240
+      ]
     },
     {
       "parameters": {
@@ -175,7 +241,10 @@
       "name": "Memória por sessão",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
-      "position": [1420, 240]
+      "position": [
+        1420,
+        240
+      ]
     },
     {
       "parameters": {
@@ -185,7 +254,10 @@
       "name": "Formatar resposta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1720, 0]
+      "position": [
+        1720,
+        0
+      ]
     },
     {
       "parameters": {
@@ -196,31 +268,176 @@
       "name": "Responder",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [1940, 0]
+      "position": [
+        1940,
+        0
+      ]
     }
   ],
   "connections": {
-    "Webhook Chat": { "main": [[{ "node": "Entrada", "type": "main", "index": 0 }]] },
-    "Entrada": { "main": [[{ "node": "Tipo de mensagem", "type": "main", "index": 0 }]] },
-    "Tipo de mensagem": {
+    "Webhook Chat": {
       "main": [
-        [{ "node": "Base64 → Binário (áudio)", "type": "main", "index": 0 }],
-        [{ "node": "Base64 → Binário (imagem)", "type": "main", "index": 0 }],
-        [{ "node": "Agente Qualificador", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
-    "Base64 → Binário (áudio)": { "main": [[{ "node": "Transcrever (Whisper)", "type": "main", "index": 0 }]] },
-    "Transcrever (Whisper)": { "main": [[{ "node": "Entrada de áudio", "type": "main", "index": 0 }]] },
-    "Entrada de áudio": { "main": [[{ "node": "Agente Qualificador", "type": "main", "index": 0 }]] },
-    "Base64 → Binário (imagem)": { "main": [[{ "node": "Descrever imagem (GPT-4o)", "type": "main", "index": 0 }]] },
-    "Descrever imagem (GPT-4o)": { "main": [[{ "node": "Entrada de imagem", "type": "main", "index": 0 }]] },
-    "Entrada de imagem": { "main": [[{ "node": "Agente Qualificador", "type": "main", "index": 0 }]] },
-    "GPT-4o": { "ai_languageModel": [[{ "node": "Agente Qualificador", "type": "ai_languageModel", "index": 0 }]] },
-    "Memória por sessão": { "ai_memory": [[{ "node": "Agente Qualificador", "type": "ai_memory", "index": 0 }]] },
-    "Agente Qualificador": { "main": [[{ "node": "Formatar resposta", "type": "main", "index": 0 }]] },
-    "Formatar resposta": { "main": [[{ "node": "Responder", "type": "main", "index": 0 }]] }
+    "Entrada": {
+      "main": [
+        [
+          {
+            "node": "Tipo de mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo de mensagem": {
+      "main": [
+        [
+          {
+            "node": "Base64 → Binário (áudio)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Base64 → Binário (imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente Qualificador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Base64 → Binário (áudio)": {
+      "main": [
+        [
+          {
+            "node": "Transcrever (Whisper)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcrever (Whisper)": {
+      "main": [
+        [
+          {
+            "node": "Entrada de áudio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada de áudio": {
+      "main": [
+        [
+          {
+            "node": "Agente Qualificador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Base64 → Binário (imagem)": {
+      "main": [
+        [
+          {
+            "node": "Descrever imagem (GPT-4o)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Descrever imagem (GPT-4o)": {
+      "main": [
+        [
+          {
+            "node": "Entrada de imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada de imagem": {
+      "main": [
+        [
+          {
+            "node": "Agente Qualificador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-4o": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Qualificador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memória por sessão": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Qualificador",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Qualificador": {
+      "main": [
+        [
+          {
+            "node": "Formatar resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar resposta": {
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
-  "settings": { "executionOrder": "v1" },
+  "settings": {
+    "executionOrder": "v1"
+  },
   "pinData": {},
-  "meta": { "templateCredsSetupCompleted": false }
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
 }

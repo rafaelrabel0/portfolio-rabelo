@@ -58,9 +58,9 @@ export function ProposalChat({ locale }: { locale: Locale }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="flex justify-end"
+            className="flex justify-start"
           >
-            <div className="max-w-[85%] rounded-2xl rounded-br-sm border border-accent/20 bg-accent/10 px-3.5 py-2 text-sm">
+            <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-accent/20 bg-accent/10 px-3.5 py-2 text-sm">
               {ui.chat.proposalGreeting}
               <span className="ml-2 whitespace-nowrap align-baseline font-mono text-[9px] tracking-[-0.18em] text-cyan/80">✓✓</span>
             </div>

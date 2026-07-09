@@ -296,13 +296,13 @@ export function LiveChat({
                   initial={{ opacity: 0, y: 12, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.35, ease: EASE }}
-                  className={isAgent ? "flex justify-end" : "flex justify-start"}
+                  className={isAgent ? "flex justify-start" : "flex justify-end"}
                 >
                   <div
                     className={
                       isAgent
-                        ? "max-w-[82%] whitespace-pre-wrap rounded-2xl rounded-br-sm border border-accent/20 bg-accent/10 px-3.5 py-2 text-sm"
-                        : "max-w-[82%] whitespace-pre-wrap rounded-2xl rounded-bl-sm border border-border bg-surface-2 px-3.5 py-2 text-sm text-fg/90"
+                        ? "max-w-[82%] whitespace-pre-wrap rounded-2xl rounded-bl-sm border border-accent/20 bg-accent/10 px-3.5 py-2 text-sm"
+                        : "max-w-[82%] whitespace-pre-wrap rounded-2xl rounded-br-sm border border-border bg-surface-2 px-3.5 py-2 text-sm text-fg/90"
                     }
                   >
                     {s.image ? (
@@ -342,9 +342,9 @@ export function LiveChat({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="flex justify-end"
+                className="flex justify-start"
               >
-                <div className="flex items-center gap-2 rounded-2xl rounded-br-sm border border-accent/20 bg-accent/10 px-3.5 py-2.5">
+                <div className="flex items-center gap-2 rounded-2xl rounded-bl-sm border border-accent/20 bg-accent/10 px-3.5 py-2.5">
                   {phase === "thinking" && (
                     <span className="font-mono text-[11px] text-muted">{ui.chat.thinking}</span>
                   )}

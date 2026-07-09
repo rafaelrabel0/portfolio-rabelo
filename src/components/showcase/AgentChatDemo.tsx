@@ -113,13 +113,13 @@ export function AgentChatDemo({
                 initial={{ opacity: 0, y: 12, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
-                className={isAgent ? "flex justify-end" : "flex justify-start"}
+                className={isAgent ? "flex justify-start" : "flex justify-end"}
               >
                 <div
                   className={
                     isAgent
-                      ? "max-w-[80%] rounded-2xl rounded-br-sm border border-accent/20 bg-accent/10 px-3.5 py-2 text-sm"
-                      : "max-w-[80%] rounded-2xl rounded-bl-sm border border-border bg-surface-2 px-3.5 py-2 text-sm text-fg/90"
+                      ? "max-w-[80%] rounded-2xl rounded-bl-sm border border-accent/20 bg-accent/10 px-3.5 py-2 text-sm"
+                      : "max-w-[80%] rounded-2xl rounded-br-sm border border-border bg-surface-2 px-3.5 py-2 text-sm text-fg/90"
                   }
                 >
                   {s.audio ? (
@@ -152,8 +152,8 @@ export function AgentChatDemo({
         </AnimatePresence>
 
         {typing && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-end">
-            <div className="flex items-center gap-1 rounded-2xl rounded-br-sm border border-accent/20 bg-accent/10 px-3.5 py-2.5">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+            <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-accent/20 bg-accent/10 px-3.5 py-2.5">
               {[0, 1, 2].map((j) => (
                 <motion.span
                   key={j}
