@@ -4,9 +4,9 @@
 // ShowcaseStage. Recebe o log da conversa, o typing, a etapa do CRM e as
 // escolhas pendentes do visitante (quick replies com countdown de autopilot).
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, Mic, Zap } from "lucide-react";
+import { Bot, Mic, Send, Zap } from "lucide-react";
 import { AUTOPILOT_MS } from "@/components/showcase/ShowcaseStage";
 import type { ChoiceStep, L, LogItem } from "@/components/showcase/script";
 import { getUi } from "@/dictionaries/ui";
@@ -21,6 +21,7 @@ export function AgentChatDemo({
   onPick,
   name,
   progress,
+  onLiveSend,
 }: {
   locale: Locale;
   log: LogItem[];
@@ -30,9 +31,18 @@ export function AgentChatDemo({
   onPick: (i: number) => void;
   name: string;
   progress: number;
+  onLiveSend?: (text: string) => void;
 }) {
   const ui = getUi(locale);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [draft, setDraft] = useState("");
+
+  const submitLive = () => {
+    const text = draft.trim();
+    if (!text || !onLiveSend) return;
+    setDraft("");
+    onLiveSend(text);
+  };
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -190,6 +200,28 @@ export function AgentChatDemo({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Composer real: uma mensagem do visitante expande para o chat ao vivo */}
+      {onLiveSend && (
+        <div className="flex items-center gap-2 border-t border-border bg-surface-2/40 px-4 py-2.5">
+          <input
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), submitLive())}
+            placeholder={ui.chat.demoPlaceholder}
+            className="min-w-0 flex-1 rounded-full border border-border bg-surface/70 px-4 py-2 text-sm text-fg placeholder:text-faint outline-none transition-colors focus:border-accent/60"
+          />
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={submitLive}
+            disabled={!draft.trim()}
+            aria-label={ui.chat.send}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-fg text-bg transition-transform hover:scale-105 disabled:opacity-40"
+          >
+            <Send className="h-4 w-4" />
+          </motion.button>
+        </div>
+      )}
     </div>
   );
 }

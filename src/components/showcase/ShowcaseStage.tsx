@@ -11,6 +11,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { ArrowRight, RotateCcw, Trophy } from "lucide-react";
 import { AgentChatDemo } from "@/components/showcase/AgentChatDemo";
 import { FunnelLiveDemo } from "@/components/showcase/FunnelLiveDemo";
+import { LiveChat } from "@/components/chat/LiveChat";
 import { SCRIPT, type ChoiceStep, type DemoEvent, type L, type LogItem } from "@/components/showcase/script";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -26,7 +27,7 @@ type Packet = {
 
 export type FeedEvent = DemoEvent & { id: number };
 
-export function ShowcaseStage({ locale, ctaHref }: { locale: Locale; ctaHref?: string }) {
+export function ShowcaseStage({ locale, ctaHref, liveChat }: { locale: Locale; ctaHref?: string; liveChat?: boolean }) {
   const ui = getUi(locale);
   const cta = ctaHref ?? `/${locale}/servicos#proposta`;
 
@@ -44,13 +45,21 @@ export function ShowcaseStage({ locale, ctaHref }: { locale: Locale; ctaHref?: s
   const [packets, setPackets] = useState<Packet[]>([]);
   const [name, setName] = useState("Maria");
   const [done, setDone] = useState(false);
+  const [live, setLive] = useState<string | null>(null);
+  const [liveAnchor, setLiveAnchor] = useState<DOMRect | null>(null);
 
   const seq = useRef(0);
   const processed = useRef(-1);
   const pendingRef = useRef<ChoiceStep | null>(null);
   const choices = useRef<Record<string, number>>({});
 
-  const running = inView && !done && !pending;
+  const running = inView && !done && !pending && !live;
+
+  // O visitante mandou uma mensagem real: pausa a demo e expande o chat ao vivo.
+  const startLive = (text: string) => {
+    setLiveAnchor(chatRef.current?.getBoundingClientRect() ?? null);
+    setLive(text);
+  };
 
   const appendLog = (item: Omit<LogItem, "id">) => {
     const id = ++seq.current;
@@ -165,11 +174,11 @@ export function ShowcaseStage({ locale, ctaHref }: { locale: Locale; ctaHref?: s
 
   // Autopilot: se o visitante não escolher, a demo segue com a primeira opção.
   useEffect(() => {
-    if (!pending || !inView || done) return;
+    if (!pending || !inView || done || live) return;
     const t = setTimeout(() => pick(0), AUTOPILOT_MS);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pending, inView, done]);
+  }, [pending, inView, done, live]);
 
   const replay = () => {
     choices.current = {};
@@ -200,6 +209,7 @@ export function ShowcaseStage({ locale, ctaHref }: { locale: Locale; ctaHref?: s
               onPick={pick}
               name={name}
               progress={Math.min(1, idx / SCRIPT.length)}
+              onLiveSend={liveChat ? startLive : undefined}
             />
           </div>
           <p className="mt-3 px-1 text-xs text-faint">{ui.sections.showcaseChatCaption}</p>
@@ -266,6 +276,19 @@ export function ShowcaseStage({ locale, ctaHref }: { locale: Locale; ctaHref?: s
               </div>
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Chat ao vivo (agente real via n8n) expandindo do card da demo */}
+      <AnimatePresence>
+        {live && (
+          <LiveChat
+            locale={locale}
+            mode="practice"
+            initialText={live}
+            anchor={liveAnchor}
+            onClose={() => setLive(null)}
+          />
         )}
       </AnimatePresence>
     </div>

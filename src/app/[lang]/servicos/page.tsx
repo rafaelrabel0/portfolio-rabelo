@@ -9,6 +9,7 @@ import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import { ShowcaseStage } from "@/components/showcase/ShowcaseStage";
 import { ProposalForm } from "@/components/services/ProposalForm";
+import { ProposalChat } from "@/components/chat/ProposalChat";
 import { CalEmbed } from "@/components/services/CalEmbed";
 import { profile } from "@/content/profile";
 import { services } from "@/content/services";
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/servicos">
 }
 
 const CAL_LINK = process.env.NEXT_PUBLIC_CAL_LINK;
+const LIVE_CHAT = !!process.env.CHAT_WEBHOOK_URL;
 
 export default async function ServicosPage({ params }: PageProps<"/[lang]/servicos">) {
   const { lang } = await params;
@@ -148,7 +150,7 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
         <Section id="demo">
           <SectionHeader eyebrow="03" title={ui.services.demoTitle} subtitle={ui.services.demoSubtitle} />
           <Reveal>
-            <ShowcaseStage locale={lang} ctaHref="#proposta" />
+            <ShowcaseStage locale={lang} ctaHref="#proposta" liveChat={LIVE_CHAT} />
           </Reveal>
         </Section>
 
@@ -156,7 +158,22 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
         <Section id="proposta">
           <SectionHeader eyebrow="04" title={ui.services.proposalTitle} subtitle={ui.services.proposalSubtitle} />
           <div className="max-w-2xl">
-            <ProposalForm locale={lang} />
+            {LIVE_CHAT ? (
+              <>
+                <ProposalChat locale={lang} />
+                <details className="group mt-4">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-2 text-sm text-muted transition-colors hover:text-fg [&::-webkit-details-marker]:hidden">
+                    <ArrowRight className="h-3.5 w-3.5 text-accent transition-transform group-open:rotate-90" />
+                    {ui.chat.preferForm}
+                  </summary>
+                  <div className="mt-4">
+                    <ProposalForm locale={lang} />
+                  </div>
+                </details>
+              </>
+            ) : (
+              <ProposalForm locale={lang} />
+            )}
           </div>
         </Section>
 
