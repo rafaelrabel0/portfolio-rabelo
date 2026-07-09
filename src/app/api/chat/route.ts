@@ -96,20 +96,26 @@ export async function POST(req: Request) {
   // Defesa em profundidade: se o workflow repassar a saída crua do agente
   // (o contrato JSON como texto, com ou sem cerca ```json), parseia aqui —
   // senão o JSON vaza para o balão do chat.
+  const tryParse = (s: string): Record<string, unknown> | null => {
+    try {
+      const v = JSON.parse(s);
+      return v && typeof v === "object" ? (v as Record<string, unknown>) : null;
+    } catch {
+      return null;
+    }
+  };
   const fenced = reply.replace(/```json|```/g, "").trim();
   if (fenced.startsWith("{") && fenced.includes('"reply"')) {
-    try {
-      const m = fenced.match(/\{[\s\S]*\}/);
-      const parsed = m ? (JSON.parse(m[0]) as Record<string, unknown>) : null;
-      if (parsed && typeof parsed.reply === "string" && parsed.reply.trim()) {
-        reply = parsed.reply.slice(0, 4000);
-        // Campos de topo do upstream têm precedência quando presentes.
-        if (!str(u?.status, 40)) status = STATUSES.includes(parsed.status as AgentStatus) ? (parsed.status as AgentStatus) : "qualifying";
-        if (!stage) stage = str(parsed.stage, 120);
-        if (!tool) tool = str(parsed.tool, 120);
-      }
-    } catch {
-      // texto segue como está; só normaliza os \n literais abaixo
+    const m = fenced.match(/\{[\s\S]*\}/);
+    // 2ª tentativa repara quebras de linha reais dentro de strings do JSON.
+    const parsed = m ? (tryParse(m[0]) ?? tryParse(m[0].replace(/\r/g, "").replace(/\n/g, "\\n"))) : null;
+    if (parsed && typeof parsed.reply === "string" && parsed.reply.trim()) {
+      // O JSON embutido é a saída real do agente — os campos de topo vêm
+      // do fallback do workflow e são descartados.
+      reply = parsed.reply.slice(0, 4000);
+      status = STATUSES.includes(parsed.status as AgentStatus) ? (parsed.status as AgentStatus) : "qualifying";
+      stage = str(parsed.stage, 120);
+      tool = str(parsed.tool, 120);
     }
   }
   // \n literais (string não parseada) viram quebras reais para as multi-bolhas.
