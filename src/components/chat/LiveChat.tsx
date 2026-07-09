@@ -10,8 +10,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, Check, CheckCircle2, ImagePlus, Loader2, Mic, PencilLine, Send, X } from "lucide-react";
+import { ArrowUpRight, Bot, Check, CheckCircle2, ImagePlus, Loader2, Mic, PencilLine, RotateCcw, Send, X } from "lucide-react";
 import { WhatsappIcon } from "@/components/icons";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
@@ -214,6 +215,20 @@ export function LiveChat({
     send({ type: "control", action: "edit_answers" });
   };
   const retry = () => lastMsg.current && send(lastMsg.current);
+
+  // Reinicia o atendimento do zero: sessão nova (memória nova no n8n) e
+  // saudação local do agente, sem chamada à API.
+  const restart = () => {
+    session.current = typeof crypto?.randomUUID === "function" ? crypto.randomUUID() : `s-${Math.random().toString(36).slice(2)}`;
+    lastMsg.current = null;
+    setBubbles([{ id: ++seq.current, role: "agent", text: ui.chat.proposalGreeting }]);
+    setStatus("qualifying");
+    setStage(null);
+    setThanks(false);
+    setFailed(null);
+    setConfirming(false);
+    setPhase("idle");
+  };
 
   if (!mounted || !target) return null;
 
@@ -455,9 +470,24 @@ export function LiveChat({
                 </div>
                 <h3 className="font-display text-xl font-bold tracking-tight">{ui.chat.thanksTitle}</h3>
                 <p className="mt-2 text-sm text-muted">{ui.chat.thanksMsg}</p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  <Link
+                    href={`/${locale}`}
+                    className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
+                  >
+                    {ui.chat.thanksAboutCta} <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    onClick={restart}
+                    className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted transition-colors hover:border-border-strong hover:text-fg"
+                  >
+                    <RotateCcw className="h-4 w-4" /> {ui.chat.thanksRestartCta}
+                  </motion.button>
+                </div>
                 <button
                   onClick={onClose}
-                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
+                  className="mt-4 text-xs text-faint transition-colors hover:text-fg"
                 >
                   {ui.chat.close}
                 </button>

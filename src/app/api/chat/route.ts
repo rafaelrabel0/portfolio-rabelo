@@ -115,6 +115,10 @@ export async function POST(req: Request) {
   // \n literais (string não parseada) viram quebras reais para as multi-bolhas.
   reply = reply.replace(/\\n/g, "\n");
 
+  // A tool de finalização É o sinal de fim de atendimento — se o agente a
+  // citou mas errou o status, corrige aqui.
+  if (tool === "finalizar_atendimento") status = "finalized";
+
   if (!reply && status === "qualifying") {
     return NextResponse.json({ error: "upstream_failed" }, { status: 502 });
   }
