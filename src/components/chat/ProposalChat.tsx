@@ -5,6 +5,7 @@
 // LiveChat (modo proposal) a partir do próprio card.
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, Send } from "lucide-react";
 import { LiveChat } from "@/components/chat/LiveChat";
@@ -66,6 +67,15 @@ export function ProposalChat({ locale }: { locale: Locale }) {
             </div>
           </motion.div>
         </div>
+
+        {/* Consentimento LGPD */}
+        <p className="px-4 pb-2 text-[11px] leading-snug text-faint">
+          {ui.chat.consentNotice}{" "}
+          <Link href={`/${locale}/privacidade`} target="_blank" className="text-cyan underline-offset-2 transition-colors hover:text-fg hover:underline">
+            {ui.chat.consentLink}
+          </Link>
+          .
+        </p>
 
         {/* Composer de abertura */}
         <div className="flex items-center gap-2 border-t border-border bg-surface-2/40 px-4 py-3">

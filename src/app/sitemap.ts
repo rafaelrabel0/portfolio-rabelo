@@ -23,5 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: { "pt-BR": `${base}/pt/servicos`, en: `${base}/en/servicos` },
       },
     })),
+    ...locales.map((lang) => ({
+      url: `${base}/${lang}/privacidade`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+      alternates: {
+        languages: { "pt-BR": `${base}/pt/privacidade`, en: `${base}/en/privacidade` },
+      },
+    })),
   ];
 }

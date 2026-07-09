@@ -4,6 +4,7 @@
 // Honeypot anti-spam; se o envio falhar, oferece WhatsApp com a mensagem pronta.
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Loader2, Send } from "lucide-react";
 import { WhatsappIcon } from "@/components/icons";
@@ -11,7 +12,7 @@ import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
 
-type Status = "idle" | "sending" | "ok" | "error" | "invalid";
+type Status = "idle" | "sending" | "ok" | "error" | "invalid" | "no_consent";
 
 const inputCls =
   "w-full rounded-xl border border-border bg-surface/70 px-3.5 py-2.5 text-sm text-fg placeholder:text-faint outline-none transition-colors focus:border-accent/60";
@@ -19,6 +20,7 @@ const inputCls =
 export function ProposalForm({ locale }: { locale: Locale }) {
   const ui = getUi(locale);
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "", company: "", message: "", website: "" });
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -36,12 +38,16 @@ export function ProposalForm({ locale }: { locale: Locale }) {
       setStatus("invalid");
       return;
     }
+    if (!consent) {
+      setStatus("no_consent");
+      return;
+    }
     setStatus("sending");
     try {
       const res = await fetch("/api/proposal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, locale }),
+        body: JSON.stringify({ ...form, locale, consent: true, consentTs: new Date().toISOString() }),
       });
       setStatus(res.ok ? "ok" : "error");
     } catch {
@@ -106,10 +112,32 @@ export function ProposalForm({ locale }: { locale: Locale }) {
         className="absolute -left-[9999px] h-0 w-0 opacity-0"
       />
 
+      {/* Consentimento LGPD */}
+      <label className="flex cursor-pointer items-start gap-2.5 text-xs text-muted">
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-border accent-[var(--color-accent)]"
+        />
+        <span>
+          {ui.proposal.consentLabel}{" "}
+          <Link href={`/${locale}/privacidade`} target="_blank" className="text-cyan underline-offset-2 transition-colors hover:text-fg hover:underline">
+            {ui.chat.consentLink}
+          </Link>
+          .
+        </span>
+      </label>
+
       <AnimatePresence>
         {status === "invalid" && (
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-xs text-accent-2">
             {ui.proposal.required}
+          </motion.p>
+        )}
+        {status === "no_consent" && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-xs text-accent-2">
+            {ui.proposal.consentRequired}
           </motion.p>
         )}
         {status === "error" && (

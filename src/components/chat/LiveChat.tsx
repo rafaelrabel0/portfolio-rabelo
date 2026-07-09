@@ -450,6 +450,15 @@ export function LiveChat({
         {/* Composer */}
         <Composer locale={locale} disabled={busy || thanks || failed === "offline"} onText={sendText} onImage={sendImage} onAudio={sendAudio} />
 
+        {/* Consentimento LGPD */}
+        <p className="border-t border-border/50 px-4 py-1.5 text-center text-[10px] leading-snug text-faint">
+          {ui.chat.consentNotice}{" "}
+          <Link href={`/${locale}/privacidade`} target="_blank" className="text-cyan underline-offset-2 transition-colors hover:text-fg hover:underline">
+            {ui.chat.consentLink}
+          </Link>
+          .
+        </p>
+
         {/* Agradecimento */}
         <AnimatePresence>
           {thanks && (

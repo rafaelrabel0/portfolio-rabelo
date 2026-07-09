@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { AgentReply, AgentStatus } from "@/lib/chat";
+import { clientIp, rateLimit, sameOrigin } from "@/lib/api-security";
 
 // Ponte do chat ao vivo: valida a mensagem do visitante e repassa ao agente
 // n8n (CHAT_WEBHOOK_URL, modo request/response). Sem a env, responde 503 e o
@@ -39,6 +40,14 @@ function parseMessage(raw: unknown): Record<string, unknown> | null {
 }
 
 export async function POST(req: Request) {
+  if (!sameOrigin(req)) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+  // 20 mensagens/min por IP — conversa humana fica longe disso.
+  if (!rateLimit(`chat:${clientIp(req)}`, 20, 60_000)) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   let data: Record<string, unknown>;
   try {
     data = await req.json();
@@ -47,6 +56,9 @@ export async function POST(req: Request) {
   }
 
   const sessionId = str(data.sessionId, 64).trim();
+  if (!/^[A-Za-z0-9-]{8,64}$/.test(sessionId)) {
+    return NextResponse.json({ error: "invalid_message" }, { status: 400 });
+  }
   const mode = data.mode === "proposal" ? "proposal" : "practice";
   const locale = data.locale === "en" ? "en" : "pt";
   const message = parseMessage(data.message);

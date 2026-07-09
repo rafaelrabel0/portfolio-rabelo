@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
+import { clientIp, rateLimit, sameOrigin } from "@/lib/api-security";
 
 // Recebe o form "Solicitar proposta" e repassa para o webhook n8n/CRM.
 // Configurar PROPOSAL_WEBHOOK_URL no ambiente (Vercel). Sem ela, responde 503
 // e o front oferece o fallback de WhatsApp.
 
 export async function POST(req: Request) {
+  if (!sameOrigin(req)) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+  // 5 envios / 10 min por IP.
+  if (!rateLimit(`proposal:${clientIp(req)}`, 5, 600_000)) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   let data: Record<string, unknown>;
   try {
     data = await req.json();
@@ -42,6 +51,9 @@ export async function POST(req: Request) {
     company: company.slice(0, 200),
     message: message.slice(0, 4000),
     locale,
+    // Registro do consentimento LGPD dado no form (art. 8º, §1º).
+    consent: data.consent === true,
+    consentTs: typeof data.consentTs === "string" ? data.consentTs.slice(0, 40) : "",
     ts: new Date().toISOString(),
   };
 

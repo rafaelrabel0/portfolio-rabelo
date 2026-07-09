@@ -5,6 +5,7 @@
 // escolhas pendentes do visitante (quick replies com countdown de autopilot).
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, Mic, Send, Zap } from "lucide-react";
 import { AUTOPILOT_MS } from "@/components/showcase/ShowcaseStage";
@@ -203,24 +204,33 @@ export function AgentChatDemo({
 
       {/* Composer real: uma mensagem do visitante expande para o chat ao vivo */}
       {onLiveSend && (
-        <div className="flex items-center gap-2 border-t border-border bg-surface-2/40 px-4 py-2.5">
-          <input
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), submitLive())}
-            placeholder={ui.chat.demoPlaceholder}
-            className="min-w-0 flex-1 rounded-full border border-border bg-surface/70 px-4 py-2 text-sm text-fg placeholder:text-faint outline-none transition-colors focus:border-accent/60"
-          />
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={submitLive}
-            disabled={!draft.trim()}
-            aria-label={ui.chat.send}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-fg text-bg transition-transform hover:scale-105 disabled:opacity-40"
-          >
-            <Send className="h-4 w-4" />
-          </motion.button>
-        </div>
+        <>
+          <div className="flex items-center gap-2 border-t border-border bg-surface-2/40 px-4 py-2.5">
+            <input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), submitLive())}
+              placeholder={ui.chat.demoPlaceholder}
+              className="min-w-0 flex-1 rounded-full border border-border bg-surface/70 px-4 py-2 text-sm text-fg placeholder:text-faint outline-none transition-colors focus:border-accent/60"
+            />
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={submitLive}
+              disabled={!draft.trim()}
+              aria-label={ui.chat.send}
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-fg text-bg transition-transform hover:scale-105 disabled:opacity-40"
+            >
+              <Send className="h-4 w-4" />
+            </motion.button>
+          </div>
+          <p className="bg-surface-2/40 px-4 pb-2 text-[10px] leading-snug text-faint">
+            {ui.chat.consentNotice}{" "}
+            <Link href={`/${locale}/privacidade`} target="_blank" className="text-cyan underline-offset-2 transition-colors hover:text-fg hover:underline">
+              {ui.chat.consentLink}
+            </Link>
+            .
+          </p>
+        </>
       )}
     </div>
   );
