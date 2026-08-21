@@ -363,6 +363,10 @@
     .price-value { font-size: 3.1rem; white-space: nowrap; }
   }
 
+  /* .scope-list li e flex container: sem um wrapper, cada <strong> vira um
+     flex item e o texto se parte em colunas. O span.t mantem tudo num item so. */
+  .scope-list li > .t { flex: 1; min-width: 0; }
+
 </style>
 </head>
 <body>
@@ -490,28 +494,28 @@
       <div class="scope-card in reveal">
         <h3>Incluso</h3>
         <ul class="scope-list checks">
-          <li>Instalação e configuração do <strong>n8n no servidor da Unymos</strong>, com credenciais na titularidade de vocês</li>
-          <li>Migração do <strong>agente de tickets</strong> do ambiente de testes para produção</li>
-          <li>Desenvolvimento completo do <strong>agente de reuniões</strong></li>
-          <li><strong>Categorização automática dos tickets</strong> — hoje quase tudo chega como "Não classificado"</li>
-          <li>Relatório visual por cliente com KPIs, assuntos, perguntas frequentes, prioridade e resumo dos atendimentos concluídos</li>
-          <li>Entrega por e-mail HTML e por link próprio, com exportação em PDF pelo próprio cliente</li>
-          <li>Primeira rodada mensal acompanhada em produção, com conferência dos números</li>
-          <li>Monitoramento das execuções e correção de falhas durante a vigência</li>
-          <li>Ajuste de prompts e evolução dos relatórios ao longo dos 12 meses</li>
-          <li>Suporte por WhatsApp (09h–19h, seg–sex) e falha crítica corrigida em até 24h</li>
-          <li>Documentação técnica e passagem de conhecimento para a equipe</li>
+          <li><span class="t">Instalação e configuração do <strong>n8n no servidor da Unymos</strong>, com credenciais na titularidade de vocês</span></li>
+          <li><span class="t">Migração do <strong>agente de tickets</strong> do ambiente de testes para produção</span></li>
+          <li><span class="t">Desenvolvimento completo do <strong>agente de reuniões</strong></span></li>
+          <li><span class="t"><strong>Categorização automática dos tickets</strong> — hoje quase tudo chega como "Não classificado"</span></li>
+          <li><span class="t">Relatório visual por cliente com KPIs, assuntos, perguntas frequentes, prioridade e resumo dos atendimentos concluídos</span></li>
+          <li><span class="t">Entrega por e-mail HTML e por link próprio, com exportação em PDF pelo próprio cliente</span></li>
+          <li><span class="t">Primeira rodada mensal acompanhada em produção, com conferência dos números</span></li>
+          <li><span class="t">Monitoramento das execuções e correção de falhas durante a vigência</span></li>
+          <li><span class="t">Ajuste de prompts e evolução dos relatórios ao longo dos 12 meses</span></li>
+          <li><span class="t">Suporte por WhatsApp (09h–19h, seg–sex) e falha crítica corrigida em até 24h</span></li>
+          <li><span class="t">Documentação técnica e passagem de conhecimento para a equipe</span></li>
         </ul>
       </div>
 
       <div class="scope-card out reveal">
         <h3>Fora do escopo</h3>
         <ul class="scope-list dashes">
-          <li><strong>Transcrição de áudio das reuniões.</strong> O agente consome a transcrição que a ferramenta de vocês já gera. Transcrição automática a partir do áudio bruto é orçada à parte.</li>
-          <li><strong>Custos de infraestrutura no Plano A</strong> (servidor, API OpenAI e banco de dados) — pagos direto por vocês, ao custo real, sem repasse. No Plano B estão inclusos até o teto contratado.</li>
-          <li><strong>Um terceiro agente</strong>, ou relatório a partir de outra fonte de dados que não o Zoho Desk e as transcrições — orçado por aditivo. Os dois agentes desta proposta são a lista completa, não exemplos.</li>
-          <li>Alterações dentro do próprio Zoho Desk — campos, automações, fluxos de atendimento e configuração da conta seguem com a equipe de vocês.</li>
-          <li>Aplicativo móvel nativo ou painel web próprio de consulta aos relatórios — a entrega é por e-mail e link.</li>
+          <li><span class="t"><strong>Transcrição de áudio das reuniões.</strong> O agente consome a transcrição que a ferramenta de vocês já gera. Transcrição automática a partir do áudio bruto é orçada à parte.</span></li>
+          <li><span class="t"><strong>Custos de infraestrutura no Plano A</strong> (servidor, API OpenAI e banco de dados) — pagos direto por vocês, ao custo real, sem repasse. No Plano B estão inclusos até o teto contratado.</span></li>
+          <li><span class="t"><strong>Um terceiro agente</strong>, ou relatório a partir de outra fonte de dados que não o Zoho Desk e as transcrições — orçado por aditivo. Os dois agentes desta proposta são a lista completa, não exemplos.</span></li>
+          <li><span class="t">Alterações dentro do próprio Zoho Desk — campos, automações, fluxos de atendimento e configuração da conta seguem com a equipe de vocês.</span></li>
+          <li><span class="t">Aplicativo móvel nativo ou painel web próprio de consulta aos relatórios — a entrega é por e-mail e link.</span></li>
         </ul>
         <div class="scope-note"><strong>A fronteira é clara:</strong> os dois agentes descritos estão inclusos por inteiro, com evolução contínua durante a vigência. O que estiver fora dessa lista é orçado e aprovado antes de começar — você nunca recebe uma cobrança que não autorizou.</div>
       </div>
