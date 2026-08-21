@@ -42,9 +42,10 @@ const nextConfig: NextConfig = {
         destination: "/proposta/vetlideres/index.html",
         has: [{ type: "host", value: "proposta.rabelo.company" }],
       },
-      // Propostas comerciais estáticas em public/proposta/<cliente>/index.html
-      { source: "/proposta/vetlideres", destination: "/proposta/vetlideres/index.html" },
-      { source: "/proposta/vetlideres/", destination: "/proposta/vetlideres/index.html" },
+      // Propostas comerciais estáticas em public/proposta/<cliente>/index.html.
+      // Genérico: cada nova proposta só precisa da pasta em public/, sem mexer aqui.
+      { source: "/proposta/:cliente", destination: "/proposta/:cliente/index.html" },
+      { source: "/proposta/:cliente/", destination: "/proposta/:cliente/index.html" },
     ];
   },
 };
