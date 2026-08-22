@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
   /* ============ Dark Premium Ember — Rabelo Co. design tokens ============ */
@@ -29,7 +29,7 @@
     --amber: #fcb46b;
 
     --font-display: 'Space Grotesk', ui-sans-serif, sans-serif;
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
     --radius-card: 1rem;
@@ -352,8 +352,8 @@
   .plan.featured li::before { content: '\2713'; left: 0; color: var(--accent); }
 
   .plans-note {
-    color: var(--faint); font-size: 0.8rem; margin-top: 1rem;
-    max-width: 40rem; margin-left: auto; margin-right: auto;
+    color: var(--faint); font-size: 0.8rem; margin-top: 1.1rem;
+    max-width: 44rem;
   }
 
   /* Valor nao pode quebrar em duas linhas no celular (a maioria le no WhatsApp) */
@@ -439,6 +439,91 @@
     .flow-line { transform: scaleY(1) !important; }
   }
 
+  /* ============ Hero assimetrico ============
+     Substitui o hero centrado: texto a esquerda, preco a direita. O preco
+     segue no topo da pagina, so deixa de estar no eixo central. */
+  .hero { text-align: left; }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr; gap: 2.6rem;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .hero-grid { grid-template-columns: 1.12fr 0.88fr; gap: 3.4rem; }
+  }
+  .hero-copy .lede { margin: 0 0 1.6rem; max-width: 34rem; }
+  .hero h1 { margin: 1.3rem 0 1.1rem; }
+
+  /* Sem gradiente em texto grande: o gradiente da marca fica nos elementos
+     graficos (faixa do topo, borda do preco, pontos do fluxo), como o brand
+     board define. A hierarquia do h1 passa a vir de cor e peso. */
+  .h1-line2 { color: var(--accent); }
+
+  /* Na coluna direita o card e mais estreito que no layout centrado antigo,
+     e "R$ 10.000" partia em duas linhas. O valor nunca deve quebrar. */
+  .price-card { display: block; width: 100%; padding: 2.1rem 2.2rem 1.9rem; }
+  .price-value {
+    letter-spacing: -0.03em; white-space: nowrap;
+    font-size: clamp(2.5rem, 4.6vw, 3.5rem);
+  }
+
+  /* O hero passou a ser alinhado a esquerda; os planos nao podem seguir
+     centrados num container mais estreito. */
+  .plans { max-width: none; margin: 2.6rem 0 0; }
+  .hero-note {
+    margin: 1.7rem 0 0; max-width: 40rem;
+    padding-left: 1rem; border-left: 2px solid var(--border-strong);
+  }
+  @media (min-width: 900px) { .hero-note { margin-top: 2rem; } }
+
+  /* ============ Prazos sem card ============
+     Tres numeros iguais em caixas viram uma faixa assimetrica separada por
+     linhas de 1px. O primeiro numero pesa mais que os outros dois. */
+  .stats-band {
+    display: grid; grid-template-columns: 1fr; gap: 0;
+    border-top: 1px solid var(--border); text-align: left;
+  }
+  @media (min-width: 768px) {
+    .stats-band { grid-template-columns: 1.5fr 1fr 1fr; }
+  }
+  .stat-cell { padding: 2rem 0 1.6rem; }
+  @media (min-width: 768px) {
+    .stat-cell + .stat-cell { padding-left: 2rem; border-left: 1px solid var(--border); }
+    .stat-cell { padding-right: 1.5rem; }
+  }
+  @media (max-width: 767px) {
+    .stat-cell + .stat-cell { border-top: 1px solid var(--border); }
+  }
+  .stat-cell .big {
+    font-family: var(--font-mono); font-weight: 700; line-height: 1;
+    font-size: 2.9rem;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2) 70%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat-cell:first-child .big { font-size: 4rem; }
+  .stat-cell .label { font-family: var(--font-display); font-weight: 600; margin: 0.55rem 0 0.5rem; }
+  .stat-cell p { color: var(--muted); font-size: 0.875rem; max-width: 26rem; }
+
+  /* ============ Feedback tatil ============
+     Todo alvo clicavel afunda no toque, para o clique ter resposta fisica. */
+  .btn { transition: transform .12s cubic-bezier(.16,1,.3,1), background-color .25s ease, border-color .25s ease, color .25s ease; }
+  .btn:active { transform: translateY(1px) scale(0.988); }
+  .plan:active { transform: translateY(-1px) scale(0.997); }
+
+  /* ============ Cascata nas revelacoes ============
+     Antes cada secao subia inteira de uma vez. Agora os filhos entram em
+     sequencia, o que da ritmo a leitura. */
+  .grid-2 > .reveal:nth-child(2) { transition-delay: .09s; }
+  .grid-2 > .reveal:nth-child(3) { transition-delay: .18s; }
+  .grid-2 > .reveal:nth-child(4) { transition-delay: .27s; }
+
+  /* ============ Movimento reduzido ============
+     O .reveal da base ignorava a preferencia do sistema. */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .btn:active, .plan:active { transform: none; }
+    * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -466,14 +551,18 @@
 <section class="hero hero-glow">
   <div class="bg-grid" style="position:absolute;inset:0;pointer-events:none;"></div>
   <div class="container" style="position:relative;">
-    <span class="pill">Proposta comercial · 22 ago 2026</span>
-    <h1>Agentes de Relatório<br /><span class="text-gradient">Unymos</span></h1>
-    <p class="lede">Dois agentes de IA que transformam os tickets do Zoho Desk e as reuniões da equipe em relatórios prontos, sem ninguém precisar compilar nada à mão.</p>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="pill">Proposta comercial · 22 ago 2026</span>
+        <h1>Agentes de Relatório<br /><span class="h1-line2">Unymos</span></h1>
+        <p class="lede">Dois agentes de IA que transformam os tickets do Zoho Desk e as reuniões da equipe em relatórios prontos, sem ninguém precisar compilar nada à mão.</p>
+      </div>
 
-    <div class="price-card">
-      <div class="price-label">Implantação · pagamento único</div>
-      <div class="price-value">R$ 10.000</div>
-      <div class="price-meta"><strong>R$ 5.000 por agente</strong> · <strong>50% no aceite</strong> e <strong>50% na entrega</strong> · cobre o desenvolvimento dos dois agentes e a montagem completa do ambiente · <strong>15 dias úteis</strong></div>
+      <div class="price-card">
+        <div class="price-label">Implantação · pagamento único</div>
+        <div class="price-value">R$ 10.000</div>
+        <div class="price-meta"><strong>R$ 5.000 por agente</strong> · <strong>50% no aceite</strong> e <strong>50% na entrega</strong> · cobre o desenvolvimento dos dois agentes e a montagem completa do ambiente · <strong>15 dias úteis</strong></div>
+      </div>
     </div>
 
     <p class="hero-note">Implantação aqui significa o pacote inteiro, e não apenas o código do agente. Cada um dos dois é desenvolvido, testado e colocado para rodar em ambiente próprio da operação. Como vocês ainda não têm servidor, isso inclui escolher e provisionar a máquina, instalar o n8n com todas as dependências e criar as credenciais de que a operação precisa: Zoho Desk, OpenAI, Google Drive e banco de dados. Vocês recebem tudo funcionando, sem nenhuma etapa técnica sobrando do lado de vocês.</p>
@@ -725,21 +814,21 @@
       <h2>Cronograma claro, <span class="text-gradient">sem surpresas</span></h2>
     </div>
 
-    <div class="grid-3">
-      <div class="stat reveal">
+    <div class="stats-band reveal">
+      <div class="stat-cell">
         <div class="big">15</div>
         <div class="label">dias úteis</div>
         <p>para montar o ambiente e entregar os dois agentes rodando, contados da liberação dos acessos.</p>
       </div>
-      <div class="stat reveal">
+      <div class="stat-cell">
         <div class="big">7</div>
         <div class="label">dias úteis de testes</div>
-        <p>validação a cada entrega, para que você aprove antes de o relatório começar a ir para os seus clientes.</p>
+        <p>validação a cada entrega, para que você aprove antes de o relatório ir para os seus clientes.</p>
       </div>
-      <div class="stat reveal">
+      <div class="stat-cell">
         <div class="big">0</div>
         <div class="label">etapa técnica do seu lado</div>
-        <p>servidor, dependências e credenciais ficam por minha conta na implantação. Vocês recebem funcionando.</p>
+        <p>servidor, dependências e credenciais ficam por minha conta na implantação.</p>
       </div>
     </div>
 
