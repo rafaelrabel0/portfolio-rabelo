@@ -356,10 +356,11 @@
     max-width: 44rem;
   }
 
-  /* Valor nao pode quebrar em duas linhas no celular (a maioria le no WhatsApp) */
+  /* No celular o bloco de preco encosta menos nas bordas e o valor encolhe,
+     sem nunca quebrar em duas linhas (a maioria le pelo WhatsApp). */
   @media (max-width: 480px) {
-    .price-card { padding: 2rem 1.5rem 1.8rem; }
-    .price-value { font-size: 3.1rem; white-space: nowrap; }
+    .price-block { padding: 1.6rem 1.35rem 1.4rem; }
+    .price-value { font-size: clamp(2.8rem, 15vw, 3.4rem); }
   }
 
   /* .scope-list li e flex container: sem um wrapper, cada <strong> vira um
@@ -439,41 +440,86 @@
     .flow-line { transform: scaleY(1) !important; }
   }
 
-  /* ============ Hero assimetrico ============
-     Substitui o hero centrado: texto a esquerda, preco a direita. O preco
-     segue no topo da pagina, so deixa de estar no eixo central. */
+  /* ============ Hero: nome do projeto + preco como par dominante ============
+     A versao anterior espalhou titulo e preco em duas colunas e nenhum dos
+     dois dominou. Agora os dois formam um bloco unico no topo da pagina, e a
+     explicacao do valor vem depois. Segue alinhado a esquerda, nunca centrado. */
   .hero { text-align: left; }
-  .hero-grid {
-    display: grid; grid-template-columns: 1fr; gap: 2.6rem;
-    align-items: start;
-  }
-  @media (min-width: 900px) {
-    .hero-grid { grid-template-columns: 1.12fr 0.88fr; gap: 3.4rem; }
-  }
-  .hero-copy .lede { margin: 0 0 1.6rem; max-width: 34rem; }
-  .hero h1 { margin: 1.3rem 0 1.1rem; }
+  .hero h1 { margin: 1.4rem 0 0; }
 
   /* Sem gradiente em texto grande: o gradiente da marca fica nos elementos
-     graficos (faixa do topo, borda do preco, pontos do fluxo), como o brand
-     board define. A hierarquia do h1 passa a vir de cor e peso. */
+     graficos, como o brand board define. Hierarquia por cor e peso. */
   .h1-line2 { color: var(--accent); }
 
-  /* Na coluna direita o card e mais estreito que no layout centrado antigo,
-     e "R$ 10.000" partia em duas linhas. O valor nunca deve quebrar. */
-  .price-card { display: block; width: 100%; padding: 2.1rem 2.2rem 1.9rem; }
-  .price-value {
-    letter-spacing: -0.03em; white-space: nowrap;
-    font-size: clamp(2.5rem, 4.6vw, 3.5rem);
+  /* O preco deixa de ser um cartao lateral e passa a ser tipografia display,
+     no mesmo peso visual do titulo. Liquid glass: borda interna clara e
+     inset shadow, para a superficie ganhar espessura. */
+  .price-block {
+    position: relative; margin-top: 2.1rem;
+    display: grid; grid-template-columns: 1fr; gap: 1.3rem;
+    align-items: end;
+    padding: 1.9rem 1.8rem 1.7rem;
+    background: linear-gradient(180deg, rgba(31,25,22,0.92), rgba(22,18,16,0.72));
+    border: 1px solid var(--border-strong); border-radius: 1.3rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 30px 70px -42px rgba(255,109,46,0.42);
+    overflow: hidden;
   }
+  @media (min-width: 820px) {
+    .price-block { grid-template-columns: auto 1fr; gap: 2.6rem; padding: 2.2rem 2.3rem 1.9rem; }
+  }
+  .price-block::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(120deg, #ff6d2e, #ef3b2d 48%, #b14ae2 95%);
+  }
+  /* Spotlight: o brilho acompanha o cursor sobre o bloco de preco. */
+  .price-block::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255,109,46,0.13), transparent 62%);
+    opacity: 0; transition: opacity .4s ease;
+  }
+  .price-block:hover::after { opacity: 1; }
 
-  /* O hero passou a ser alinhado a esquerda; os planos nao podem seguir
-     centrados num container mais estreito. */
-  .plans { max-width: none; margin: 2.6rem 0 0; }
-  .hero-note {
-    margin: 1.7rem 0 0; max-width: 40rem;
-    padding-left: 1rem; border-left: 2px solid var(--border-strong);
+  .price-main { min-width: 0; position: relative; }
+  .price-label {
+    font-family: var(--font-mono); color: var(--faint); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.45rem;
   }
-  @media (min-width: 900px) { .hero-note { margin-top: 2rem; } }
+  .price-value {
+    font-family: var(--font-mono); font-weight: 700; line-height: 0.92;
+    letter-spacing: -0.045em; white-space: nowrap; color: var(--fg);
+    font-size: clamp(3.2rem, 9vw, 5.8rem);
+    clip-path: inset(0 0 100% 0); transform: translateY(0.16em);
+    transition: clip-path .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+  }
+  /* Reveal em cortina. Sem contador numerico: em documento comercial isso
+     soa mais brinquedo do que premio. */
+  .price-block.is-in .price-value { clip-path: inset(0 0 -12% 0); transform: translateY(0); }
+
+  .price-meta {
+    color: var(--muted); font-size: 0.875rem; margin: 0; max-width: 27rem;
+  }
+  @media (min-width: 820px) {
+    .price-meta { border-left: 1px solid var(--border); padding-left: 2.3rem; }
+  }
+  .price-meta strong { color: var(--amber); font-weight: 600; }
+
+  /* text-wrap evita a viuva: sem isso a lede deixava "mao." sozinho na
+     terceira linha. balance equilibra blocos curtos, pretty cuida dos longos. */
+  .hero h1 { text-wrap: balance; }
+  .hero .lede {
+    margin: 2.3rem 0 0; max-width: 36rem; text-wrap: pretty;
+  }
+  .hero-note {
+    margin: 1.15rem 0 0; max-width: 42rem; font-size: 0.875rem;
+    padding-left: 1rem; border-left: 2px solid var(--border-strong);
+    text-wrap: pretty;
+  }
+  .section-head h2 { text-wrap: balance; }
+  .section-head p, .flow-card p, .plan-desc { text-wrap: pretty; }
+
+  /* O hero e alinhado a esquerda; os planos acompanham a largura total. */
+  .plans { max-width: none; margin: 2.8rem 0 0; }
+
 
   /* ============ Prazos sem card ============
      Tres numeros iguais em caixas viram uma faixa assimetrica separada por
@@ -503,10 +549,37 @@
   .stat-cell .label { font-family: var(--font-display); font-weight: 600; margin: 0.55rem 0 0.5rem; }
   .stat-cell p { color: var(--muted); font-size: 0.875rem; max-width: 26rem; }
 
-  /* ============ Feedback tatil ============
-     Todo alvo clicavel afunda no toque, para o clique ter resposta fisica. */
-  .btn { transition: transform .12s cubic-bezier(.16,1,.3,1), background-color .25s ease, border-color .25s ease, color .25s ease; }
-  .btn:active { transform: translateY(1px) scale(0.988); }
+  /* ============ Spotlight border nos planos ============
+     O brilho e a borda seguem o cursor. As coordenadas chegam por custom
+     property, escrita fora do ciclo de render, sem reflow. */
+  .plan::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    pointer-events: none; opacity: 0; transition: opacity .35s ease;
+    background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(255,109,46,0.12), transparent 60%);
+  }
+  .plan.featured::after {
+    background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(255,109,46,0.16), transparent 60%);
+  }
+  .plan:hover::after { opacity: 1; }
+  /* A borda acende no ponto sob o cursor: gradiente na borda via mask. */
+  .plan-edge {
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    padding: 1px; opacity: 0; transition: opacity .35s ease;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(255,140,80,0.75), transparent 65%);
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .plan:hover .plan-edge { opacity: 1; }
+
+  /* ============ Feedback tatil e botao magnetico ============
+     O primario e atraido pelo cursor. Deslocamento e escala vivem em custom
+     properties separadas para nao brigarem no mesmo transform. */
+  .btn {
+    transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--sc, 1));
+    transition: transform .18s cubic-bezier(.16,1,.3,1), background-color .25s ease, border-color .25s ease, color .25s ease;
+  }
+  .btn.is-magnetic { transition: background-color .25s ease, border-color .25s ease, color .25s ease; }
+  .btn:active { --sc: 0.985; --ty: 1px; }
   .plan:active { transform: translateY(-1px) scale(0.997); }
 
   /* ============ Cascata nas revelacoes ============
@@ -521,7 +594,16 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .btn:active, .plan:active { transform: none; }
+    .btn { --tx: 0px !important; --ty: 0px !important; }
+    .plan::after, .plan-edge { display: none; }
+    .price-value { clip-path: none !important; transform: none !important; transition: none !important; }
     * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+  }
+
+  /* No papel o valor precisa sair, mesmo sem o observer ter disparado */
+  @media print {
+    .price-value { clip-path: none !important; transform: none !important; }
+    .plan::after, .plan-edge, .price-block::after { display: none; }
   }
 
 </style>
@@ -551,24 +633,24 @@
 <section class="hero hero-glow">
   <div class="bg-grid" style="position:absolute;inset:0;pointer-events:none;"></div>
   <div class="container" style="position:relative;">
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <span class="pill">Proposta comercial · 22 ago 2026</span>
-        <h1>Agentes de Relatório<br /><span class="h1-line2">Unymos</span></h1>
-        <p class="lede">Dois agentes de IA que transformam os tickets do Zoho Desk e as reuniões da equipe em relatórios prontos, sem ninguém precisar compilar nada à mão.</p>
-      </div>
+    <span class="pill">Proposta comercial · 22 ago 2026</span>
+    <h1>Agentes de Relatório<br /><span class="h1-line2">Unymos</span></h1>
 
-      <div class="price-card">
+    <div class="price-block" data-spotlight>
+      <div class="price-main">
         <div class="price-label">Implantação · pagamento único</div>
         <div class="price-value">R$ 10.000</div>
-        <div class="price-meta"><strong>R$ 5.000 por agente</strong> · <strong>50% no aceite</strong> e <strong>50% na entrega</strong> · cobre o desenvolvimento dos dois agentes e a montagem completa do ambiente · <strong>15 dias úteis</strong></div>
       </div>
+      <p class="price-meta"><strong>R$ 5.000 por agente</strong> · <strong>50% no aceite</strong> e <strong>50% na entrega</strong> · cobre o desenvolvimento dos dois agentes e a montagem completa do ambiente · <strong>15 dias úteis</strong></p>
     </div>
+
+    <p class="lede">Dois agentes de IA que transformam os tickets do Zoho Desk e as reuniões da equipe em relatórios prontos, sem ninguém precisar compilar nada à mão.</p>
 
     <p class="hero-note">Implantação aqui significa o pacote inteiro, e não apenas o código do agente. Cada um dos dois é desenvolvido, testado e colocado para rodar em ambiente próprio da operação. Como vocês ainda não têm servidor, isso inclui escolher e provisionar a máquina, instalar o n8n com todas as dependências e criar as credenciais de que a operação precisa: Zoho Desk, OpenAI, Google Drive e banco de dados. Vocês recebem tudo funcionando, sem nenhuma etapa técnica sobrando do lado de vocês.</p>
 
     <div class="plans">
-      <div class="plan">
+      <div class="plan" data-spotlight>
+        <div class="plan-edge"></div>
         <div class="plan-tag">Plano A · Infraestrutura sua</div>
         <div class="plan-value">R$ 1.850<span class="plan-per">/mês</span></div>
         <p class="plan-desc">A implantação está inclusa, mas os custos de servidor, API e banco de dados ficam por conta da Unymos. Essas cobranças são em dólar e podem variar de um mês para o outro; a responsabilidade por essa variação é da contratante.</p>
@@ -580,7 +662,8 @@
         </ul>
       </div>
 
-      <div class="plan featured">
+      <div class="plan featured" data-spotlight>
+        <div class="plan-edge"></div>
         <div class="plan-tag">Plano B · Tudo incluso</div>
         <div class="plan-value">R$ 2.350<span class="plan-per">/mês</span></div>
         <p class="plan-desc">Eu forneço e mantenho o servidor, a API e o banco de dados. Nada para vocês configurarem e nenhuma conta em dólar no nome de vocês.</p>
@@ -918,6 +1001,65 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-in'); });
   }, { threshold: 0.45, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('.flow-step').forEach(el => flowObserver.observe(el));
+
+  // Valor: reveal em cortina quando o bloco de preco entra em cena
+  const priceBlock = document.querySelector('.price-block');
+  if (priceBlock) {
+    const priceObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); priceObserver.unobserve(e.target); } });
+    }, { threshold: 0.3 });
+    priceObserver.observe(priceBlock);
+  }
+
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Spotlight: coordenadas do cursor viram custom properties. A escrita passa
+  // por requestAnimationFrame, entao varios eventos no mesmo frame colapsam
+  // em uma unica atualizacao e nada disso entra no ciclo de layout.
+  if (fine && !still) {
+    document.querySelectorAll('[data-spotlight]').forEach(el => {
+      let queued = false, mx = 0, my = 0;
+      const paint = () => {
+        queued = false;
+        el.style.setProperty('--mx', mx + 'px');
+        el.style.setProperty('--my', my + 'px');
+      };
+      el.addEventListener('pointermove', (ev) => {
+        const r = el.getBoundingClientRect();
+        mx = ev.clientX - r.left; my = ev.clientY - r.top;
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
+      });
+    });
+
+    // Botao magnetico: o primario e atraido pelo cursor dentro de um raio,
+    // com deslocamento limitado para nao descolar do layout.
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+      let queued = false, tx = 0, ty = 0;
+      const paint = () => {
+        queued = false;
+        btn.style.setProperty('--tx', tx.toFixed(2) + 'px');
+        btn.style.setProperty('--ty', ty.toFixed(2) + 'px');
+      };
+      const onMove = (ev) => {
+        const r = btn.getBoundingClientRect();
+        const dx = ev.clientX - (r.left + r.width / 2);
+        const dy = ev.clientY - (r.top + r.height / 2);
+        tx = Math.max(-10, Math.min(10, dx * 0.16));
+        ty = Math.max(-6, Math.min(6, dy * 0.22));
+        btn.classList.add('is-magnetic');
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
+      };
+      const reset = () => {
+        btn.classList.remove('is-magnetic');
+        tx = 0; ty = 0;
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
+      };
+      btn.addEventListener('pointermove', onMove);
+      btn.addEventListener('pointerleave', reset);
+      btn.addEventListener('blur', reset);
+    });
+  }
 </script>
 
 </body>
