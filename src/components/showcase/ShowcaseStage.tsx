@@ -165,6 +165,9 @@ export function ShowcaseStage({ locale, ctaHref, liveChat }: { locale: Locale; c
         break;
       case "choice":
         pendingRef.current = step;
+        // A timeline da demo é a fonte externa: o passo de escolha para aqui
+        // e espera a resposta do visitante.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setPending(step);
         return;
     }

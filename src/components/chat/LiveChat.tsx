@@ -19,6 +19,12 @@ import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
 import type { AgentReply, AgentStatus, ChatBubble, ChatMode, OutgoingMessage } from "@/lib/chat";
 
+function newSessionId(): string {
+  return typeof crypto?.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `s-${Math.random().toString(36).slice(2)}`;
+}
+
 type Rect = { left: number; top: number; width: number; height: number };
 type Phase = "idle" | "thinking" | "typing";
 
@@ -88,14 +94,17 @@ export function LiveChat({
   const started = useRef(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  if (!session.current && typeof window !== "undefined") {
-    session.current = typeof crypto?.randomUUID === "function" ? crypto.randomUUID() : `s-${Math.random().toString(36).slice(2)}`;
-  }
+
+  // Id de sessão criado na primeira mensagem, não no render: gerar aleatório
+  // durante o render é impuro e escrever em ref ali quebra o StrictMode.
+  const sessionId = () => (session.current ||= newSessionId());
 
   const push = (b: Omit<ChatBubble, "id">) => setBubbles((l) => [...l, { ...b, id: ++seq.current }]);
 
   // Overlay: alvo central responsivo + trava de scroll + Esc.
   useEffect(() => {
+    // O portal só existe depois do mount (precisa de document.body).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const compute = () => {
       const vw = window.innerWidth;
@@ -131,7 +140,7 @@ export function LiveChat({
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId: session.current, mode, locale, message: msg }),
+          body: JSON.stringify({ sessionId: sessionId(), mode, locale, message: msg }),
         });
         if (res.status === 503) {
           setPhase("idle");
@@ -219,7 +228,7 @@ export function LiveChat({
   // Reinicia o atendimento do zero: sessão nova (memória nova no n8n) e
   // saudação local do agente, sem chamada à API.
   const restart = () => {
-    session.current = typeof crypto?.randomUUID === "function" ? crypto.randomUUID() : `s-${Math.random().toString(36).slice(2)}`;
+    session.current = newSessionId();
     lastMsg.current = null;
     setBubbles([{ id: ++seq.current, role: "agent", text: ui.chat.proposalGreeting }]);
     setStatus("qualifying");

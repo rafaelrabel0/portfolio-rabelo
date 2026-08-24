@@ -2,23 +2,37 @@
 
 // Alterna dark/light via data-theme no <html>, persistido em localStorage.
 // O script inline no layout aplica o tema salvo antes do paint (sem flash).
+//
+// O <html> é a fonte da verdade: o React o lê por useSyncExternalStore em vez
+// de espelhar em estado próprio — nada de setState dentro de efeito, e o tema
+// aplicado pelo script inline já vem certo na primeira leitura do cliente.
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+type Theme = "dark" | "light";
 
-  useEffect(() => {
-    const current = document.documentElement.dataset.theme === "light" ? "light" : "dark";
-    setTheme(current);
-  }, []);
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
+}
+
+function getSnapshot(): Theme {
+  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+}
+
+export function ThemeToggle() {
+  const theme = useSyncExternalStore<Theme>(subscribe, getSnapshot, () => "dark");
 
   function toggle() {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
+    const next: Theme = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
-    localStorage.setItem("theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      // modo privado / storage bloqueado: o tema vale só nesta navegação
+    }
   }
 
   return (

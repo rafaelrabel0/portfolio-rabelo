@@ -29,6 +29,9 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(), payment=(), usb=()" },
   { key: "X-DNS-Prefetch-Control", value: "on" },
+  // Isola o browsing context de janelas abertas por terceiros. allow-popups
+  // porque o embed do cal.com pode abrir o fluxo de agendamento em popup.
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
 ];
 
 const nextConfig: NextConfig = {
