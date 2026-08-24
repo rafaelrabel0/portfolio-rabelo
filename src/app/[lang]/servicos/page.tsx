@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/servicos">
     title,
     description,
     alternates: { canonical: `/${locale}/servicos`, languages: { "pt-BR": "/pt/servicos", en: "/en/servicos" } },
-    openGraph: { title, description, type: "website", url: `/${locale}/servicos`, siteName: "Rabelo Co.", images: [{ url: "/og.png", width: 1200, height: 630 }] },
+    openGraph: { title, description, type: "website", url: `/${locale}/servicos`, siteName: "Rabelo Co.", images: [{ url: "/og.jpg", width: 1200, height: 630 }] },
   };
 }
 

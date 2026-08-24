@@ -44,7 +44,7 @@ export function AnimatedBackground() {
       <div
         className="bg-pattern absolute inset-0"
         style={{
-          backgroundImage: "url(/bg-pattern.jpg)",
+          backgroundImage: "url(/bg-pattern.webp)",
           backgroundSize: "50% auto",
           backgroundRepeat: "repeat",
           backgroundPosition: "center",
