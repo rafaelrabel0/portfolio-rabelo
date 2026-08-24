@@ -98,7 +98,7 @@ export const ui = {
       consentLabel: "Li e concordo com a",
       consentRequired: "É preciso concordar com a Política de Privacidade para enviar.",
     },
-    labels: { problem: "Problema", solution: "Solução", result: "Resultado", stack: "Stack", services: "Serviços", clients: "Clientes", segment: "Segmento", status: "Status", live: "Produção", scrollToExplore: "Role para explorar" },
+    labels: { problem: "Problema", solution: "Solução", result: "Resultado", stack: "Stack", services: "Serviços", clients: "Clientes", segment: "Segmento", status: "Status", live: "Produção", scrollToExplore: "Role para explorar", improved: "O que mudou" },
     status: { ativo: "Ativo", onboarding: "Onboarding", parcial: "Parcial", proposta: "Proposta", planejamento: "Planejamento", producao: "Produção", dev: "Em dev", funcional: "Funcional" },
   },
   en: {
@@ -197,7 +197,7 @@ export const ui = {
       consentLabel: "I have read and agree to the",
       consentRequired: "You must agree to the Privacy Policy to submit.",
     },
-    labels: { problem: "Problem", solution: "Solution", result: "Result", stack: "Stack", services: "Services", clients: "Clients", segment: "Segment", status: "Status", live: "Live", scrollToExplore: "Scroll to explore" },
+    labels: { problem: "Problem", solution: "Solution", result: "Result", stack: "Stack", services: "Services", clients: "Clients", segment: "Segment", status: "Status", live: "Live", scrollToExplore: "Scroll to explore", improved: "What changed" },
     status: { ativo: "Active", onboarding: "Onboarding", parcial: "Partial", proposta: "Proposal", planejamento: "Planning", producao: "Live", dev: "In dev", funcional: "Working" },
   },
 } as const;

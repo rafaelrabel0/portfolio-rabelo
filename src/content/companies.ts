@@ -22,6 +22,8 @@ export type Company = {
   services: Localized[];
   clientCount: number;
   deliveries: Delivery[];
+  /** O que mudou na operação depois das automações — aparece no hover do card. */
+  improvements: Localized[];
   links?: { label: string; url: string }[];
 };
 
@@ -46,6 +48,11 @@ export const companies: Company[] = [
     deliveries: [
       { label: { pt: "Plataforma SaaS de atendimento com IA", en: "AI service SaaS platform" }, count: 1, status: "ativo" },
       { label: { pt: "Canal WhatsApp (aditivo)", en: "WhatsApp channel (addendum)" }, count: 1, status: "proposta" },
+    ],
+    improvements: [
+      { pt: "Cada cliente ganhou instância e credenciais isoladas — banco próprio, tokens próprios, nada compartilhado entre operações.", en: "Every client got isolated instances and credentials — own database, own tokens, nothing shared across operations." },
+      { pt: "O que era proposta em PDF virou página com demo ao vivo: o cliente testa o agente antes de assinar.", en: "What used to be a PDF proposal became a page with a live demo: the client tries the agent before signing." },
+      { pt: "Produtos próprios em produção sustentam o método que eu vendo — não é slide, está no ar.", en: "In-house products in production back the method I sell — it isn't a slide, it's live." },
     ],
   },
   {
@@ -72,10 +79,15 @@ export const companies: Company[] = [
       { label: { pt: "Agente principal + webhook no CRM", en: "Main agent + CRM webhook" }, count: 1, status: "parcial" },
       { label: { pt: "Dashboard de Vendas IA", en: "AI Sales Dashboard" }, count: 1, status: "ativo" },
     ],
+    improvements: [
+      { pt: "Lead que chegava de madrugada passou a ser atendido e qualificado na hora, já registrado no CRM.", en: "Leads arriving at 3 a.m. started getting answered and qualified on the spot, already logged in the CRM." },
+      { pt: "O follow-up deixou de depender de alguém lembrar: a cadência por etapa cria os touchpoints e desfaz sozinha quando o negócio muda de etapa.", en: "Follow-up stopped depending on someone remembering: the stage cadence creates the touchpoints and rolls itself back when the deal moves." },
+      { pt: "Call de SDR virou contexto: transcrição e resumo caem como nota no negócio, sem ninguém digitar.", en: "SDR calls turned into context: transcript and summary land as a deal note with nobody typing." },
+      { pt: "A gestão passou a ver o funil da IA em tempo real, por evento, em vez de perguntar como foi a semana.", en: "Management started seeing the AI funnel in real time, event by event, instead of asking how the week went." },
+    ],
     links: [
       { label: "CRM (produção)", url: "https://ativos-digitais-crm.vercel.app" },
       { label: "E-book (captura)", url: "https://ativosdigitaisebook.lovable.app" },
-      { label: "Lead Scoring", url: "https://leadscoringativos.lovable.app" },
     ],
   },
   {
@@ -98,6 +110,11 @@ export const companies: Company[] = [
       { label: { pt: "Agente de IA (SDR + agendamento)", en: "AI agent (SDR + scheduling)" }, count: 2, status: "ativo" },
       { label: { pt: "Agente de IA (SDR + agendamento)", en: "AI agent (SDR + scheduling)" }, count: 8, status: "onboarding" },
     ],
+    improvements: [
+      { pt: "Agendamento, confirmação de presença e lembrete saíram da secretária e passaram para o agente — inclusive fora do horário.", en: "Booking, attendance confirmation and reminders moved off the front desk and onto the agent — after hours included." },
+      { pt: "Aprovação de conteúdo saiu do WhatsApp para um link com trilha auditável, e a publicação na rede virou automática.", en: "Content approval moved from WhatsApp to a link with an auditable trail, and publishing to the network became automatic." },
+      { pt: "Dúvida frequente e triagem inicial deixaram de formar fila: são respondidas na hora, com guardrails de CFM e LGPD.", en: "FAQs and initial triage stopped forming a queue: they're answered instantly, with CFM and LGPD guardrails." },
+    ],
   },
   {
     slug: "solid-studio",
@@ -114,6 +131,10 @@ export const companies: Company[] = [
     ],
     clientCount: 0,
     deliveries: [],
+    improvements: [
+      { pt: "Acervo espalhado por dezenas de grupos virou busca única, com a IA conferindo visualmente o resultado antes de entregar.", en: "An archive scattered across dozens of groups became a single search, with AI visually checking the result before delivering it." },
+      { pt: "Loja, catálogo, pedido, estoque e cálculo de custo passaram a viver num app só, em vez de planilha e caderno.", en: "Store, catalog, orders, inventory and cost calculation moved into a single app, instead of spreadsheets and notebooks." },
+    ],
     links: [{ label: "solidapp.shop", url: "https://solidapp.shop" }],
   },
 ];

@@ -8,6 +8,8 @@ import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import { ShowcaseStageLazy } from "@/components/showcase/ShowcaseStageLazy";
+import { Faq } from "@/components/ui/faq";
+import { HowItWorks } from "@/components/ui/how-it-works";
 import { ProposalForm } from "@/components/services/ProposalForm";
 import { ProposalChat } from "@/components/chat/ProposalChat";
 import { CalEmbed } from "@/components/services/CalEmbed";
@@ -133,17 +135,11 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
         {/* Processo */}
         <Section id="processo">
           <SectionHeader eyebrow="02" title={ui.services.processTitle} subtitle={ui.services.processSubtitle} />
-          <div className="grid gap-5 md:grid-cols-4">
-            {services.process.map((step, i) => (
-              <Reveal key={i} delay={i * 0.08}>
-                <div className="h-full rounded-2xl border border-border bg-surface/50 p-6">
-                  <span className="font-display text-3xl font-bold text-gradient">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="mt-3 font-display text-base font-semibold">{step.title[lang]}</h3>
-                  <p className="mt-2 text-sm text-muted">{step.desc[lang]}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal>
+            <HowItWorks
+              steps={services.process.map((step) => ({ title: step.title[lang], desc: step.desc[lang] }))}
+            />
+          </Reveal>
         </Section>
 
         {/* Demo interativa */}
@@ -203,18 +199,10 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
         {/* FAQ */}
         <Section id="faq">
           <SectionHeader eyebrow="06" title={ui.services.faqTitle} />
-          <div className="max-w-3xl space-y-3">
-            {services.faq.map((f, i) => (
-              <Reveal key={i} delay={i * 0.05}>
-                <details className="group rounded-2xl border border-border bg-surface/50 px-5 py-4 transition-colors hover:border-border-strong">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-sm font-semibold [&::-webkit-details-marker]:hidden">
-                    {f.q[lang]}
-                    <ArrowRight className="h-4 w-4 shrink-0 text-accent transition-transform group-open:rotate-90" />
-                  </summary>
-                  <p className="mt-3 text-sm text-muted">{f.a[lang]}</p>
-                </details>
-              </Reveal>
-            ))}
+          <div className="max-w-3xl">
+            <Reveal>
+              <Faq entries={services.faq.map((f) => ({ q: f.q[lang], a: f.a[lang] }))} />
+            </Reveal>
           </div>
         </Section>
       </main>

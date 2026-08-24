@@ -458,3 +458,122 @@ body {
     scale: 1 1;
   }
 }
+
+/* ============ FAQ — acordeão em <details>, sem JS ============ */
+/* O conteúdo abre animando grid-template-rows (0fr → 1fr), a mesma técnica do
+   menu mobile. `details[open]` cuida do estado; nada de useState. */
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item .faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+
+.faq-item .faq-answer > * {
+  overflow: hidden;
+}
+
+.faq-item[open] .faq-answer {
+  grid-template-rows: 1fr;
+}
+
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-chevron {
+  transition: transform 0.3s ease-out;
+}
+
+/* details só anima se o conteúdo continuar no DOM enquanto fecha; sem isso o
+   navegador remove o bloco na hora e a transição não aparece. */
+.faq-item::details-content {
+  block-size: auto;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item .faq-answer,
+  .faq-chevron {
+    transition: none;
+  }
+}
+
+/* ============ Card de cliente: "o que mudou" revela no hover ============ */
+.client-overlay {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out;
+}
+
+.client-card:hover .client-overlay,
+.client-card:focus-within .client-overlay {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* A versão em fluxo só existe onde não há hover (toque). */
+.client-overlay-inline {
+  display: none;
+}
+
+@media (hover: none) {
+  .client-overlay {
+    display: none;
+  }
+
+  .client-overlay-inline {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-overlay {
+    transition: opacity 0.2s ease-out;
+    transform: none;
+  }
+}
+
+/* ============ Rodapé — marca grande com brilho que segue o gradiente ============ */
+.footer-wordmark {
+  background: linear-gradient(
+    100deg,
+    var(--color-border-strong) 0%,
+    var(--color-fg) 40%,
+    var(--color-accent) 55%,
+    var(--color-border-strong) 75%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: wordmark-sheen 12s linear infinite;
+}
+
+@keyframes wordmark-sheen {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-wordmark {
+    animation: none;
+    background-position: 50% 0;
+  }
+}
