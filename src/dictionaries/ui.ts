@@ -8,6 +8,7 @@ export const ui = {
     sections: {
       aboutTitle: "Sobre",
       experienceTitle: "Experiência",
+      experienceSubtitle: "O percurso: de agentes soltos a plataformas em produção.",
       projectsTitle: "Projetos em destaque",
       projectsSubtitle: "Sistemas em produção — problema, solução e resultado.",
       showcaseTitle: "Na prática",
@@ -106,6 +107,7 @@ export const ui = {
     sections: {
       aboutTitle: "About",
       experienceTitle: "Experience",
+      experienceSubtitle: "The path: from standalone agents to production platforms.",
       projectsTitle: "Selected work",
       projectsSubtitle: "Production systems — problem, solution and result.",
       showcaseTitle: "In practice",

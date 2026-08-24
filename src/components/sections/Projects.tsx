@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
+import { HoverPreviewLink } from "@/components/ui/hover-preview";
 import { projects } from "@/content/projects";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -28,7 +29,18 @@ export function Projects({ locale }: { locale: Locale }) {
             <article className="group flex h-full flex-col rounded-2xl border border-border bg-surface/60 p-6 transition-all hover:border-border-strong hover:bg-surface">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="font-display text-lg font-semibold">{p.name}</h3>
+                  <h3 className="font-display text-lg font-semibold">
+                    {p.image ? (
+                      <HoverPreviewLink
+                        preview={{ image: p.image, title: p.name, subtitle: p.tagline[locale] }}
+                        href={p.links?.[0]?.url}
+                      >
+                        {p.name}
+                      </HoverPreviewLink>
+                    ) : (
+                      p.name
+                    )}
+                  </h3>
                   <p className="mt-0.5 text-xs text-faint">{p.company}</p>
                 </div>
                 <span className={`font-mono text-[10px] uppercase tracking-wider ${statusColor[p.status]}`}>
@@ -80,7 +92,18 @@ export function Projects({ locale }: { locale: Locale }) {
           <Reveal key={p.slug} delay={(i % 3) * 0.06}>
             <article className="flex h-full flex-col rounded-2xl border border-border bg-surface/40 p-5 transition-colors hover:border-border-strong">
               <div className="flex items-center justify-between">
-                <h3 className="font-display text-base font-semibold">{p.name}</h3>
+                <h3 className="font-display text-base font-semibold">
+                  {p.image ? (
+                    <HoverPreviewLink
+                      preview={{ image: p.image, title: p.name, subtitle: p.tagline[locale] }}
+                      href={p.links?.[0]?.url}
+                    >
+                      {p.name}
+                    </HoverPreviewLink>
+                  ) : (
+                    p.name
+                  )}
+                </h3>
                 <span className={`font-mono text-[10px] uppercase ${statusColor[p.status]}`}>● {ui.status[p.status]}</span>
               </div>
               <p className="mt-2 flex-1 text-sm text-muted">{p.tagline[locale]}</p>

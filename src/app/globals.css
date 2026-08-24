@@ -428,3 +428,33 @@ body {
     transition: none;
   }
 }
+
+/* ============ Timeline — trilho que preenche conforme o scroll ============ */
+/* O original (Aceternity) mede a altura com JS e anima com framer. Aqui é
+   scroll-driven animation: onde não há suporte a linha aparece cheia, que é o
+   estado final de qualquer forma. */
+.timeline-beam {
+  transform-origin: top;
+}
+
+@supports (animation-timeline: view()) {
+  .timeline-beam {
+    scale: 1 0;
+    animation: beam-grow linear both;
+    animation-timeline: view(block);
+    animation-range: entry 60% cover 70%;
+  }
+}
+
+@keyframes beam-grow {
+  to {
+    scale: 1 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-beam {
+    animation: none;
+    scale: 1 1;
+  }
+}
