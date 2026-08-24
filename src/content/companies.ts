@@ -105,10 +105,12 @@ export const companies: Company[] = [
       { pt: "Respostas a perguntas frequentes e triagem inicial", en: "FAQ answering and initial triage" },
       { pt: "Agente SDR customizado por profissional", en: "Custom SDR agent per professional" },
     ],
-    clientCount: 10,
+    clientCount: 7,
     deliveries: [
       { label: { pt: "Agente de IA (SDR + agendamento)", en: "AI agent (SDR + scheduling)" }, count: 2, status: "ativo" },
-      { label: { pt: "Agente de IA (SDR + agendamento)", en: "AI agent (SDR + scheduling)" }, count: 8, status: "onboarding" },
+      { label: { pt: "Agente de IA (SDR + agendamento)", en: "AI agent (SDR + scheduling)" }, count: 5, status: "onboarding" },
+      { label: { pt: "Plataforma de aprovação e publicação", en: "Approval and publishing platform" }, count: 1, status: "ativo" },
+      { label: { pt: "CRM multi-tenant com agente de IA", en: "Multi-tenant CRM with AI agent" }, count: 1, status: "planejamento" },
     ],
     improvements: [
       { pt: "Agendamento, confirmação de presença e lembrete saíram da secretária e passaram para o agente — inclusive fora do horário.", en: "Booking, attendance confirmation and reminders moved off the front desk and onto the agent — after hours included." },

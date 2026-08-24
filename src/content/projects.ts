@@ -50,7 +50,6 @@ export const projects: Project[] = [
     solution: { pt: "Dashboard alimentado por eventos dos workflows n8n via edge function autenticada com token por cliente (lead_created, conversation_started, lead_qualified, followup_sent, deal_won…). KPIs, funil de conversão, timeline por lead, ranking de vendedores e metas com celebrações.", en: "Dashboard fed by n8n workflow events through an edge function authenticated with a per-client token (lead_created, conversation_started, lead_qualified, followup_sent, deal_won…). KPIs, conversion funnel, per-lead timeline, sales leaderboard and goals with celebrations." },
     result: { pt: "Contrato de eventos genérico: cada agente novo entra no dashboard com 3 workflows emissores apontando para o mesmo endpoint.", en: "Generic event contract: each new agent plugs into the dashboard with 3 emitter workflows pointing at the same endpoint." },
     stack: ["React + Vite", "TypeScript", "shadcn/ui", "Supabase (Edge Functions)", "Recharts", "n8n"],
-    links: [{ label: "GitHub", url: "https://github.com/rafaelrabel0/dashboard-vendas-i.a." }],
   },
   {
     slug: "kelly-rag-beauty",
