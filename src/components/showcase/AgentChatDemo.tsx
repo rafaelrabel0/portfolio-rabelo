@@ -9,6 +9,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, Mic, Send, Zap } from "lucide-react";
 import { AUTOPILOT_MS } from "@/components/showcase/ShowcaseStage";
+import { Popover } from "@/components/ui/popover";
 import type { ChoiceStep, L, LogItem } from "@/components/showcase/script";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -37,11 +38,17 @@ export function AgentChatDemo({
   const ui = getUi(locale);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [draft, setDraft] = useState("");
+  // Escrever aqui troca a demo roteirizada pelo agente de verdade. O popover
+  // avisa disso uma vez, ancorado no próprio composer, para o visitante não
+  // descobrir só depois de a conversa ter mudado de mãos.
+  const [handoffSeen, setHandoffSeen] = useState(false);
+  const showHandoff = !!onLiveSend && !handoffSeen && draft.trim().length > 0;
 
   const submitLive = () => {
     const text = draft.trim();
     if (!text || !onLiveSend) return;
     setDraft("");
+    setHandoffSeen(true);
     onLiveSend(text);
   };
 
@@ -205,7 +212,15 @@ export function AgentChatDemo({
       {/* Composer real: uma mensagem do visitante expande para o chat ao vivo */}
       {onLiveSend && (
         <>
-          <div className="flex items-center gap-2 border-t border-border bg-surface-2/40 px-4 py-2.5">
+          <div className="relative flex items-center gap-2 border-t border-border bg-surface-2/40 px-4 py-2.5">
+            <Popover
+              open={showHandoff}
+              title={ui.chat.handoffTitle}
+              onClose={() => setHandoffSeen(true)}
+              closeLabel={ui.chat.close}
+            >
+              {ui.chat.handoffBody}
+            </Popover>
             <input
               value={draft}
               onChange={(e) => setDraft(e.target.value)}

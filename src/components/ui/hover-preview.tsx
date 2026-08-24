@@ -35,6 +35,10 @@ export function HoverPreviewLink({
 }) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
+  // A imagem só entra no DOM depois do primeiro hover. Montada de saída, o
+  // browser baixava os 14 previews da página junto com o conteúdo — o card
+  // está na viewport (fixed, opacity 0), então o lazy nativo não segurava.
+  const [armed, setArmed] = useState(false);
   const anchorRef = useRef<HTMLElement>(null);
 
   const place = useCallback((clientX: number, clientY: number) => {
@@ -52,6 +56,7 @@ export function HoverPreviewLink({
   const show = useCallback(
     (e: React.MouseEvent) => {
       place(e.clientX, e.clientY);
+      setArmed(true);
       setVisible(true);
     },
     [place]
@@ -71,6 +76,7 @@ export function HoverPreviewLink({
     const rect = anchorRef.current?.getBoundingClientRect();
     if (!rect) return;
     place(rect.left + rect.width / 2, rect.top);
+    setArmed(true);
     setVisible(true);
   }, [place]);
 
@@ -98,13 +104,15 @@ export function HoverPreviewLink({
         style={{ left: pos.x, top: pos.y, width: CARD_W }}
       >
         <div className="glow overflow-hidden rounded-2xl border border-border bg-surface p-2 backdrop-blur">
-          <Image
-            src={preview.image}
-            alt=""
-            width={CARD_W}
-            height={168}
-            className="h-auto w-full rounded-xl"
-          />
+          {armed && (
+            <Image
+              src={preview.image}
+              alt=""
+              width={CARD_W}
+              height={168}
+              className="h-auto w-full rounded-xl"
+            />
+          )}
           <div className="px-1.5 pb-1 pt-2.5 font-display text-sm font-semibold">{preview.title}</div>
           {preview.subtitle && (
             <div className="px-1.5 pb-1.5 text-xs text-faint">{preview.subtitle}</div>
