@@ -6,6 +6,7 @@
 // segunda já ocupou o lugar. A segunda é aria-hidden para o leitor de tela não
 // ouvir a lista duas vezes.
 
+import { Fragment } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
@@ -16,6 +17,10 @@ export function Marquee({
   gap = 40,
   direction = "left",
   pauseOnHover = true,
+  /** Quantas vezes o conteúdo se repete dentro de cada trilha. Com lista curta,
+   *  uma cópia só não cobre a largura da tela e abre um vão na volta do ciclo —
+   *  suba para 2 ou 3 quando a faixa tiver poucos itens. */
+  repeat = 1,
 }: {
   children: ReactNode;
   className?: string;
@@ -23,7 +28,12 @@ export function Marquee({
   gap?: number;
   direction?: "left" | "right";
   pauseOnHover?: boolean;
+  repeat?: number;
 }) {
+  const track = Array.from({ length: Math.max(1, repeat) }, (_, i) => (
+    <Fragment key={i}>{children}</Fragment>
+  ));
+
   return (
     <div
       className={cn("marquee", className)}
@@ -36,9 +46,9 @@ export function Marquee({
         } as CSSProperties
       }
     >
-      <div className="marquee-track">{children}</div>
+      <div className="marquee-track">{track}</div>
       <div aria-hidden className="marquee-track">
-        {children}
+        {track}
       </div>
     </div>
   );

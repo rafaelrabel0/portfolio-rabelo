@@ -29,33 +29,6 @@ export type Company = {
 
 export const companies: Company[] = [
   {
-    slug: "rabelo-co",
-    name: "Rabelo Co.",
-    isHolding: true,
-    focus: { pt: "Holding pessoal — agentes de IA, automação e software", en: "Personal holding — AI agents, automation and software" },
-    description: {
-      pt: "Consultoria independente que entrega agentes de IA, automação e software para múltiplos clientes B2B em varejo de tintas, saúde e beleza. Presta serviço para todas as marcas próprias e clientes externos.",
-      en: "Independent consultancy delivering AI agents, automation, and software for multiple B2B clients across paint retail, healthcare, and beauty. Serves all in-house brands and external clients.",
-    },
-    stack: ["n8n", "Claude / GPT", "Supabase pgvector", "Evolution API", "Next.js", "Python / FastAPI"],
-    services: [
-      { pt: "Agentes de IA em produção (n8n) com handoff humano", en: "Production AI agents (n8n) with human handoff" },
-      { pt: "Automação de CRM e cadências de funil", en: "CRM automation and funnel cadences" },
-      { pt: "RAG híbrido + APIs (busca vetorial + ao vivo)", en: "Hybrid RAG + APIs (vector + live search)" },
-      { pt: "Web apps de IA ponta a ponta", en: "End-to-end AI web apps" },
-    ],
-    clientCount: 1,
-    deliveries: [
-      { label: { pt: "Plataforma SaaS de atendimento com IA", en: "AI service SaaS platform" }, count: 1, status: "ativo" },
-      { label: { pt: "Canal WhatsApp (aditivo)", en: "WhatsApp channel (addendum)" }, count: 1, status: "proposta" },
-    ],
-    improvements: [
-      { pt: "Cada cliente ganhou instância e credenciais isoladas — banco próprio, tokens próprios, nada compartilhado entre operações.", en: "Every client got isolated instances and credentials — own database, own tokens, nothing shared across operations." },
-      { pt: "O que era proposta em PDF virou página com demo ao vivo: o cliente testa o agente antes de assinar.", en: "What used to be a PDF proposal became a page with a live demo: the client tries the agent before signing." },
-      { pt: "Produtos próprios em produção sustentam o método que eu vendo — não é slide, está no ar.", en: "In-house products in production back the method I sell — it isn't a slide, it's live." },
-    ],
-  },
-  {
     slug: "ativos-digitais",
     name: "Ativos Digitais",
     focus: { pt: "Marketing digital, automação e IA para PMEs", en: "Digital marketing, automation and AI for SMBs" },
@@ -138,5 +111,76 @@ export const companies: Company[] = [
       { pt: "Loja, catálogo, pedido, estoque e cálculo de custo passaram a viver num app só, em vez de planilha e caderno.", en: "Store, catalog, orders, inventory and cost calculation moved into a single app, instead of spreadsheets and notebooks." },
     ],
     links: [{ label: "solidapp.shop", url: "https://solidapp.shop" }],
+  },
+  {
+    slug: "elevra",
+    name: "Elevra",
+    focus: { pt: "Assistentes virtuais de IA para negócios de serviço", en: "AI virtual assistants for service businesses" },
+    description: {
+      pt: "Marca de assistentes virtuais de IA: atendimento, qualificação e agendamento automáticos para negócios de serviço, com demo ao vivo antes da contratação.",
+      en: "AI virtual assistant brand: automatic answering, qualification and scheduling for service businesses, with a live demo before signing.",
+    },
+    stack: ["n8n", "OpenAI (Whisper + GPT-4o-mini)", "Dify", "Go High Level", "Postgres", "Redis", "Stripe"],
+    services: [
+      { pt: "Assistente virtual que atende, qualifica, agenda e retém", en: "Virtual assistant that answers, qualifies, books and retains" },
+      { pt: "Leitura de texto, áudio e imagem na mesma conversa", en: "Text, audio and image handled in one conversation" },
+      { pt: "Template de SDR de pré-qualificação em Dify + Go High Level", en: "Pre-qualification SDR template on Dify + Go High Level" },
+    ],
+    clientCount: 1,
+    deliveries: [
+      { label: { pt: "Assistente virtual com demo ao vivo", en: "Virtual assistant with live demo" }, count: 1, status: "ativo" },
+      { label: { pt: "Template SDR (Dify + GHL)", en: "SDR template (Dify + GHL)" }, count: 1, status: "planejamento" },
+    ],
+    improvements: [
+      { pt: "A primeira resposta ao lead deixou de depender de horário comercial — cai em segundos, a qualquer hora.", en: "The first reply to a lead stopped depending on business hours — it lands in seconds, any time." },
+      { pt: "Áudio e foto de cliente pararam de virar gargalo: o agente transcreve e interpreta na mesma conversa.", en: "Customer voice notes and photos stopped being a bottleneck: the agent transcribes and reads them in the same conversation." },
+      { pt: "A proposta virou demo: o cliente conversa com o agente antes de decidir, em vez de ler um PDF.", en: "The proposal became a demo: the client talks to the agent before deciding, instead of reading a PDF." },
+    ],
+  },
+  {
+    slug: "unymos",
+    name: "Unymos",
+    focus: { pt: "Customer success a partir dos tickets de suporte", en: "Customer success out of support tickets" },
+    description: {
+      pt: "Operação com volume alto de tickets no helpdesk e nenhuma leitura de negócio em cima deles. A automação transforma um mês de tickets em relatório de sucesso do cliente.",
+      en: "An operation with high helpdesk ticket volume and no business reading on top of it. The automation turns a month of tickets into a customer-success report.",
+    },
+    stack: ["n8n", "Zoho Desk API", "OpenAI"],
+    services: [
+      { pt: "Relatório mensal de Customer Success por cliente", en: "Monthly per-client customer-success report" },
+      { pt: "Agrupamento dos motivos de abertura de ticket", en: "Grouping of ticket reasons" },
+      { pt: "Sinalização de risco de churn e de oportunidade", en: "Churn risk and opportunity flagging" },
+    ],
+    clientCount: 1,
+    deliveries: [
+      { label: { pt: "Agente de relatório de CS", en: "CS report agent" }, count: 1, status: "onboarding" },
+    ],
+    improvements: [
+      { pt: "Volume de ticket virou leitura de negócio: por que o cliente procurou, o que repete e onde está o risco.", en: "Ticket volume became a business reading: why the client reached out, what repeats and where the risk is." },
+      { pt: "O relatório mensal que era compilado à mão passou a sair pronto, por cliente.", en: "The monthly report that used to be compiled by hand now comes out ready, per client." },
+    ],
+  },
+  {
+    slug: "vetlideres",
+    name: "VetLíderes",
+    focus: { pt: "Plataforma de atendimento com IA para o setor veterinário", en: "AI service platform for the veterinary sector" },
+    description: {
+      pt: "Setor veterinário sem plataforma unificada de atendimento. Entrega de um SaaS com IA dedicada, interface de chat e canal de WhatsApp em aditivo.",
+      en: "Veterinary sector with no unified service platform. Delivered a SaaS with dedicated AI, a chat interface and a WhatsApp channel as an addendum.",
+    },
+    stack: ["Vite + React 18", "TypeScript", "Supabase", "n8n", "Evolution API"],
+    services: [
+      { pt: "Plataforma web com IA dedicada ao contexto do setor", en: "Web platform with AI dedicated to the sector's context" },
+      { pt: "Transcrição de áudio e criação de usuários por edge function", en: "Audio transcription and user creation through edge functions" },
+    ],
+    clientCount: 1,
+    deliveries: [
+      { label: { pt: "Plataforma SaaS de atendimento com IA", en: "AI service SaaS platform" }, count: 1, status: "ativo" },
+      { label: { pt: "Canal WhatsApp (aditivo)", en: "WhatsApp channel (addendum)" }, count: 1, status: "proposta" },
+    ],
+    improvements: [
+      { pt: "A equipe passou a ter um só lugar para o atendimento, em vez de conversa espalhada por aplicativo pessoal.", en: "The team got a single place for service, instead of conversations scattered across personal apps." },
+      { pt: "Áudio de cliente virou texto pesquisável no histórico do profissional.", en: "Customer voice notes became searchable text in the professional's history." },
+    ],
   },
 ];

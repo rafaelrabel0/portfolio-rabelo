@@ -2,8 +2,15 @@
 
 import type { Localized } from "./profile";
 
+/** Agrupamento na seção de projetos e na página /projetos. */
+export type ProjectCategory = "agente" | "saas" | "plataforma" | "outros";
+
+/** Ordem das categorias na home e em /projetos. */
+export const categoryOrder = ["agente", "saas", "plataforma", "outros"] as const;
+
 export type Project = {
   slug: string;
+  category: ProjectCategory;
   name: string;
   company: string;
   status: "producao" | "dev" | "funcional" | "planejamento";
@@ -22,6 +29,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "agente-sdr-whatsapp",
+    category: "agente",
     image: "/projects/agente-sdr-whatsapp.webp",
     name: "Agente SDR WhatsApp Multimodal",
     company: "Ativos Digitais",
@@ -40,11 +48,12 @@ export const projects: Project[] = [
   },
   {
     slug: "dashboard-vendas-ia",
+    category: "plataforma",
     image: "/projects/dashboard-vendas-ia.webp",
     name: "Dashboard de Vendas IA",
     company: "Ativos Digitais",
     status: "producao",
-    featured: true,
+    featured: false,
     tagline: { pt: "Funil em tempo real dos atendimentos feitos pela IA", en: "Real-time funnel of AI-handled conversations" },
     problem: { pt: "Gestores sem visibilidade do que os agentes de IA faziam no funil — atendimentos, qualificações e follow-ups invisíveis.", en: "Managers had zero visibility into what the AI agents were doing in the funnel — conversations, qualifications and follow-ups were invisible." },
     solution: { pt: "Dashboard alimentado por eventos dos workflows n8n via edge function autenticada com token por cliente (lead_created, conversation_started, lead_qualified, followup_sent, deal_won…). KPIs, funil de conversão, timeline por lead, ranking de vendedores e metas com celebrações.", en: "Dashboard fed by n8n workflow events through an edge function authenticated with a per-client token (lead_created, conversation_started, lead_qualified, followup_sent, deal_won…). KPIs, conversion funnel, per-lead timeline, sales leaderboard and goals with celebrations." },
@@ -53,6 +62,7 @@ export const projects: Project[] = [
   },
   {
     slug: "kelly-rag-beauty",
+    category: "agente",
     image: "/projects/kelly-rag-beauty.webp",
     name: "Agente RAG de Agendamento",
     company: "Rabelo Co. / Rise Doc",
@@ -71,11 +81,12 @@ export const projects: Project[] = [
   },
   {
     slug: "ativos-gtm-suite",
+    category: "plataforma",
     image: "/projects/ativos-gtm-suite.webp",
     name: "Suíte GTM no CRM",
     company: "Ativos Digitais",
     status: "producao",
-    featured: true,
+    featured: false,
     tagline: { pt: "Automação GTM ponta a ponta no Pipedrive/Kommo", en: "End-to-end GTM automation on Pipedrive/Kommo" },
     problem: { pt: "Time comercial perdia pipeline por falta de cadência, follow-up e contexto pós-call.", en: "Sales team lost pipeline due to missing cadence, follow-up and post-call context." },
     solution: { pt: "Cadência de atividades por etapa com rollback, follow-up por IA, resumos de call por Whisper logados no negócio, triagem de candidatos no ClickUp e ingestão de Meta Lead Ads com disparo segmentado no WhatsApp.", en: "Stage-based activity cadence with rollback, AI follow-up, Whisper call summaries logged to deals, candidate screening into ClickUp, and Meta Lead Ads ingestion with segmented WhatsApp dispatch." },
@@ -84,11 +95,12 @@ export const projects: Project[] = [
   },
   {
     slug: "fia",
+    category: "saas",
     image: "/projects/fia.webp",
     name: "FIA — Financial Intelligence Assistant",
     company: "Rabelo Co.",
     status: "producao",
-    featured: true,
+    featured: false,
     tagline: { pt: "Web app de finanças pessoais em produção", en: "Full personal-finance web app in production" },
     problem: { pt: "Gestão de finanças pessoais dispersa, sem API para automação.", en: "Scattered personal finance management with no API for automation." },
     solution: { pt: "App completo: despesas recorrentes, parcelas, metas, sync de taxas do BCB (CDI/Selic/IPCA), simulador de investimento e API REST versionada com chaves de API consumida por automação externa em n8n.", en: "Full app: recurring expenses, installments, goals, BCB rate sync (CDI/Selic/IPCA), investment simulator, and a versioned REST API with API keys consumed by external n8n automation." },
@@ -97,11 +109,12 @@ export const projects: Project[] = [
   },
   {
     slug: "telegram-3d-search",
+    category: "plataforma",
     image: "/projects/telegram-3d-search.webp",
     name: "Telegram 3D Search",
     company: "Solid Studio",
     status: "funcional",
-    featured: true,
+    featured: false,
     tagline: { pt: "Busca semântica com verificação visual por IA", en: "Semantic search with AI visual verification" },
     problem: { pt: "Acervos de modelos 3D espalhados por ~60 grupos do Telegram, impossível de buscar.", en: "3D model archives scattered across ~60 Telegram groups, impossible to search." },
     solution: { pt: "Motor de busca que funde busca fuzzy + vetorial sobre 1.266 bibliotecas indexadas, com verificação visual por GPT-4o Vision antes de confirmar o match e download sob demanda.", en: "Search engine fusing fuzzy + vector search over 1,266 indexed libraries, with GPT-4o Vision visual verification before confirming a match and on-demand download." },
@@ -110,6 +123,7 @@ export const projects: Project[] = [
   },
   {
     slug: "lead-scoring-funnels",
+    category: "outros",
     image: "/projects/ebook-ativos.webp",
     name: "Lead Scoring Funnels",
     company: "Ativos Digitais",
@@ -123,6 +137,7 @@ export const projects: Project[] = [
   },
   {
     slug: "vetlideres",
+    category: "saas",
     image: "/projects/vetlideres.webp",
     name: "Plataforma de Atendimento Inteligente",
     company: "Rabelo Co.",
@@ -135,11 +150,12 @@ export const projects: Project[] = [
   },
   {
     slug: "solid-app",
+    category: "saas",
     image: "/projects/solid-app.webp",
     name: "Solid App",
     company: "Solid Studio",
     status: "dev",
-    featured: false,
+    featured: true,
     tagline: { pt: "Gestão para profissionais de impressão 3D", en: "Management for 3D printing pros" },
     problem: { pt: "Profissionais de impressão 3D sem ferramenta de gestão de loja, custo e pedidos.", en: "3D printing pros without a tool for store, cost and order management." },
     solution: { pt: "PWA de gestão: loja, catálogo, pedidos, estoque e cálculo de custo, com pagamentos Stripe e auth NextAuth v5.", en: "Management PWA: store, catalog, orders, inventory and cost calculation, with Stripe payments and NextAuth v5 auth." },
@@ -148,6 +164,7 @@ export const projects: Project[] = [
   },
   {
     slug: "face-finder",
+    category: "plataforma",
     image: "/projects/face-finder.webp",
     name: "Face Finder",
     company: "Rabelo Co.",
@@ -167,6 +184,7 @@ export const projects: Project[] = [
   },
   {
     slug: "risedoc-plataforma",
+    category: "saas",
     image: "/projects/risedoc-plataforma.webp",
     name: "Plataforma de Aprovação e Publicação",
     company: "Rise Doc",
@@ -180,11 +198,12 @@ export const projects: Project[] = [
   },
   {
     slug: "crm-risedoc",
+    category: "agente",
     image: "/projects/crm-risedoc.webp",
     name: "CRM multi-tenant com agente de IA",
     company: "Rise Doc",
     status: "dev",
-    featured: false,
+    featured: true,
     tagline: { pt: "Chat público que qualifica e entrega o lead ao painel", en: "Public chat that qualifies and drops the lead into the panel" },
     problem: { pt: "Cada clínica atendida precisava de um canal de entrada próprio, com o cuidado que dado de saúde exige.", en: "Every clinic needed its own inbound channel, handled with the care health data demands." },
     solution: { pt: "Módulo de CRM dentro da própria plataforma: chat público com agente de IA, captura de lead, guardrails de CFM e LGPD e registro de consentimento. O custo por conversa foi medido contra a API antes de subir, para caber no teto acordado.", en: "A CRM module inside the platform itself: public chat with an AI agent, lead capture, CFM and LGPD guardrails and consent logging. Per-conversation cost was measured against the API before shipping, to fit the agreed ceiling." },
@@ -192,6 +211,7 @@ export const projects: Project[] = [
   },
   {
     slug: "assistente-virtual-ia",
+    category: "agente",
     image: "/projects/lia.webp",
     name: "Assistente Virtual de IA",
     company: "Rabelo Co.",
@@ -204,6 +224,7 @@ export const projects: Project[] = [
   },
   {
     slug: "relatorio-cs-tickets",
+    category: "agente",
     image: "/projects/agente-sdr-whatsapp.webp",
     name: "Agente de Relatório de Customer Success",
     company: "Ativos Digitais",

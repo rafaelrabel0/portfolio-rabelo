@@ -613,3 +613,49 @@ body {
     transform: none;
   }
 }
+
+/* ============ Lista de projetos — detalhe abre no clique ============ */
+/* Mesma técnica do FAQ: <details> nativo, altura animada em grid-template-rows.
+   O hover no nome mostra o preview; o clique abre a descrição. */
+.project-row .project-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s ease-out;
+}
+
+.project-row .project-body > * {
+  overflow: hidden;
+}
+
+.project-row[open] .project-body {
+  grid-template-rows: 1fr;
+}
+
+.project-row summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.project-row summary::-webkit-details-marker {
+  display: none;
+}
+
+.project-row[open] .project-caret {
+  transform: rotate(90deg);
+}
+
+.project-caret {
+  transition: transform 0.3s ease-out;
+}
+
+.project-row::details-content {
+  block-size: auto;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-row .project-body,
+  .project-caret {
+    transition: none;
+  }
+}

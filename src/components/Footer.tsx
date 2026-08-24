@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { GithubIcon } from "@/components/icons";
+import { GithubIcon, WhatsappIcon } from "@/components/icons";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -13,6 +13,8 @@ import type { Locale } from "@/lib/i18n";
 export function Footer({ locale }: { locale: Locale }) {
   const year = new Date().getFullYear();
   const ui = getUi(locale);
+
+  const waHref = `https://wa.me/${profile.contact.phone.replace(/\D/g, "")}`;
 
   const sections = [
     { href: `/${locale}#about`, label: ui.nav.about },
@@ -62,6 +64,15 @@ export function Footer({ locale }: { locale: Locale }) {
               className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-fg"
             >
               {profile.contact.email}
+            </a>
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-fg"
+            >
+              <WhatsappIcon className="h-3.5 w-3.5" />
+              {profile.contact.phone}
             </a>
             <Link
               href={profile.contact.github}

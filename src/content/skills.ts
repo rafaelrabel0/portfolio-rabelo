@@ -1,68 +1,83 @@
 // Skills, ferramentas e experiência. Fonte: CV.
+//
+// `items` aceita string (nome próprio de tecnologia, que não se traduz) ou
+// { pt, en } quando o rótulo é descritivo — antes havia rótulo em inglês
+// aparecendo na versão em português.
 
 import type { Localized } from "./profile";
 
+export type SkillItem = string | Localized;
+
 export type SkillGroup = {
+  slug: string;
   category: Localized;
-  items: string[];
+  items: SkillItem[];
 };
 
 export const skillGroups: SkillGroup[] = [
   {
+    slug: "ia-automacao",
     category: { pt: "IA & Automação", en: "AI & Automation" },
     items: [
-      "AI Agent Workflows (n8n)",
-      "LLM Integration (Claude, GPT-4o)",
-      "Prompt Engineering",
-      "RAG / Vector Search (Supabase pgvector)",
-      "AI Vision (GPT-4o Vision)",
-      "Transcrição & Sumarização de Áudio (Whisper)",
+      { pt: "Workflows de agentes de IA (n8n)", en: "AI agent workflows (n8n)" },
+      { pt: "Integração de LLMs (Claude, GPT-4o)", en: "LLM integration (Claude, GPT-4o)" },
+      { pt: "Engenharia de prompt", en: "Prompt engineering" },
+      { pt: "RAG e busca vetorial (Supabase pgvector)", en: "RAG and vector search (Supabase pgvector)" },
+      { pt: "Visão computacional com IA (GPT-4o Vision)", en: "AI vision (GPT-4o Vision)" },
+      { pt: "Transcrição e sumarização de áudio (Whisper)", en: "Audio transcription and summarization (Whisper)" },
       "Make / Zapier",
     ],
   },
   {
+    slug: "gtm-crm",
     category: { pt: "GTM & Inteligência de CRM", en: "GTM & CRM Intelligence" },
     items: [
-      "Pipedrive & Kommo Automation",
-      "Cadências por etapa de funil",
-      "Follow-up gerado por IA",
-      "Briefings pré/pós-call automáticos",
-      "Lead Scoring & Qualificação",
+      { pt: "Automação de Pipedrive e Kommo", en: "Pipedrive and Kommo automation" },
+      { pt: "Cadências por etapa de funil", en: "Funnel-stage cadences" },
+      { pt: "Follow-up gerado por IA", en: "AI-generated follow-up" },
+      { pt: "Briefings automáticos de pré e pós-call", en: "Automatic pre and post-call briefings" },
+      { pt: "Lead scoring e qualificação", en: "Lead scoring and qualification" },
       "Meta Lead Ads",
-      "Pixel Event Tracking",
-      "Orquestração de Webhooks",
+      { pt: "Rastreamento de eventos de pixel", en: "Pixel event tracking" },
+      { pt: "Orquestração de webhooks", en: "Webhook orchestration" },
     ],
   },
   {
+    slug: "engenharia",
     category: { pt: "Engenharia", en: "Engineering" },
     items: [
       "TypeScript", "JavaScript", "Python",
       "Next.js", "React", "Node.js / NestJS", "FastAPI",
       "PostgreSQL", "SQLite", "Supabase",
-      "Redis / BullMQ", "Prisma", "REST API Design", "Stripe",
+      "Redis / BullMQ", "Prisma",
+      { pt: "Design de APIs REST", en: "REST API design" },
+      "Stripe",
     ],
   },
   {
+    slug: "dados-infra",
     category: { pt: "Dados & Infra", en: "Data & Infra" },
     items: [
-      "Data Pipelines", "Cron / ETL Jobs", "SQL",
-      "Vector Embeddings (text-embedding-3-small)",
+      { pt: "Pipelines de dados", en: "Data pipelines" },
+      { pt: "Cron e jobs de ETL", en: "Cron and ETL jobs" },
+      "SQL",
+      { pt: "Embeddings vetoriais (text-embedding-3-small)", en: "Vector embeddings (text-embedding-3-small)" },
       "Evolution API (WhatsApp)", "ClickUp API",
       "Socket.IO", "Vercel", "Railway",
     ],
   },
   {
+    slug: "praticas",
     category: { pt: "Práticas", en: "Practices" },
     items: [
-      "Product Thinking",
-      "End-to-End Shipping",
-      "ATS/SEO-aware Content Automation",
-      "Bidirectional Tool Sync (ClickUp)",
+      { pt: "Visão de produto", en: "Product thinking" },
+      { pt: "Entrega de ponta a ponta", en: "End-to-end shipping" },
+      { pt: "Automação de conteúdo com SEO e ATS em mente", en: "ATS/SEO-aware content automation" },
+      { pt: "Sync bidirecional de ferramentas (ClickUp)", en: "Bidirectional tool sync (ClickUp)" },
     ],
   },
 ];
 
-// Ferramentas para a seção de stack visual (ícones/logos depois em /public/tools)
 export const tools = [
   "n8n", "Claude", "OpenAI", "Supabase", "Next.js", "React", "TypeScript",
   "Python", "FastAPI", "NestJS", "PostgreSQL", "Prisma", "Stripe",

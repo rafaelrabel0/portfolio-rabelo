@@ -27,11 +27,16 @@ export function HoverPreviewLink({
   children,
   href,
   className,
+  /** Desligue quando o gatilho já estiver dentro de um elemento focável
+   *  (um <summary>, por exemplo) — dois pontos de foco no mesmo item confundem
+   *  a navegação por teclado. */
+  focusable = true,
 }: {
   preview: PreviewData;
   children: React.ReactNode;
   href?: string;
   className?: string;
+  focusable?: boolean;
 }) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
@@ -86,7 +91,11 @@ export function HoverPreviewLink({
     <>
       <Tag
         ref={anchorRef as React.Ref<HTMLAnchorElement & HTMLSpanElement>}
-        {...(href ? { href, target: "_blank", rel: "noreferrer" } : { tabIndex: 0 })}
+        {...(href
+          ? { href, target: "_blank", rel: "noreferrer" }
+          : focusable
+            ? { tabIndex: 0 }
+            : {})}
         className={cn("preview-link", className)}
         onMouseEnter={show}
         onMouseMove={move}
