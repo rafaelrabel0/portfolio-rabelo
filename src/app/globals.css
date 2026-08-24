@@ -372,12 +372,27 @@ body {
   }
 }
 
+/* Sem movimento, a faixa vira lista estática — nunca barra de rolagem: obrigar
+   a arrastar para ler a lista é pior do que a animação que se quis evitar. */
 @media (prefers-reduced-motion: reduce) {
   .marquee {
-    overflow-x: auto;
+    display: block;
+    overflow: visible;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
+
   .marquee-track {
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 0;
+    padding-inline-end: 0;
     animation: none;
+  }
+
+  /* a segunda trilha é só a cópia do efeito */
+  .marquee-track + .marquee-track {
+    display: none;
   }
 }
 

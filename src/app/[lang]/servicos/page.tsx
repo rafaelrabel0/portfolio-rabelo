@@ -9,6 +9,10 @@ import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import { ShowcaseStageLazy } from "@/components/showcase/ShowcaseStageLazy";
 import { Faq } from "@/components/ui/faq";
+import { HoverPreviewLink } from "@/components/ui/hover-preview";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { Marquee } from "@/components/ui/marquee";
+import { tools } from "@/content/skills";
 import { HowItWorks } from "@/components/ui/how-it-works";
 import { ProposalForm } from "@/components/services/ProposalForm";
 import { ProposalChat } from "@/components/chat/ProposalChat";
@@ -68,24 +72,20 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
             </Reveal>
             <Reveal delay={0.15}>
               <div className="mt-9 flex flex-wrap items-center gap-3">
-                <a
-                  href="#proposta"
-                  className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
-                >
-                  <FileText className="h-4 w-4" /> {ui.cta.requestProposal}
+                <a href="#proposta">
+                  <InteractiveHoverButton icon={<FileText className="h-4 w-4" />}>
+                    {ui.cta.requestProposal}
+                  </InteractiveHoverButton>
                 </a>
-                <a
-                  href="#agenda"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-fg transition-colors hover:border-border-strong hover:bg-surface"
-                >
-                  <CalendarClock className="h-4 w-4" /> {ui.cta.scheduleCall}
+                <a href="#agenda">
+                  <InteractiveHoverButton variant="outline" icon={<CalendarClock className="h-4 w-4" />}>
+                    {ui.cta.scheduleCall}
+                  </InteractiveHoverButton>
                 </a>
-                <a
-                  href={waHref}
-                  target="_blank"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-muted transition-colors hover:border-border-strong hover:text-fg"
-                >
-                  <WhatsappIcon className="h-4 w-4" /> WhatsApp
+                <a href={waHref} target="_blank" rel="noreferrer">
+                  <InteractiveHoverButton variant="outline" icon={<WhatsappIcon className="h-4 w-4" />}>
+                    WhatsApp
+                  </InteractiveHoverButton>
                 </a>
               </div>
             </Reveal>
@@ -111,7 +111,11 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
                     p.featured ? "glow border-accent/30 bg-surface/80" : "border-border bg-surface/50"
                   }`}
                 >
-                  <h3 className="font-display text-lg font-semibold">{p.name[lang]}</h3>
+                  <h3 className="font-display text-lg font-semibold">
+                    <HoverPreviewLink preview={{ image: p.image, title: p.name[lang], subtitle: p.tagline[lang] }}>
+                      {p.name[lang]}
+                    </HoverPreviewLink>
+                  </h3>
                   <p className="mt-2 text-sm text-muted">{p.tagline[lang]}</p>
                   <ul className="mt-5 flex-1 space-y-2.5">
                     {p.items.map((item, j) => (
@@ -131,6 +135,20 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
             ))}
           </div>
         </Section>
+
+        {/* Faixa de stack — prova visual antes de falar de processo */}
+        <div className="w-full overflow-hidden pb-8">
+          <Marquee duration={50} gap={12} repeat={2}>
+            {tools.map((tool) => (
+              <span
+                key={tool}
+                className="whitespace-nowrap rounded-full border border-border bg-surface/60 px-3.5 py-1.5 text-sm text-muted"
+              >
+                {tool}
+              </span>
+            ))}
+          </Marquee>
+        </div>
 
         {/* Processo */}
         <Section id="processo">

@@ -5,6 +5,8 @@ import type { Localized } from "@/content/profile";
 
 export type ServicePackage = {
   slug: string;
+  /** Print de um projeto representativo — aparece no hover do nome do pacote. */
+  image: string;
   name: Localized;
   tagline: Localized;
   items: Localized[];
@@ -27,6 +29,7 @@ export const services = {
   packages: [
     {
       slug: "agente-sdr",
+      image: "/projects/agente-sdr-whatsapp.webp",
       name: { pt: "Agente SDR no WhatsApp", en: "WhatsApp SDR Agent" },
       tagline: {
         pt: "Atendimento, qualificação e follow-up 24/7 — com handoff para humano na hora certa.",
@@ -43,6 +46,7 @@ export const services = {
     },
     {
       slug: "crm-gtm",
+      image: "/projects/ativos-gtm-suite.webp",
       name: { pt: "Automação de CRM & GTM", en: "CRM & GTM Automation" },
       tagline: {
         pt: "Seu funil trabalhando sozinho: cadências, inteligência pós-call e lead ads no CRM.",
@@ -58,6 +62,7 @@ export const services = {
     },
     {
       slug: "web-apps",
+      image: "/projects/face-finder.webp",
       name: { pt: "Web apps de IA & RAG sob medida", en: "Custom AI web apps & RAG" },
       tagline: {
         pt: "Do banco vetorial ao deploy: apps, portais e busca semântica sobre os seus dados.",
