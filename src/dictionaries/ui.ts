@@ -4,7 +4,7 @@ import type { Locale } from "@/lib/i18n";
 export const ui = {
   pt: {
     nav: { about: "Sobre", experience: "Experiência", projects: "Projetos", showcase: "Na prática", agents: "Agentes IA", companies: "Empresas", skills: "Skills", contact: "Contato", services: "Serviços" },
-    cta: { downloadCv: "Baixar CV", contact: "Entrar em contato", viewProject: "Ver projeto", email: "Enviar e-mail", availableForWork: "Disponível para oportunidades", workTogether: "Vamos trabalhar juntos", recruiterCv: "Recrutador? Baixar CV", requestProposal: "Solicitar proposta", scheduleCall: "Agendar conversa" },
+    cta: { downloadCv: "Baixar CV", contact: "Entrar em contato", viewProject: "Ver projeto", email: "Enviar e-mail", availableForWork: "Disponível para oportunidades", workTogether: "Vamos trabalhar juntos", recruiterCv: "Recrutador? Baixar CV", requestProposal: "Solicitar proposta", scheduleCall: "Agendar conversa", iBuild: "Eu construo", inProduction: "em produção" },
     sections: {
       aboutTitle: "Sobre",
       experienceTitle: "Experiência",
@@ -102,7 +102,7 @@ export const ui = {
   },
   en: {
     nav: { about: "About", experience: "Experience", projects: "Projects", showcase: "In practice", agents: "AI Agents", companies: "Companies", skills: "Skills", contact: "Contact", services: "Services" },
-    cta: { downloadCv: "Download CV", contact: "Get in touch", viewProject: "View project", email: "Send email", availableForWork: "Open to opportunities", workTogether: "Let's work together", recruiterCv: "Recruiter? Download CV", requestProposal: "Request a proposal", scheduleCall: "Book a call" },
+    cta: { downloadCv: "Download CV", contact: "Get in touch", viewProject: "View project", email: "Send email", availableForWork: "Open to opportunities", workTogether: "Let's work together", recruiterCv: "Recruiter? Download CV", requestProposal: "Request a proposal", scheduleCall: "Book a call", iBuild: "I build", inProduction: "in production" },
     sections: {
       aboutTitle: "About",
       experienceTitle: "Experience",

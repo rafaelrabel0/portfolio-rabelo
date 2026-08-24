@@ -15,6 +15,17 @@ export const profile = {
     pt: "Construo agentes de IA e automações em produção que viram receita.",
     en: "I build production AI agents and automations that turn into revenue.",
   } satisfies Localized,
+  // Linha rotativa do hero — o que eu construo, em ordem de peso comercial.
+  // Cada item precisa fazer sentido tanto para recrutador quanto para cliente.
+  // Curtos de propósito: entram num display 5xl sem estourar o mobile.
+  builds: [
+    { pt: "agentes de IA", en: "AI agents" },
+    { pt: "automação de CRM", en: "CRM automation" },
+    { pt: "busca semântica", en: "semantic search" },
+    { pt: "web apps de IA", en: "AI web apps" },
+    { pt: "dashboards de funil", en: "funnel dashboards" },
+    { pt: "visão computacional", en: "computer vision" },
+  ] satisfies Localized[],
   summary: {
     pt: "Engenheiro de Automação com IA e fundador da Rabelo Co. Construo agentes de IA, workflows de automação e pipelines de dados que transformam contexto de negócio em ferramentas mensuráveis de receita. Atuo de ponta a ponta: orquestração de agentes em n8n, integração de LLMs (Claude, GPT), RAG com bancos vetoriais, automação de CRM e web apps de IA entregues do início ao fim. Fico naturalmente na interseção entre vendas, produto e engenharia de IA. Inglês C2 (certificado EF SET).",
     en: "AI Automation Engineer and founder of Rabelo Co., building production AI agents, automation workflows, and data pipelines that turn business context into measurable revenue tools. Hands-on across the full stack: n8n agent orchestration, LLM integration (Claude, GPT), RAG with vector databases, CRM automation, and AI-powered web apps shipped end to end. I sit at the intersection of sales, product, and AI engineering. English C2 (EF SET Certified).",

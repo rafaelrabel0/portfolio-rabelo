@@ -4,6 +4,8 @@ import { ArrowDownToLine, Handshake } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import { ScrollHint } from "@/components/ScrollHint";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { RotatingWords } from "@/components/ui/rotating-words";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -39,39 +41,35 @@ export function Hero({ locale }: { locale: Locale }) {
           </div>
         </Reveal>
 
+        {/* O que eu construo — linha rotativa, o peso visual do hero depois do nome */}
         <Reveal immediate delay={0.1}>
-          <p className="mt-5 max-w-2xl text-lg text-muted md:text-xl">{profile.role[locale]}</p>
+          <p className="mt-6 flex max-w-3xl flex-wrap items-baseline gap-x-3 font-display text-3xl font-semibold leading-tight tracking-tight text-muted md:text-5xl">
+            <span>{ui.cta.iBuild}</span>
+            <RotatingWords words={profile.builds.map((b) => b[locale])} wordClassName="text-gradient" />
+            <span>{ui.cta.inProduction}</span>
+          </p>
         </Reveal>
 
         <Reveal immediate delay={0.15}>
-          <p className="mt-3 font-mono text-sm text-faint">
-            <span className="text-accent">&gt;</span> {profile.headline[locale]}
-          </p>
+          <p className="mt-5 max-w-2xl text-base text-muted md:text-lg">{profile.role[locale]}</p>
         </Reveal>
 
         <Reveal immediate delay={0.2}>
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Link
-              href={`/${locale}/servicos`}
-              className="group inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
-            >
-              <Handshake className="h-4 w-4" />
-              {ui.cta.workTogether}
+            <Link href={`/${locale}/servicos`}>
+              <InteractiveHoverButton icon={<Handshake className="h-4 w-4" />}>
+                {ui.cta.workTogether}
+              </InteractiveHoverButton>
             </Link>
-            <a
-              href="/cv.pdf"
-              className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-fg transition-colors hover:border-border-strong hover:bg-surface"
-            >
-              <ArrowDownToLine className="h-4 w-4" />
-              {ui.cta.recruiterCv}
+            <a href="/cv.pdf">
+              <InteractiveHoverButton variant="outline" icon={<ArrowDownToLine className="h-4 w-4" />}>
+                {ui.cta.recruiterCv}
+              </InteractiveHoverButton>
             </a>
-            <Link
-              href={profile.contact.github}
-              target="_blank"
-              className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-muted transition-colors hover:border-border-strong hover:text-fg"
-            >
-              <GithubIcon className="h-4 w-4" />
-              {profile.contact.githubHandle}
+            <Link href={profile.contact.github} target="_blank">
+              <InteractiveHoverButton variant="outline" icon={<GithubIcon className="h-4 w-4" />}>
+                {profile.contact.githubHandle}
+              </InteractiveHoverButton>
             </Link>
           </div>
         </Reveal>

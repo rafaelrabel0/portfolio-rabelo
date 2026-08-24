@@ -6,9 +6,10 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { otherLocale, type Locale } from "@/lib/i18n";
+import { type Locale } from "@/lib/i18n";
 import { getUi } from "@/dictionaries/ui";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LocaleToggle } from "@/components/ui/locale-toggle";
 
 export function Nav({ locale }: { locale: Locale }) {
   const ui = getUi(locale);
@@ -35,8 +36,8 @@ export function Nav({ locale }: { locale: Locale }) {
     { href: `${base}/servicos`, label: ui.nav.services, accent: true },
   ];
 
-  const swapLocale = otherLocale(locale);
-  const targetPath = pathname.replace(`/${locale}`, `/${swapLocale}`) || `/${swapLocale}`;
+  // Mesma página, outro idioma.
+  const hrefFor = (target: Locale) => pathname.replace(`/${locale}`, `/${target}`) || `/${target}`;
 
   return (
     <header
@@ -68,12 +69,7 @@ export function Nav({ locale }: { locale: Locale }) {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link
-            href={targetPath}
-            className="rounded-full border border-border px-3 py-1.5 font-mono text-xs text-muted transition-colors hover:border-border-strong hover:text-fg"
-          >
-            {locale === "pt" ? "EN" : "PT"}
-          </Link>
+          <LocaleToggle locale={locale} hrefFor={hrefFor} />
           <button
             onClick={() => setOpen((o) => !o)}
             aria-label="Menu"
