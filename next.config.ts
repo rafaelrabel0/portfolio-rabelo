@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 // CSP: 'unsafe-inline' em script-src é exigido pelos inline scripts do Next
@@ -31,6 +32,18 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Turbopack inferia a raiz no diretorio do usuario por causa de outro lockfile.
+  turbopack: { root: path.join(__dirname) },
+  images: {
+    // AVIF primeiro, WebP como fallback; o header Accept do browser decide.
+    formats: ["image/avif", "image/webp"],
+    qualities: [75, 90],
+    minimumCacheTTL: 2678400, // 31 dias - assets locais versionados por deploy
+  },
+  experimental: {
+    // Tailwind e atomico: inlinar o CSS no <head> corta um round-trip render-blocking.
+    inlineCss: true,
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
