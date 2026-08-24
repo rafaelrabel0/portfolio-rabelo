@@ -1,6 +1,6 @@
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
-import { ShowcaseStage } from "@/components/showcase/ShowcaseStage";
+import { ShowcaseStageLazy } from "@/components/showcase/ShowcaseStageLazy";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
 
@@ -15,7 +15,7 @@ export function Showcase({ locale }: { locale: Locale }) {
       <SectionHeader eyebrow="04" title={ui.sections.showcaseTitle} subtitle={ui.sections.showcaseSubtitle} />
 
       <Reveal>
-        <ShowcaseStage locale={locale} liveChat={liveChat} />
+        <ShowcaseStageLazy locale={locale} liveChat={liveChat} />
       </Reveal>
     </Section>
   );

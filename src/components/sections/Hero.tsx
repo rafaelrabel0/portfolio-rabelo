@@ -19,7 +19,7 @@ export function Hero({ locale }: { locale: Locale }) {
       />
 
       <div className="mx-auto w-full max-w-6xl px-5">
-        <Reveal>
+        <Reveal immediate>
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1.5 text-xs text-muted backdrop-blur">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
@@ -29,7 +29,7 @@ export function Hero({ locale }: { locale: Locale }) {
           </div>
         </Reveal>
 
-        <Reveal delay={0.05}>
+        <Reveal immediate delay={0.05}>
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
             <Image src="/logo-rc.png" alt="Rabelo Co." width={120} height={50} loading="eager" fetchPriority="high" className="logo-adaptive h-10 w-auto md:h-14" />
             <h1 className="max-w-4xl font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
@@ -39,17 +39,17 @@ export function Hero({ locale }: { locale: Locale }) {
           </div>
         </Reveal>
 
-        <Reveal delay={0.1}>
+        <Reveal immediate delay={0.1}>
           <p className="mt-5 max-w-2xl text-lg text-muted md:text-xl">{profile.role[locale]}</p>
         </Reveal>
 
-        <Reveal delay={0.15}>
+        <Reveal immediate delay={0.15}>
           <p className="mt-3 font-mono text-sm text-faint">
             <span className="text-accent">&gt;</span> {profile.headline[locale]}
           </p>
         </Reveal>
 
-        <Reveal delay={0.2}>
+        <Reveal immediate delay={0.2}>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
               href={`/${locale}/servicos`}
@@ -76,7 +76,7 @@ export function Hero({ locale }: { locale: Locale }) {
           </div>
         </Reveal>
 
-        <Reveal delay={0.28}>
+        <Reveal immediate delay={0.28}>
           <dl className="mt-16 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-4">
             {profile.stats.map((s) => (
               <div key={s.value} className="bg-surface p-5">

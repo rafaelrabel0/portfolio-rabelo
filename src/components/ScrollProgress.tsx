@@ -1,19 +1,15 @@
-"use client";
-
 // Barra de progresso de scroll no topo, com o gradiente ember do site.
-
-import { motion, useScroll, useSpring } from "framer-motion";
+//
+// Scroll-driven animation do CSS: zero JS, zero listener de scroll. Onde o
+// browser não suporta `animation-timeline` a barra simplesmente não aparece
+// (regra .scroll-progress em globals.css) — é decoração, não conteúdo.
 
 export function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.3 });
-
   return (
-    <motion.div
+    <div
       aria-hidden
-      className="fixed inset-x-0 top-0 z-[60] h-[2px] origin-left"
+      className="scroll-progress fixed inset-x-0 top-0 z-[60] h-[2px]"
       style={{
-        scaleX,
         background: "linear-gradient(90deg, var(--color-accent), var(--color-accent-2) 55%, #b14ae2)",
       }}
     />

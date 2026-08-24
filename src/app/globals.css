@@ -136,3 +136,163 @@ body {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 999px; }
+
+/* ============ Reveal — entrada por scroll sem JS de animação ============ */
+/* .reveal + IntersectionObserver (RevealObserver) para o que está abaixo da
+   dobra; .reveal-now para o que já nasce visível (hero), animando no primeiro
+   paint sem esperar hidratação — o texto do LCP não fica preso em opacity 0. */
+.reveal,
+.reveal-now {
+  --reveal-delay: 0s;
+  --reveal-ease: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s var(--reveal-ease) var(--reveal-delay),
+    transform 0.6s var(--reveal-ease) var(--reveal-delay);
+}
+
+.reveal[data-in] {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-now {
+  animation: reveal-in 0.6s var(--reveal-ease) var(--reveal-delay) both;
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Sem JS o observer nunca marca data-in: revela tudo de saída. */
+.no-js .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-now {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ============ Fundo animado (ex-framer-motion, agora CSS) ============ */
+/* Blobs em deriva lenta. Animar só translate/scale mantém tudo no compositor;
+   o blur fica no filter estático, sem re-render por frame. */
+.blob {
+  animation: blob-drift var(--blob-duration, 40s) ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(var(--blob-x1), var(--blob-y1), 0) scale(1.12);
+  }
+  66% {
+    transform: translate3d(var(--blob-x2), var(--blob-y2), 0) scale(0.95);
+  }
+}
+
+/* ============ Barra de progresso de scroll (scroll-driven, zero JS) ============ */
+.scroll-progress {
+  display: none;
+  transform-origin: 0 50%;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    animation: scroll-grow linear;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes scroll-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ============ Indicador "role para explorar" ============ */
+.scroll-hint-chevron {
+  animation: chevron-bob 1.6s ease-in-out infinite;
+}
+
+@keyframes chevron-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .scroll-hint {
+    animation: fade-out linear both;
+    animation-timeline: view(block);
+    animation-range: exit-crossing 0% exit-crossing 60%;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ============ Menu mobile — altura animada sem JS de animação ============ */
+.mobile-menu {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.25s ease-out,
+    opacity 0.25s ease-out;
+}
+
+.mobile-menu[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.mobile-menu > * {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob,
+  .scroll-hint-chevron,
+  .mobile-menu {
+    animation: none;
+    transition: none;
+  }
+
+  /* Sem animação a barra ficaria cheia (scaleX padrão 1): esconde. */
+  .scroll-progress {
+    display: none;
+  }
+}

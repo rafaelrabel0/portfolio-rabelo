@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/cn";
 import { otherLocale, type Locale } from "@/lib/i18n";
 import { getUi } from "@/dictionaries/ui";
@@ -86,34 +85,33 @@ export function Nav({ locale }: { locale: Locale }) {
         </div>
       </nav>
 
-      {/* Menu mobile */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="overflow-hidden border-t border-border bg-bg/95 backdrop-blur-xl md:hidden"
-          >
-            <div className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4">
-              {links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-surface hover:text-fg",
-                    l.accent ? "font-medium text-accent" : "text-muted"
-                  )}
-                >
-                  {l.label}
-                </a>
-              ))}
-            </div>
-          </motion.div>
+      {/* Menu mobile — altura animada via grid-template-rows (CSS, sem framer) */}
+      <div
+        data-open={open}
+        className={cn(
+          "mobile-menu bg-bg/95 backdrop-blur-xl md:hidden",
+          open ? "border-t border-border" : ""
         )}
-      </AnimatePresence>
+      >
+        <div>
+          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                tabIndex={open ? 0 : -1}
+                className={cn(
+                  "rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-surface hover:text-fg",
+                  l.accent ? "font-medium text-accent" : "text-muted"
+                )}
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

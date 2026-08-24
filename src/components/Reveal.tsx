@@ -1,26 +1,32 @@
-"use client";
+// Entrada por scroll sem framer-motion: só classe + custom property de delay.
+// Server component — não custa nada ao bundle do cliente.
+//
+// `immediate` (hero) usa animação CSS que roda no primeiro paint, sem depender
+// de hidratação. O resto espera o RevealObserver marcar data-in.
 
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 export function Reveal({
   children,
   delay = 0,
   className,
+  immediate = false,
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
+  immediate?: boolean;
 }) {
+  const style = delay ? ({ "--reveal-delay": `${delay}s` } as CSSProperties) : undefined;
+
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+    <div
+      className={cn(immediate ? "reveal-now" : "reveal", className)}
+      style={style}
+      {...(immediate ? {} : { "data-reveal": "" })}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

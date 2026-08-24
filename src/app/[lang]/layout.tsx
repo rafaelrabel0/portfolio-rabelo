@@ -5,7 +5,7 @@ import "../globals.css";
 import { isLocale, locales } from "@/lib/i18n";
 import { profile } from "@/content/profile";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
-import { MotionProvider } from "@/components/MotionProvider";
+import { RevealObserver } from "@/components/RevealObserver";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
@@ -54,7 +54,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   };
 
   return (
-    <html lang={lang === "pt" ? "pt-BR" : "en"} className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang={lang === "pt" ? "pt-BR" : "en"} className={`no-js ${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -64,11 +64,10 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       </head>
       <body className="min-h-screen antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <MotionProvider>
-          <AnimatedBackground />
-          <ScrollProgress />
-          {children}
-        </MotionProvider>
+        <AnimatedBackground />
+        <ScrollProgress />
+        <RevealObserver />
+        {children}
       </body>
     </html>
   );

@@ -9,6 +9,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { ArrowRight, RotateCcw, Trophy } from "lucide-react";
+import { MotionProvider } from "@/components/MotionProvider";
 import { AgentChatDemo } from "@/components/showcase/AgentChatDemo";
 import { FunnelLiveDemo } from "@/components/showcase/FunnelLiveDemo";
 import { LiveChat } from "@/components/chat/LiveChat";
@@ -196,101 +197,103 @@ export function ShowcaseStage({ locale, ctaHref, liveChat }: { locale: Locale; c
   };
 
   return (
-    <div ref={containerRef} className="relative">
-      <div className="grid gap-5 md:grid-cols-2">
-        <div>
-          <div ref={chatRef}>
-            <AgentChatDemo
-              locale={locale}
-              log={log}
-              typing={typing}
-              stage={stage}
-              pending={pending}
-              onPick={pick}
-              name={name}
-              progress={Math.min(1, idx / SCRIPT.length)}
-              onLiveSend={liveChat ? startLive : undefined}
-            />
+    <MotionProvider>
+      <div ref={containerRef} className="relative">
+        <div className="grid gap-5 md:grid-cols-2">
+          <div>
+            <div ref={chatRef}>
+              <AgentChatDemo
+                locale={locale}
+                log={log}
+                typing={typing}
+                stage={stage}
+                pending={pending}
+                onPick={pick}
+                name={name}
+                progress={Math.min(1, idx / SCRIPT.length)}
+                onLiveSend={liveChat ? startLive : undefined}
+              />
+            </div>
+            <p className="mt-3 px-1 text-xs text-faint">{ui.sections.showcaseChatCaption}</p>
           </div>
-          <p className="mt-3 px-1 text-xs text-faint">{ui.sections.showcaseChatCaption}</p>
-        </div>
-        <div>
-          <div ref={funnelRef}>
-            <FunnelLiveDemo locale={locale} events={events} name={name} />
+          <div>
+            <div ref={funnelRef}>
+              <FunnelLiveDemo locale={locale} events={events} name={name} />
+            </div>
+            <p className="mt-3 px-1 text-xs text-faint">{ui.sections.showcaseFunnelCaption}</p>
           </div>
-          <p className="mt-3 px-1 text-xs text-faint">{ui.sections.showcaseFunnelCaption}</p>
         </div>
-      </div>
 
-      {/* Pacotes de evento voando do chat para o dashboard */}
-      {packets.map((pk) => (
-        <motion.div
-          key={pk.id}
-          className="pointer-events-none absolute left-0 top-0 z-20"
-          initial={{ x: pk.from.x, y: pk.from.y, opacity: 0 }}
-          animate={{
-            x: [pk.from.x, (pk.from.x + pk.to.x) / 2, pk.to.x],
-            y: [pk.from.y, Math.min(pk.from.y, pk.to.y) - 36, pk.to.y],
-            opacity: [0, 1, 1],
-          }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
-          onAnimationComplete={() => deliver(pk)}
-        >
-          <span className="block h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_14px_5px_color-mix(in_srgb,var(--color-accent)_55%,transparent)]" />
-        </motion.div>
-      ))}
-
-      {/* Final: fechamento da história + CTA */}
-      <AnimatePresence>
-        {done && (
+        {/* Pacotes de evento voando do chat para o dashboard */}
+        {packets.map((pk) => (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center rounded-3xl bg-bg/70 backdrop-blur-sm"
+            key={pk.id}
+            className="pointer-events-none absolute left-0 top-0 z-20"
+            initial={{ x: pk.from.x, y: pk.from.y, opacity: 0 }}
+            animate={{
+              x: [pk.from.x, (pk.from.x + pk.to.x) / 2, pk.to.x],
+              y: [pk.from.y, Math.min(pk.from.y, pk.to.y) - 36, pk.to.y],
+              opacity: [0, 1, 1],
+            }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+            onAnimationComplete={() => deliver(pk)}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 16, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 0.1, duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="glow pointer-events-auto mx-4 max-w-md rounded-2xl border border-border bg-surface/95 p-8 text-center"
-            >
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent/15">
-                <Trophy className="h-5 w-5 text-accent" />
-              </div>
-              <h3 className="font-display text-xl font-bold tracking-tight">{ui.showcase.doneTitle}</h3>
-              <p className="mt-2 text-sm text-muted">{ui.showcase.doneSubtitle}</p>
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-                <a
-                  href={cta}
-                  className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
-                >
-                  {ui.showcase.cta} <ArrowRight className="h-4 w-4" />
-                </a>
-                <button
-                  onClick={replay}
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted transition-colors hover:border-border-strong hover:text-fg"
-                >
-                  <RotateCcw className="h-4 w-4" /> {ui.showcase.replay}
-                </button>
-              </div>
-            </motion.div>
+            <span className="block h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_14px_5px_color-mix(in_srgb,var(--color-accent)_55%,transparent)]" />
           </motion.div>
-        )}
-      </AnimatePresence>
+        ))}
 
-      {/* Chat ao vivo (agente real via n8n) expandindo do card da demo */}
-      <AnimatePresence>
-        {live && (
-          <LiveChat
-            locale={locale}
-            mode="practice"
-            initialText={live}
-            anchor={liveAnchor}
-            onClose={() => setLive(null)}
-          />
-        )}
-      </AnimatePresence>
-    </div>
+        {/* Final: fechamento da história + CTA */}
+        <AnimatePresence>
+          {done && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center rounded-3xl bg-bg/70 backdrop-blur-sm"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 16, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.1, duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="glow pointer-events-auto mx-4 max-w-md rounded-2xl border border-border bg-surface/95 p-8 text-center"
+              >
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent/15">
+                  <Trophy className="h-5 w-5 text-accent" />
+                </div>
+                <h3 className="font-display text-xl font-bold tracking-tight">{ui.showcase.doneTitle}</h3>
+                <p className="mt-2 text-sm text-muted">{ui.showcase.doneSubtitle}</p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  <a
+                    href={cta}
+                    className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
+                  >
+                    {ui.showcase.cta} <ArrowRight className="h-4 w-4" />
+                  </a>
+                  <button
+                    onClick={replay}
+                    className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted transition-colors hover:border-border-strong hover:text-fg"
+                  >
+                    <RotateCcw className="h-4 w-4" /> {ui.showcase.replay}
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Chat ao vivo (agente real via n8n) expandindo do card da demo */}
+        <AnimatePresence>
+          {live && (
+            <LiveChat
+              locale={locale}
+              mode="practice"
+              initialText={live}
+              anchor={liveAnchor}
+              onClose={() => setLive(null)}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+    </MotionProvider>
   );
 }

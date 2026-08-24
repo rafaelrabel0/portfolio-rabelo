@@ -7,7 +7,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
-import { ShowcaseStage } from "@/components/showcase/ShowcaseStage";
+import { ShowcaseStageLazy } from "@/components/showcase/ShowcaseStageLazy";
 import { ProposalForm } from "@/components/services/ProposalForm";
 import { ProposalChat } from "@/components/chat/ProposalChat";
 import { CalEmbed } from "@/components/services/CalEmbed";
@@ -150,7 +150,7 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
         <Section id="demo">
           <SectionHeader eyebrow="03" title={ui.services.demoTitle} subtitle={ui.services.demoSubtitle} />
           <Reveal>
-            <ShowcaseStage locale={lang} ctaHref="#proposta" liveChat={LIVE_CHAT} />
+            <ShowcaseStageLazy locale={lang} ctaHref="#proposta" liveChat={LIVE_CHAT} />
           </Reveal>
         </Section>
 
