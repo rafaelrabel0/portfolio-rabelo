@@ -22,5 +22,5 @@
       "content": "/* ============ Timeline — trilho que preenche conforme o scroll ============ */\n/* O original (Aceternity) mede a altura com JS e anima com framer. Aqui é\n   scroll-driven animation: onde não há suporte a linha aparece cheia, que é o\n   estado final de qualquer forma. */\n.timeline-beam {\n  transform-origin: top;\n}\n\n@supports (animation-timeline: view()) {\n  .timeline-beam {\n    scale: 1 0;\n    animation: beam-grow linear both;\n    animation-timeline: view(block);\n    animation-range: entry 60% cover 70%;\n  }\n}\n\n@keyframes beam-grow {\n  to {\n    scale: 1 1;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .timeline-beam {\n    animation: none;\n    scale: 1 1;\n  }\n}\n"
     }
   ],
-  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+  "docs": "Adicione ao seu CSS global:\n@import \"./styles/rabelo/timeline.css\";"
 }

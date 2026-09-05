@@ -25,5 +25,5 @@
       "content": "/* ============ Popover ancorado ============ */\n.popover {\n  opacity: 0;\n  transform: translateY(6px) scale(0.97);\n  pointer-events: none;\n  transform-origin: bottom center;\n  transition:\n    opacity 0.2s ease-out,\n    transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);\n}\n\n.popover[data-open=\"true\"] {\n  opacity: 1;\n  transform: none;\n  pointer-events: auto;\n}\n\n/* Bico do popover: quadrado girado, herdando fundo e borda do card. */\n.popover-arrow {\n  position: absolute;\n  bottom: -5px;\n  width: 10px;\n  height: 10px;\n  transform: rotate(45deg);\n  background: var(--color-surface-2);\n  border-right: 1px solid var(--color-border-strong);\n  border-bottom: 1px solid var(--color-border-strong);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .popover {\n    transition: opacity 0.15s ease-out;\n    transform: none;\n  }\n}\n"
     }
   ],
-  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+  "docs": "Adicione ao seu CSS global:\n@import \"./styles/rabelo/popover.css\";"
 }

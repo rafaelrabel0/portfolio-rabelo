@@ -22,5 +22,5 @@
       "content": "/* ============ Card de cliente: \"o que mudou\" revela no hover ============ */\n.client-overlay {\n  opacity: 0;\n  transform: translateY(10px);\n  pointer-events: none;\n  transition:\n    opacity 0.3s ease-out,\n    transform 0.3s ease-out;\n}\n\n.client-card:hover .client-overlay,\n.client-card:focus-within .client-overlay {\n  opacity: 1;\n  transform: none;\n  pointer-events: auto;\n}\n\n/* A versão em fluxo só existe onde não há hover (toque). */\n.client-overlay-inline {\n  display: none;\n}\n\n@media (hover: none) {\n  .client-overlay {\n    display: none;\n  }\n\n  .client-overlay-inline {\n    display: block;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .client-overlay {\n    transition: opacity 0.2s ease-out;\n    transform: none;\n  }\n}\n"
     }
   ],
-  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+  "docs": "Adicione ao seu CSS global:\n@import \"./styles/rabelo/client-card.css\";"
 }

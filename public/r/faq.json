@@ -25,5 +25,5 @@
       "content": "/* ============ FAQ — acordeão em <details>, sem JS ============ */\n/* O conteúdo abre animando grid-template-rows (0fr → 1fr), a mesma técnica do\n   menu mobile. `details[open]` cuida do estado; nada de useState. */\n.faq-item summary {\n  cursor: pointer;\n  list-style: none;\n}\n\n.faq-item summary::-webkit-details-marker {\n  display: none;\n}\n\n.faq-item .faq-answer {\n  display: grid;\n  grid-template-rows: 0fr;\n  transition: grid-template-rows 0.3s ease-out;\n}\n\n.faq-item .faq-answer > * {\n  overflow: hidden;\n}\n\n.faq-item[open] .faq-answer {\n  grid-template-rows: 1fr;\n}\n\n.faq-item[open] .faq-chevron {\n  transform: rotate(180deg);\n}\n\n.faq-chevron {\n  transition: transform 0.3s ease-out;\n}\n\n/* details só anima se o conteúdo continuar no DOM enquanto fecha; sem isso o\n   navegador remove o bloco na hora e a transição não aparece. */\n.faq-item::details-content {\n  block-size: auto;\n  overflow: visible;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .faq-item .faq-answer,\n  .faq-chevron {\n    transition: none;\n  }\n}\n"
     }
   ],
-  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+  "docs": "Adicione ao seu CSS global:\n@import \"./styles/rabelo/faq.css\";"
 }

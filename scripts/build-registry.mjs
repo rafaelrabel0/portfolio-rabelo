@@ -15,7 +15,9 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(root, "public", "r");
-const BASE = "https://rabelo.company";
+// REGISTRY_BASE permite gerar apontando para um servidor local e testar a
+// instalação de verdade antes de publicar.
+const BASE = process.env.REGISTRY_BASE ?? "https://rabelo.company";
 
 const manifest = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
 const globals = readFileSync(join(root, "src", "app", "globals.css"), "utf8");
@@ -84,6 +86,8 @@ for (const item of manifest.items) {
     });
   }
 
+  const cssFiles = files.filter((f) => f.type === "registry:file");
+
   const out = {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name: item.name,
@@ -96,10 +100,11 @@ for (const item of manifest.items) {
       ? { registryDependencies: item.registryDependencies.map((d) => `${BASE}/r/${d}.json`) }
       : {}),
     files,
-    docs:
-      files.some((f) => f.type === "registry:file")
-        ? "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
-        : undefined,
+    // Nomeia os arquivos de fato — a instrução genérica obrigava a abrir a
+    // pasta para descobrir o que importar.
+    docs: cssFiles.length
+      ? ["Adicione ao seu CSS global:", ...cssFiles.map((f) => `@import "./${f.target}";`)].join("\n")
+      : undefined,
   };
 
   writeFileSync(join(OUT, `${item.name}.json`), JSON.stringify(out, null, 2) + "\n");

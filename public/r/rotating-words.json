@@ -22,5 +22,5 @@
       "content": "/* ============ Rotator de palavras do hero ============ */\n/* Cada palavra ocupa uma fatia do ciclo: entra de baixo, fica, sai por cima.\n   Os keyframes dependem da quantidade de palavras, então o componente\n   RotatingWords emite o @keyframes correspondente ao seu N. Zero JS: o hero\n   não pode depender de hidratação para pintar o texto do LCP. */\n.rotator {\n  position: relative;\n  display: inline-block;\n  overflow: hidden;\n  vertical-align: bottom;\n}\n\n.rotator-sizer {\n  visibility: hidden;\n}\n\n.rotator-word {\n  position: absolute;\n  inset-inline-start: 0;\n  top: 0;\n  white-space: nowrap;\n  opacity: 0;\n  animation-fill-mode: backwards;\n  animation-iteration-count: infinite;\n  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .rotator-word {\n    animation: none;\n  }\n  .rotator-word:first-of-type {\n    opacity: 1;\n  }\n}\n"
     }
   ],
-  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+  "docs": "Adicione ao seu CSS global:\n@import \"./styles/rabelo/rotator.css\";"
 }
