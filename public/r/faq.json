@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "faq",
+  "type": "registry:ui",
+  "title": "FAQ em acordeão",
+  "description": "details/summary nativos com abertura animada em CSS. Sem estado em React, acessível por teclado, funciona sem JS.",
+  "author": "Rabelo Co. <rafael@rabelo.company>",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "https://rabelo.company/r/ember-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/rabelo/faq.tsx",
+      "target": "components/ui/faq.tsx",
+      "type": "registry:ui",
+      "content": "// FAQ em acordeão. Recriado no estilo do site (o código do 21st.dev não é\n// acessível sem login): em vez de estado em React, usa <details>/<summary>\n// nativos com a abertura animada em CSS. Funciona sem JS, é acessível por\n// teclado de graça e continua server component.\n\nimport { ChevronDown } from \"lucide-react\";\n\nexport type FaqEntry = { q: string; a: string };\n\nexport function Faq({ entries }: { entries: FaqEntry[] }) {\n  return (\n    <div className=\"divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface/40\">\n      {entries.map((entry) => (\n        <details key={entry.q} className=\"faq-item group\">\n          <summary className=\"flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-surface/60 md:px-6 md:py-5\">\n            <span className=\"font-display text-base font-semibold md:text-lg\">{entry.q}</span>\n            <ChevronDown className=\"faq-chevron h-4 w-4 shrink-0 text-faint\" />\n          </summary>\n          <div className=\"faq-answer\">\n            <div>\n              <p className=\"px-5 pb-5 text-sm leading-relaxed text-muted md:px-6 md:pb-6 md:text-base\">\n                {entry.a}\n              </p>\n            </div>\n          </div>\n        </details>\n      ))}\n    </div>\n  );\n}\n"
+    },
+    {
+      "path": "registry/rabelo/styles/faq.css",
+      "target": "styles/rabelo/faq.css",
+      "type": "registry:file",
+      "content": "/* ============ FAQ — acordeão em <details>, sem JS ============ */\n/* O conteúdo abre animando grid-template-rows (0fr → 1fr), a mesma técnica do\n   menu mobile. `details[open]` cuida do estado; nada de useState. */\n.faq-item summary {\n  cursor: pointer;\n  list-style: none;\n}\n\n.faq-item summary::-webkit-details-marker {\n  display: none;\n}\n\n.faq-item .faq-answer {\n  display: grid;\n  grid-template-rows: 0fr;\n  transition: grid-template-rows 0.3s ease-out;\n}\n\n.faq-item .faq-answer > * {\n  overflow: hidden;\n}\n\n.faq-item[open] .faq-answer {\n  grid-template-rows: 1fr;\n}\n\n.faq-item[open] .faq-chevron {\n  transform: rotate(180deg);\n}\n\n.faq-chevron {\n  transition: transform 0.3s ease-out;\n}\n\n/* details só anima se o conteúdo continuar no DOM enquanto fecha; sem isso o\n   navegador remove o bloco na hora e a transição não aparece. */\n.faq-item::details-content {\n  block-size: auto;\n  overflow: visible;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .faq-item .faq-answer,\n  .faq-chevron {\n    transition: none;\n  }\n}\n"
+    }
+  ],
+  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+}

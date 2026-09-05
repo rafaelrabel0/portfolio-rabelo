@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "how-it-works",
+  "type": "registry:ui",
+  "title": "Como funciona",
+  "description": "Passos numerados com conector entre colunas no desktop. Server component, sem JS.",
+  "author": "Rabelo Co. <rafael@rabelo.company>",
+  "registryDependencies": [
+    "https://rabelo.company/r/ember-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/rabelo/how-it-works.tsx",
+      "target": "components/ui/how-it-works.tsx",
+      "type": "registry:ui",
+      "content": "// \"Como funciona\" em passos numerados. Recriado no estilo do site: número\n// grande em display, conector entre os passos e destaque no card ativo por\n// hover. Server component, sem JS.\n//\n// O conector é um pseudo-elemento no card (não uma linha atrás de tudo), então\n// ele acompanha o grid quando quebra em uma coluna no mobile.\n\nimport { cn } from \"@/lib/utils\";\n\nexport type Step = { title: string; desc: string };\n\nexport function HowItWorks({ steps }: { steps: Step[] }) {\n  return (\n    <ol className=\"grid gap-4 md:grid-cols-2 lg:grid-cols-4\">\n      {steps.map((step, i) => (\n        <li\n          key={step.title}\n          className={cn(\n            \"group relative flex h-full flex-col rounded-2xl border border-border bg-surface/40 p-6\",\n            \"transition-colors hover:border-border-strong hover:bg-surface\"\n          )}\n        >\n          {/* conector para o passo seguinte — só entre colunas, no desktop */}\n          {i < steps.length - 1 && (\n            <span\n              aria-hidden\n              className=\"absolute right-[-10px] top-1/2 hidden h-px w-[20px] bg-border lg:block\"\n            />\n          )}\n\n          <div className=\"flex items-baseline gap-3\">\n            <span className=\"font-display text-4xl font-bold leading-none text-border-strong transition-colors group-hover:text-accent\">\n              {String(i + 1).padStart(2, \"0\")}\n            </span>\n            <h3 className=\"font-display text-base font-semibold\">{step.title}</h3>\n          </div>\n\n          <p className=\"mt-4 text-sm leading-relaxed text-muted\">{step.desc}</p>\n        </li>\n      ))}\n    </ol>\n  );\n}\n"
+    }
+  ]
+}

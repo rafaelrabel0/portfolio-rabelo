@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "interactive-hover-button",
+  "type": "registry:ui",
+  "title": "Botão interativo",
+  "description": "Um ponto que cresce até cobrir o botão enquanto o rótulo desliza e volta com a seta. Padrão de todo CTA da marca.",
+  "author": "Rabelo Co. <rafael@rabelo.company>",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "https://rabelo.company/r/ember-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/rabelo/interactive-hover-button.tsx",
+      "target": "components/ui/interactive-hover-button.tsx",
+      "type": "registry:ui",
+      "content": "// Botão do Magic UI (interactive-hover-button): um ponto que cresce até cobrir\n// o botão enquanto o rótulo desliza e reaparece com a seta.\n//\n// Adaptado dos tokens shadcn do original (bg-background / bg-primary /\n// text-primary-foreground) para os tokens ember do site, e com variante para os\n// dois pesos de CTA que o portfólio já usava: sólido e contornado.\n\nimport type { ReactNode } from \"react\";\nimport { ArrowRight } from \"lucide-react\";\nimport { cn } from \"@/lib/utils\";\n\ntype Variant = \"solid\" | \"outline\";\n\nconst base =\n  \"group relative inline-flex w-auto cursor-pointer items-center overflow-hidden rounded-full px-5 py-3 text-sm font-medium\";\n\nconst variants: Record<Variant, { shell: string; dot: string; reveal: string }> = {\n  // Sólido: o hover inverte para o acento, então o rótulo revelado fica escuro.\n  solid: {\n    shell: \"bg-fg text-bg\",\n    dot: \"bg-accent\",\n    reveal: \"text-bg\",\n  },\n  outline: {\n    shell: \"border border-border bg-transparent text-fg hover:border-border-strong\",\n    dot: \"bg-accent\",\n    reveal: \"text-bg\",\n  },\n};\n\nexport function InteractiveHoverButton({\n  children,\n  className,\n  variant = \"solid\",\n  icon,\n}: {\n  children: ReactNode;\n  className?: string;\n  variant?: Variant;\n  icon?: ReactNode;\n}) {\n  const v = variants[variant];\n\n  return (\n    <span className={cn(base, v.shell, className)}>\n      <span className=\"flex items-center justify-center gap-2\">\n        <span\n          className={cn(\n            \"h-2 w-2 shrink-0 rounded-full transition-transform duration-500 ease-out group-hover:scale-[80]\",\n            v.dot\n          )}\n        />\n        <span className=\"inline-block transition-all duration-300 group-hover:translate-x-8 group-hover:opacity-0\">\n          {children}\n        </span>\n      </span>\n      {/* Cópia só para o efeito: aria-hidden para o leitor de tela não anunciar\n          o rótulo duas vezes. */}\n      <span\n        aria-hidden\n        className={cn(\n          \"absolute inset-0 z-10 flex translate-x-8 items-center justify-center gap-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100\",\n          v.reveal\n        )}\n      >\n        {icon}\n        <span>{children}</span>\n        <ArrowRight className=\"h-4 w-4\" />\n      </span>\n    </span>\n  );\n}\n"
+    }
+  ]
+}

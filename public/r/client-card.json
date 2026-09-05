@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "client-card",
+  "type": "registry:ui",
+  "title": "Card com overlay",
+  "description": "Card de marca ou cliente que revela no hover o que mudou na operação. Em tela de toque o overlay não existe e o conteúdo entra no fluxo.",
+  "author": "Rabelo Co. <rafael@rabelo.company>",
+  "registryDependencies": [
+    "https://rabelo.company/r/ember-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/rabelo/client-card.tsx",
+      "target": "components/ui/client-card.tsx",
+      "type": "registry:ui",
+      "content": "// Card de marca/cliente com um overlay que revela no hover o que mudou na\n// operação — o papel do testimonial-1 do 21st.dev, sem depoimento inventado:\n// aqui o que aparece é a entrega real, contada sem nome de cliente final.\n//\n// O overlay cobre o card em vez de ocupar o corpo dele. Assim o card já diz\n// algo sem interação (primeira versão deixava quatro caixas quase vazias para\n// quem não passa o mouse) e o hover acrescenta a leitura de resultado.\n//\n// Em telas de toque, onde hover não existe, o overlay some e as melhorias\n// entram no fluxo normal do card — senão o conteúdo seria inalcançável.\n\nimport type { ReactNode } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport function ClientCard({\n  name,\n  focus,\n  meta,\n  overlayTitle,\n  overlay,\n  children,\n  className,\n}: {\n  name: string;\n  focus: string;\n  /** Linha curta de contexto (contagem de clientes, papel). */\n  meta?: string;\n  overlayTitle: ReactNode;\n  /** Revelado no hover: o que mudou na operação. */\n  overlay: ReactNode;\n  children: ReactNode;\n  className?: string;\n}) {\n  return (\n    <article\n      tabIndex={0}\n      className={cn(\n        \"client-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface/50 p-6\",\n        \"transition-all hover:border-border-strong focus-visible:border-border-strong\",\n        className\n      )}\n    >\n      {/* brilho ember no canto, acende junto com o overlay */}\n      <span\n        aria-hidden\n        className=\"pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100\"\n        style={{ background: \"radial-gradient(closest-side, var(--color-accent), transparent)\" }}\n      />\n\n      <div className=\"relative\">\n        <h3 className=\"font-display text-lg font-bold tracking-tight\">{name}</h3>\n        <p className=\"mt-1 text-sm text-muted\">{focus}</p>\n        {meta && <p className=\"mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-faint\">{meta}</p>}\n      </div>\n\n      <div className=\"relative mt-5 flex-1 border-t border-border pt-4\">{children}</div>\n\n      {/* Overlay do hover — em telas de toque ele não existe (ver client-overlay\n          em globals.css) e o conteúdo aparece abaixo, no fluxo. */}\n      <div className=\"client-overlay absolute inset-0 flex flex-col bg-bg/92 p-6 backdrop-blur-sm\">\n        <p className=\"flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-accent\">\n          {overlayTitle}\n        </p>\n        <div className=\"mt-4 min-h-0 flex-1 overflow-hidden\">{overlay}</div>\n      </div>\n\n      <div className=\"client-overlay-inline relative mt-5 border-t border-border pt-4\">\n        <p className=\"flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-accent\">\n          {overlayTitle}\n        </p>\n        <div className=\"mt-3\">{overlay}</div>\n      </div>\n    </article>\n  );\n}\n"
+    },
+    {
+      "path": "registry/rabelo/styles/client-card.css",
+      "target": "styles/rabelo/client-card.css",
+      "type": "registry:file",
+      "content": "/* ============ Card de cliente: \"o que mudou\" revela no hover ============ */\n.client-overlay {\n  opacity: 0;\n  transform: translateY(10px);\n  pointer-events: none;\n  transition:\n    opacity 0.3s ease-out,\n    transform 0.3s ease-out;\n}\n\n.client-card:hover .client-overlay,\n.client-card:focus-within .client-overlay {\n  opacity: 1;\n  transform: none;\n  pointer-events: auto;\n}\n\n/* A versão em fluxo só existe onde não há hover (toque). */\n.client-overlay-inline {\n  display: none;\n}\n\n@media (hover: none) {\n  .client-overlay {\n    display: none;\n  }\n\n  .client-overlay-inline {\n    display: block;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .client-overlay {\n    transition: opacity 0.2s ease-out;\n    transform: none;\n  }\n}\n"
+    }
+  ],
+  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+}

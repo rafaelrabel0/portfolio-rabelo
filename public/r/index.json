@@ -1,0 +1,104 @@
+{
+  "name": "rabelo",
+  "homepage": "https://rabelo.company/pt/kit",
+  "items": [
+    {
+      "name": "ember-theme",
+      "type": "registry:theme",
+      "title": "Tema Ember",
+      "description": "Os tokens da Rabelo Co.: preto quente, laranja vivo, vermelho e roxo. Tema claro por data-theme, não pela classe dark do Tailwind. Base de todos os outros itens.",
+      "files": 2,
+      "dependsOn": []
+    },
+    {
+      "name": "interactive-hover-button",
+      "type": "registry:ui",
+      "title": "Botão interativo",
+      "description": "Um ponto que cresce até cobrir o botão enquanto o rótulo desliza e volta com a seta. Padrão de todo CTA da marca.",
+      "files": 1,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "marquee",
+      "type": "registry:ui",
+      "title": "Faixa infinita",
+      "description": "Lista deslizando sozinha, de borda a borda, com fade nas pontas. Server component, animação em CSS. Repete o conteúdo para cobrir telas largas.",
+      "files": 2,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "hover-preview",
+      "type": "registry:ui",
+      "title": "Preview no hover",
+      "description": "Link que abre um card seguindo o cursor com print, título e uma linha. A imagem só carrega no primeiro hover; funciona também por teclado.",
+      "files": 2,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "rotating-words",
+      "type": "registry:ui",
+      "title": "Palavras que se revezam",
+      "description": "O efeito de hero em CSS puro: cada palavra ocupa uma fatia do ciclo e os keyframes são emitidos conforme a quantidade. Não depende de hidratação, então não custa LCP.",
+      "files": 2,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover ancorado",
+      "description": "Balão com bico preso ao elemento, para avisar mudança de contexto. Sem Radix e sem foco-trap: é aviso, não diálogo.",
+      "files": 2,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "faq",
+      "type": "registry:ui",
+      "title": "FAQ em acordeão",
+      "description": "details/summary nativos com abertura animada em CSS. Sem estado em React, acessível por teclado, funciona sem JS.",
+      "files": 2,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "how-it-works",
+      "type": "registry:ui",
+      "title": "Como funciona",
+      "description": "Passos numerados com conector entre colunas no desktop. Server component, sem JS.",
+      "files": 1,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline com trilho",
+      "description": "Rótulo grudado e trilho que preenche conforme o scroll, por scroll-driven animation. Sem biblioteca de animação.",
+      "files": 2,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    },
+    {
+      "name": "client-card",
+      "type": "registry:ui",
+      "title": "Card com overlay",
+      "description": "Card de marca ou cliente que revela no hover o que mudou na operação. Em tela de toque o overlay não existe e o conteúdo entra no fluxo.",
+      "files": 2,
+      "dependsOn": [
+        "ember-theme"
+      ]
+    }
+  ]
+}

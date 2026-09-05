@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "marquee",
+  "type": "registry:ui",
+  "title": "Faixa infinita",
+  "description": "Lista deslizando sozinha, de borda a borda, com fade nas pontas. Server component, animação em CSS. Repete o conteúdo para cobrir telas largas.",
+  "author": "Rabelo Co. <rafael@rabelo.company>",
+  "registryDependencies": [
+    "https://rabelo.company/r/ember-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/rabelo/marquee.tsx",
+      "target": "components/ui/marquee.tsx",
+      "type": "registry:ui",
+      "content": "// Marquee infinito. O original (spell.sh) injeta os keyframes com <style jsx>\n// e é client component; aqui as regras vivem em globals.css e isto é um server\n// component — a faixa é decorativa e não precisa de JS nenhum.\n//\n// Duas trilhas idênticas deslizam -100%: quando a primeira sai da tela, a\n// segunda já ocupou o lugar. A segunda é aria-hidden para o leitor de tela não\n// ouvir a lista duas vezes.\n\nimport { Fragment } from \"react\";\nimport type { CSSProperties, ReactNode } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport function Marquee({\n  children,\n  className,\n  duration = 32,\n  gap = 40,\n  direction = \"left\",\n  pauseOnHover = true,\n  /** Quantas vezes o conteúdo se repete dentro de cada trilha. Com lista curta,\n   *  uma cópia só não cobre a largura da tela e abre um vão na volta do ciclo —\n   *  suba para 2 ou 3 quando a faixa tiver poucos itens. */\n  repeat = 1,\n}: {\n  children: ReactNode;\n  className?: string;\n  duration?: number;\n  gap?: number;\n  direction?: \"left\" | \"right\";\n  pauseOnHover?: boolean;\n  repeat?: number;\n}) {\n  const track = Array.from({ length: Math.max(1, repeat) }, (_, i) => (\n    <Fragment key={i}>{children}</Fragment>\n  ));\n\n  return (\n    <div\n      className={cn(\"marquee\", className)}\n      data-direction={direction}\n      data-pause={pauseOnHover}\n      style={\n        {\n          \"--marquee-duration\": `${duration}s`,\n          \"--marquee-gap\": `${gap}px`,\n        } as CSSProperties\n      }\n    >\n      <div className=\"marquee-track\">{track}</div>\n      <div aria-hidden className=\"marquee-track\">\n        {track}\n      </div>\n    </div>\n  );\n}\n"
+    },
+    {
+      "path": "registry/rabelo/styles/marquee.css",
+      "target": "styles/rabelo/marquee.css",
+      "type": "registry:file",
+      "content": "/* ============ Marquee ============ */\n/* Duas trilhas idênticas deslizando -100%: quando a primeira sai, a segunda\n   já está no lugar. Animação de transform, roda no compositor. */\n.marquee {\n  display: flex;\n  width: 100%;\n  overflow: hidden;\n  gap: var(--marquee-gap, 0px);\n  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);\n  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);\n}\n\n.marquee-track {\n  display: flex;\n  flex-shrink: 0;\n  align-items: center;\n  gap: var(--marquee-gap, 0px);\n  padding-inline-end: var(--marquee-gap, 0px);\n  min-width: 100%;\n  animation: marquee-x var(--marquee-duration, 32s) linear infinite;\n}\n\n.marquee[data-direction=\"right\"] .marquee-track {\n  animation-direction: reverse;\n}\n\n.marquee[data-pause=\"true\"]:hover .marquee-track {\n  animation-play-state: paused;\n}\n\n@keyframes marquee-x {\n  from {\n    transform: translateX(0);\n  }\n  to {\n    transform: translateX(-100%);\n  }\n}\n\n/* Sem movimento, a faixa vira lista estática — nunca barra de rolagem: obrigar\n   a arrastar para ler a lista é pior do que a animação que se quis evitar. */\n@media (prefers-reduced-motion: reduce) {\n  .marquee {\n    display: block;\n    overflow: visible;\n    mask-image: none;\n    -webkit-mask-image: none;\n  }\n\n  .marquee-track {\n    flex-wrap: wrap;\n    justify-content: center;\n    min-width: 0;\n    padding-inline-end: 0;\n    animation: none;\n  }\n\n  /* a segunda trilha é só a cópia do efeito */\n  .marquee-track + .marquee-track {\n    display: none;\n  }\n}\n"
+    }
+  ],
+  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+}

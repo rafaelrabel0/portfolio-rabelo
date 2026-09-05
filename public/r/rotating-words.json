@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rotating-words",
+  "type": "registry:ui",
+  "title": "Palavras que se revezam",
+  "description": "O efeito de hero em CSS puro: cada palavra ocupa uma fatia do ciclo e os keyframes são emitidos conforme a quantidade. Não depende de hidratação, então não custa LCP.",
+  "author": "Rabelo Co. <rafael@rabelo.company>",
+  "registryDependencies": [
+    "https://rabelo.company/r/ember-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/rabelo/rotating-words.tsx",
+      "target": "components/ui/rotating-words.tsx",
+      "type": "registry:ui",
+      "content": "// Palavras que se revezam numa linha — o efeito do animated-hero do 21st.dev,\n// aqui em CSS puro. O original usa framer-motion; no hero isso custaria o LCP,\n// porque o h1 só apareceria depois da hidratação. Server component.\n//\n// Cada palavra ganha uma fatia igual do ciclo via animation-delay, e os\n// keyframes são emitidos conforme a quantidade de palavras (a fatia de cada\n// uma é 100/N do ciclo, então o @keyframes não pode ser fixo).\n\nimport type { CSSProperties } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport function RotatingWords({\n  words,\n  className,\n  wordClassName,\n  secondsPerWord = 2.4,\n}: {\n  words: string[];\n  className?: string;\n  wordClassName?: string;\n  secondsPerWord?: number;\n}) {\n  if (words.length === 0) return null;\n  if (words.length === 1) return <span className={className}>{words[0]}</span>;\n\n  const total = words.length * secondsPerWord;\n  const slot = 100 / words.length;\n  const name = `rotator-cycle-${words.length}`;\n\n  // A saída passa do fim da fatia (1.12 × slot) para cruzar com a entrada da\n  // palavra seguinte — sem isso a linha fica vazia por um instante na troca.\n  const enter = (slot * 0.12).toFixed(3);\n  const holdEnd = slot.toFixed(3);\n  const exit = (slot * 1.12).toFixed(3);\n\n  const keyframes =\n    `@keyframes ${name}{` +\n    `0%{opacity:0;transform:translateY(110%)}` +\n    `${enter}%{opacity:1;transform:translateY(0)}` +\n    `${holdEnd}%{opacity:1;transform:translateY(0)}` +\n    `${exit}%{opacity:0;transform:translateY(-110%)}` +\n    `100%{opacity:0;transform:translateY(-110%)}}`;\n\n  // A palavra mais longa reserva largura e altura para as outras, que são\n  // absolutas — sem isso a linha muda de tamanho a cada troca.\n  const longest = words.reduce((a, b) => (b.length > a.length ? b : a));\n\n  return (\n    <span className={cn(\"rotator\", className)}>\n      <style>{keyframes}</style>\n      <span aria-hidden className={cn(\"rotator-sizer\", wordClassName)}>\n        {longest}\n      </span>\n      {words.map((word, i) => (\n        <span\n          key={word}\n          className={cn(\"rotator-word\", wordClassName)}\n          style={\n            {\n              animationName: name,\n              animationDuration: `${total}s`,\n              animationDelay: `${(i * secondsPerWord).toFixed(2)}s`,\n            } as CSSProperties\n          }\n        >\n          {word}\n        </span>\n      ))}\n    </span>\n  );\n}\n"
+    },
+    {
+      "path": "registry/rabelo/styles/rotator.css",
+      "target": "styles/rabelo/rotator.css",
+      "type": "registry:file",
+      "content": "/* ============ Rotator de palavras do hero ============ */\n/* Cada palavra ocupa uma fatia do ciclo: entra de baixo, fica, sai por cima.\n   Os keyframes dependem da quantidade de palavras, então o componente\n   RotatingWords emite o @keyframes correspondente ao seu N. Zero JS: o hero\n   não pode depender de hidratação para pintar o texto do LCP. */\n.rotator {\n  position: relative;\n  display: inline-block;\n  overflow: hidden;\n  vertical-align: bottom;\n}\n\n.rotator-sizer {\n  visibility: hidden;\n}\n\n.rotator-word {\n  position: absolute;\n  inset-inline-start: 0;\n  top: 0;\n  white-space: nowrap;\n  opacity: 0;\n  animation-fill-mode: backwards;\n  animation-iteration-count: infinite;\n  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .rotator-word {\n    animation: none;\n  }\n  .rotator-word:first-of-type {\n    opacity: 1;\n  }\n}\n"
+    }
+  ],
+  "docs": "Importe o CSS deste item no seu arquivo de estilos global: @import './styles/rabelo/<arquivo>.css';"
+}
