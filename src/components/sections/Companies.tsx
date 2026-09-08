@@ -18,7 +18,7 @@ export function Companies({ locale }: { locale: Locale }) {
 
   return (
     <Section id="companies">
-      <SectionHeader eyebrow="05" title={ui.sections.companiesTitle} subtitle={ui.sections.companiesSubtitle} />
+      <SectionHeader eyebrow="06" title={ui.sections.companiesTitle} subtitle={ui.sections.companiesSubtitle} />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {companies.map((c, i) => (

@@ -3,7 +3,7 @@ import type { Locale } from "@/lib/i18n";
 // Strings de UI (navegação, botões, títulos de seção). Conteúdo factual fica em /content.
 export const ui = {
   pt: {
-    nav: { about: "Sobre", experience: "Experiência", projects: "Projetos", showcase: "Na prática", agents: "Agentes IA", companies: "Empresas", skills: "Skills", contact: "Contato", services: "Serviços" },
+    nav: { about: "Sobre", experience: "Experiência", projects: "Projetos", showcase: "Na prática", howIBuild: "Como construo", agents: "Agentes IA", companies: "Empresas", skills: "Skills", contact: "Contato", services: "Serviços" },
     cta: { downloadCv: "Baixar CV", contact: "Entrar em contato", viewProject: "Ver projeto", email: "Enviar e-mail", availableForWork: "Disponível para oportunidades", workTogether: "Vamos trabalhar juntos", recruiterCv: "Recrutador? Baixar CV", requestProposal: "Solicitar proposta", scheduleCall: "Agendar conversa", iBuild: "Eu construo", inProduction: "em produção", allProjects: "Ver todos os projetos" },
     sections: {
       aboutTitle: "Sobre",
@@ -17,6 +17,9 @@ export const ui = {
       showcaseSubtitle: "Demo interativa de um sistema real em produção — responda como o cliente e veja cada ação do agente virar evento no funil ao lado.",
       showcaseChatCaption: "Reprodução do fluxo real: buffer de mensagens, transcrição de áudio (Whisper), tools de qualificação e movimentação de etapa no CRM.",
       showcaseFunnelCaption: "Cada ação do agente emite um evento via edge function autenticada — o dashboard acompanha o funil em tempo real.",
+      howIBuildTitle: "Como eu construo",
+      howIBuildSubtitle: "Uma sessão real de agente de código — a que derrubou o LCP deste site de 4,2 s para 1,8 s.",
+      howIBuildNote: "Interfaces de agente recriadas como componentes (brainless, de theswerd, MIT). O conteúdo é a sessão de verdade: mesmo arquivo, mesmo diff, mesmos números medidos.",
       companiesTitle: "Empresas & Clientes",
       companiesSubtitle: "Aponte uma marca para ver o que mudou na operação dela.",
       skillsTitle: "Skills & Ferramentas",
@@ -114,7 +117,7 @@ export const ui = {
     status: { ativo: "Ativo", onboarding: "Onboarding", parcial: "Parcial", proposta: "Proposta", planejamento: "Planejamento", producao: "Produção", dev: "Em dev", funcional: "Funcional" },
   },
   en: {
-    nav: { about: "About", experience: "Experience", projects: "Projects", showcase: "In practice", agents: "AI Agents", companies: "Companies", skills: "Skills", contact: "Contact", services: "Services" },
+    nav: { about: "About", experience: "Experience", projects: "Projects", showcase: "In practice", howIBuild: "How I build", agents: "AI Agents", companies: "Companies", skills: "Skills", contact: "Contact", services: "Services" },
     cta: { downloadCv: "Download CV", contact: "Get in touch", viewProject: "View project", email: "Send email", availableForWork: "Open to opportunities", workTogether: "Let's work together", recruiterCv: "Recruiter? Download CV", requestProposal: "Request a proposal", scheduleCall: "Book a call", iBuild: "I build", inProduction: "in production", allProjects: "See every project" },
     sections: {
       aboutTitle: "About",
@@ -128,6 +131,9 @@ export const ui = {
       showcaseSubtitle: "Interactive demo of a real production system — reply as the customer and watch every agent action become a funnel event.",
       showcaseChatCaption: "Replays the real flow: message buffering, audio transcription (Whisper), qualification tools and CRM stage moves.",
       showcaseFunnelCaption: "Every agent action emits an event through an authenticated edge function — the dashboard tracks the funnel in real time.",
+      howIBuildTitle: "How I build",
+      howIBuildSubtitle: "A real coding-agent session — the one that took this site's LCP from 4.2s down to 1.8s.",
+      howIBuildNote: "Agent interfaces recreated as components (brainless, by theswerd, MIT). The content is the actual session: same file, same diff, same measured numbers.",
       companiesTitle: "Companies & Clients",
       companiesSubtitle: "Point at a brand to see what changed in its operation.",
       skillsTitle: "Skills & Tools",

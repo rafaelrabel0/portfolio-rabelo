@@ -23,7 +23,7 @@ export function Skills({ locale }: { locale: Locale }) {
   return (
     <>
       <Section id="skills" className="pb-0 md:pb-0">
-        <SectionHeader eyebrow="06" title={ui.sections.skillsTitle} subtitle={ui.sections.skillsSubtitle} />
+        <SectionHeader eyebrow="07" title={ui.sections.skillsTitle} subtitle={ui.sections.skillsSubtitle} />
       </Section>
 
       <div className="w-full overflow-hidden pb-24 md:pb-32">

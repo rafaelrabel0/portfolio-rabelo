@@ -30,6 +30,7 @@ export function Nav({ locale }: { locale: Locale }) {
     { href: `${base}#experience`, label: ui.nav.experience },
     { href: `${base}#projects`, label: ui.nav.projects },
     { href: `${base}#showcase`, label: ui.nav.showcase },
+    { href: `${base}#how-i-build`, label: ui.nav.howIBuild },
     { href: `${base}#companies`, label: ui.nav.companies },
     { href: `${base}#skills`, label: ui.nav.skills },
     { href: `${base}#contact`, label: ui.nav.contact },
