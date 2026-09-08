@@ -17,8 +17,13 @@ import type { Locale } from "@/lib/i18n";
 // para 1832 ms. Números, arquivo e diff são os verdadeiros; nada de "acme-app".
 //
 // Só peças que são server component entram aqui (header, message, todo, tool
-// call, diff). As três client do brainless (thinking, permission, prompt) têm
-// animação e estado, e não vale gastar JS no caminho crítico da home por elas.
+// call, diff). As três client do brainless — thinking, permission e prompt —
+// têm animação e estado, e não vale gastar JS no caminho crítico da home por
+// elas; por isso nem ficam no repositório. Para trazer alguma de volta:
+//
+//   curl -s https://brainless.swerdlow.dev/r/claude-prompt.json
+//
+// e adaptar os imports (`@/lib/utils` -> `@/lib/cn`).
 
 const cena: Record<Locale, {
   frame: string;
