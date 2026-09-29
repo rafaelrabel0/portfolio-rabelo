@@ -15,7 +15,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/[lang]/privacidade">): Promise<Metadata> {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : "pt";
-  const title = locale === "pt" ? "Política de Privacidade — Rabelo Co." : "Privacy Policy — Rabelo Co.";
+  const title = locale === "pt" ? "Política de Privacidade — deciban" : "Privacy Policy — deciban";
   const description = privacy.intro[locale].slice(0, 160);
   return {
     title,

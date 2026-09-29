@@ -1,5 +1,5 @@
 // Empresas e seus clientes/serviços. Fonte: Obsidian Vault (Empresas + MOCs de agentes).
-// Rabelo Co. é a holding pessoal do Rafael que presta serviço para as demais.
+// deciban é a holding pessoal do Rafael que presta serviço para as demais.
 
 import type { Localized } from "./profile";
 
@@ -33,8 +33,8 @@ export const companies: Company[] = [
     name: "Ativos Digitais",
     focus: { pt: "Marketing digital, automação e IA para PMEs", en: "Digital marketing, automation and AI for SMBs" },
     description: {
-      pt: "Marca de marketing digital e IA. Prioridade 1 da Rabelo Co. Agentes de pré-atendimento e SDR via WhatsApp para qualificação de leads, mais suíte de automação GTM no Pipedrive/Kommo.",
-      en: "Digital marketing and AI brand. Rabelo Co.'s top priority. Pre-sales and SDR WhatsApp agents for lead qualification, plus a Pipedrive/Kommo GTM automation suite.",
+      pt: "Marca de marketing digital e IA. Prioridade 1 da deciban. Agentes de pré-atendimento e SDR via WhatsApp para qualificação de leads, mais suíte de automação GTM no Pipedrive/Kommo.",
+      en: "Digital marketing and AI brand. deciban's top priority. Pre-sales and SDR WhatsApp agents for lead qualification, plus a Pipedrive/Kommo GTM automation suite.",
     },
     stack: ["n8n", "Kommo / Pipedrive", "Evolution API", "OpenAI (GPT + Whisper)", "ClickUp API", "PostgreSQL", "React + NestJS"],
     services: [
@@ -68,8 +68,8 @@ export const companies: Company[] = [
     name: "Rise Doc",
     focus: { pt: "Saúde digital — automação médica e agentes de IA", en: "Digital health — medical automation and AI agents" },
     description: {
-      pt: "Marca de saúde digital. Prioridade 2 da Rabelo Co. Agentes de IA por cliente para agendamento, confirmação de presença, lembretes, FAQ e triagem inicial em clínicas e consultórios.",
-      en: "Digital health brand. Rabelo Co.'s second priority. Per-client AI agents for scheduling, attendance confirmation, reminders, FAQ and initial triage in clinics and practices.",
+      pt: "Marca de saúde digital. Prioridade 2 da deciban. Agentes de IA por cliente para agendamento, confirmação de presença, lembretes, FAQ e triagem inicial em clínicas e consultórios.",
+      en: "Digital health brand. deciban's second priority. Per-client AI agents for scheduling, attendance confirmation, reminders, FAQ and initial triage in clinics and practices.",
     },
     stack: ["n8n", "OpenAI / Claude", "Evolution API", "oAtmos (CRM)"],
     services: [

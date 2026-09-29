@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/projetos">
       description: ui.sections.allProjectsSubtitle,
       type: "website",
       url: `/${locale}/projetos`,
-      siteName: "Rabelo Co.",
+      siteName: "deciban",
       images: [{ url: "/og.jpg", width: 1200, height: 630 }],
     },
   };

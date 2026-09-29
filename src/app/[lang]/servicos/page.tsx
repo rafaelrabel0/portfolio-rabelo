@@ -7,6 +7,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
+import { Companies } from "@/components/sections/Companies";
 import { ShowcaseStageLazy } from "@/components/showcase/ShowcaseStageLazy";
 import { Faq } from "@/components/ui/faq";
 import { HoverPreviewLink } from "@/components/ui/hover-preview";
@@ -29,13 +30,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/[lang]/servicos">): Promise<Metadata> {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : "pt";
-  const title = locale === "pt" ? "Serviços — Rabelo Co." : "Services — Rabelo Co.";
+  const title = locale === "pt" ? "Serviços — deciban" : "Services — deciban";
   const description = services.hero.subtitle[locale];
   return {
     title,
     description,
     alternates: { canonical: `/${locale}/servicos`, languages: { "pt-BR": "/pt/servicos", en: "/en/servicos" } },
-    openGraph: { title, description, type: "website", url: `/${locale}/servicos`, siteName: "Rabelo Co.", images: [{ url: "/og.jpg", width: 1200, height: 630 }] },
+    openGraph: { title, description, type: "website", url: `/${locale}/servicos`, siteName: "deciban", images: [{ url: "/og.jpg", width: 1200, height: 630 }] },
   };
 }
 
@@ -168,9 +169,11 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
           </Reveal>
         </Section>
 
+        <Companies locale={lang} />
+
         {/* Solicitar proposta */}
         <Section id="proposta">
-          <SectionHeader eyebrow="04" title={ui.services.proposalTitle} subtitle={ui.services.proposalSubtitle} />
+          <SectionHeader eyebrow="05" title={ui.services.proposalTitle} subtitle={ui.services.proposalSubtitle} />
           <div className="max-w-2xl">
             {LIVE_CHAT ? (
               <>
@@ -193,7 +196,7 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
 
         {/* Agenda */}
         <Section id="agenda">
-          <SectionHeader eyebrow="05" title={ui.services.agendaTitle} subtitle={ui.services.agendaSubtitle} />
+          <SectionHeader eyebrow="06" title={ui.services.agendaTitle} subtitle={ui.services.agendaSubtitle} />
           {CAL_LINK ? (
             <Reveal>
               <CalEmbed calLink={CAL_LINK} />
@@ -216,7 +219,7 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
 
         {/* FAQ */}
         <Section id="faq">
-          <SectionHeader eyebrow="06" title={ui.services.faqTitle} />
+          <SectionHeader eyebrow="07" title={ui.services.faqTitle} />
           <div className="max-w-3xl">
             <Reveal>
               <Faq entries={services.faq.map((f) => ({ q: f.q[lang], a: f.a[lang] }))} />

@@ -11,14 +11,16 @@ import type { Locale } from "@/lib/i18n";
 // na operação aparece ao apontar o card — quem só está passando os olhos não
 // precisa ler seis blocos de entrega.
 //
-// Rabelo Co. saiu daqui: é a holding do Rafael, não cliente.
+// Vive em /servicos, não na home: quem contrata quer saber quem já é atendido;
+// num portfólio isso é vitrine de agência. A deciban não aparece na lista — é a
+// marca do Rafael, não cliente.
 
 export function Companies({ locale }: { locale: Locale }) {
   const ui = getUi(locale);
 
   return (
     <Section id="companies">
-      <SectionHeader eyebrow="06" title={ui.sections.companiesTitle} subtitle={ui.sections.companiesSubtitle} />
+      <SectionHeader eyebrow="04" title={ui.sections.companiesTitle} subtitle={ui.sections.companiesSubtitle} />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {companies.map((c, i) => (

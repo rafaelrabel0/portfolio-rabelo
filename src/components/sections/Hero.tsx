@@ -1,9 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowDownToLine, Handshake } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import { ScrollHint } from "@/components/ScrollHint";
+import { BrandMark } from "@/components/ui/brand-mark";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { RotatingWords } from "@/components/ui/rotating-words";
 import { profile } from "@/content/profile";
@@ -33,7 +33,7 @@ export function Hero({ locale }: { locale: Locale }) {
 
         <Reveal immediate delay={0.05}>
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <Image src="/logo-rc.png" alt="Rabelo Co." width={120} height={50} loading="eager" fetchPriority="high" className="logo-adaptive h-10 w-auto md:h-14" />
+            <BrandMark variante="simbolo" height={44} className="md:h-14" priority />
             <h1 className="max-w-4xl font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
               {profile.shortName.split(" ")[0]}{" "}
               <span className="text-gradient">{profile.shortName.split(" ").slice(1).join(" ")}</span>

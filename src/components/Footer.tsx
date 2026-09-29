@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { GithubIcon, WhatsappIcon } from "@/components/icons";
+import { BrandSignature } from "@/components/ui/brand-signature";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -20,7 +20,7 @@ export function Footer({ locale }: { locale: Locale }) {
     { href: `/${locale}#about`, label: ui.nav.about },
     { href: `/${locale}#experience`, label: ui.nav.experience },
     { href: `/${locale}#projects`, label: ui.nav.projects },
-    { href: `/${locale}#companies`, label: ui.nav.companies },
+    { href: `/${locale}/projetos`, label: ui.sections.allProjectsTitle },
     { href: `/${locale}/servicos`, label: ui.nav.services },
   ];
 
@@ -29,20 +29,7 @@ export function Footer({ locale }: { locale: Locale }) {
       <div className="mx-auto max-w-6xl px-5 py-14 md:py-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <Image
-                src="/logo-rc.png"
-                alt="Rabelo Co."
-                width={44}
-                height={18}
-                className="logo-adaptive h-4 w-auto"
-              />
-              <span className="font-display text-sm font-bold">
-                <span className="text-gradient">Rabelo</span>
-                <span className="text-muted"> Co.</span>
-              </span>
-            </div>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">{profile.headline[locale]}</p>
+            <p className="max-w-xs text-sm leading-relaxed text-muted">{profile.headline[locale]}</p>
             <p className="mt-4 font-mono text-xs text-faint">{profile.location[locale]}</p>
           </div>
 
@@ -97,14 +84,6 @@ export function Footer({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        {/* Marca em escala grande fechando a página */}
-        <p
-          aria-hidden
-          className="footer-wordmark mt-12 select-none font-display text-[15vw] font-bold leading-[0.8] tracking-tighter md:mt-16 md:text-[10rem]"
-        >
-          Rabelo Co.
-        </p>
-
         <div className="mt-6 flex flex-col gap-2 border-t border-border pt-6 font-mono text-[11px] text-faint md:flex-row md:items-center md:justify-between">
           <span>
             © {year} {profile.name}
@@ -112,6 +91,10 @@ export function Footer({ locale }: { locale: Locale }) {
           <span>{locale === "pt" ? "Construído com Next.js + Tailwind" : "Built with Next.js + Tailwind"}</span>
         </div>
       </div>
+
+      {/* Assinatura animada da marca (manual §6.7): faixa carvão nos dois temas,
+          toca uma vez ao aparecer e para no quadro final. */}
+      <BrandSignature className="border-t border-border" />
     </footer>
   );
 }

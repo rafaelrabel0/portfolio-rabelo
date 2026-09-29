@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Geist, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { isLocale, locales } from "@/lib/i18n";
@@ -9,7 +9,7 @@ import { RevealObserver } from "@/components/RevealObserver";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
-const sans = Inter({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
+const sans = Geist({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
 const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin"], display: "swap" });
 
 export function generateStaticParams() {
@@ -27,12 +27,12 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
     title,
     description,
     keywords: [
-      "Rafael Rabelo", "Rabelo Co", "AI Automation Engineer", "Engenheiro de IA",
+      "Rafael Rabelo", "deciban", "AI Automation Engineer", "Engenheiro de IA",
       "AI Agents", "n8n", "RAG", "Supabase pgvector", "LLM", "Next.js",
       "automação de workflows", "prompt engineering", "AI engineer Brazil",
     ],
     authors: [{ name: profile.name }],
-    openGraph: { title, description, type: "website", locale: locale === "pt" ? "pt_BR" : "en_US", url: `/${locale}`, siteName: "Rabelo Co.", images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Rabelo Co. — AI agents & automation that turn into revenue" }] },
+    openGraph: { title, description, type: "website", locale: locale === "pt" ? "pt_BR" : "en_US", url: `/${locale}`, siteName: "deciban", images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "deciban — AI agents & automation that turn into revenue" }] },
     twitter: { card: "summary_large_image", title, description, images: ["/og.jpg"] },
   };
 }

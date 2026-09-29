@@ -9,8 +9,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
   updated: "2026-07-09",
 
   intro: {
-    pt: "Esta Política de Privacidade explica, de forma transparente, como a Rabelo Co. coleta, usa, armazena e protege os seus dados pessoais quando você navega em rabelo.company, conversa com o nosso agente de IA ou solicita uma proposta comercial — em conformidade com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).",
-    en: "This Privacy Policy explains, transparently, how Rabelo Co. collects, uses, stores and protects your personal data when you browse rabelo.company, talk to our AI agent or request a business proposal — in compliance with the Brazilian General Data Protection Law (LGPD, Law no. 13,709/2018).",
+    pt: "Esta Política de Privacidade explica, de forma transparente, como a deciban coleta, usa, armazena e protege os seus dados pessoais quando você navega em rabelo.company, conversa com o nosso agente de IA ou solicita uma proposta comercial — em conformidade com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).",
+    en: "This Privacy Policy explains, transparently, how deciban collects, uses, stores and protects your personal data when you browse rabelo.company, talk to our AI agent or request a business proposal — in compliance with the Brazilian General Data Protection Law (LGPD, Law no. 13,709/2018).",
   },
 
   sections: [
@@ -18,8 +18,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "1. Quem é o controlador", en: "1. Who the controller is" },
       paragraphs: [
         {
-          pt: "O controlador dos dados tratados neste site é Rafael Rabelo de Souza (Rabelo Co.), Brasil. Para qualquer assunto de privacidade — dúvidas, solicitações ou exercício de direitos — o canal do titular é o e-mail rafael@rabelo.company. Responderemos em até 15 dias.",
-          en: "The controller of the data processed on this website is Rafael Rabelo de Souza (Rabelo Co.), Brazil. For any privacy matter — questions, requests or exercising your rights — the data subject channel is the email rafael@rabelo.company. We reply within 15 days.",
+          pt: "O controlador dos dados tratados neste site é Rafael Rabelo de Souza (deciban), Brasil. Para qualquer assunto de privacidade — dúvidas, solicitações ou exercício de direitos — o canal do titular é o e-mail rafael@rabelo.company. Responderemos em até 15 dias.",
+          en: "The controller of the data processed on this website is Rafael Rabelo de Souza (deciban), Brazil. For any privacy matter — questions, requests or exercising your rights — the data subject channel is the email rafael@rabelo.company. We reply within 15 days.",
         },
       ],
     },
@@ -65,8 +65,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "4. Transparência sobre IA", en: "4. AI transparency" },
       paragraphs: [
         {
-          pt: "O chat é operado por um agente de inteligência artificial construído sobre a plataforma de automação n8n (infraestrutura própria da Rabelo Co.). Para gerar as respostas, as suas mensagens são processadas por modelos da OpenAI (GPT-4o); áudios são transcritos (Whisper) e imagens são descritas (visão computacional). Segundo os termos da API da OpenAI, esses dados não são usados para treinar os modelos. Você é sempre informado de que está conversando com uma IA — o agente se identifica como tal.",
-          en: "The chat is operated by an artificial-intelligence agent built on the n8n automation platform (Rabelo Co.'s own infrastructure). To generate replies, your messages are processed by OpenAI models (GPT-4o); voice notes are transcribed (Whisper) and images are described (computer vision). Under OpenAI's API terms, this data is not used to train their models. You are always informed that you are talking to an AI — the agent identifies itself as such.",
+          pt: "O chat é operado por um agente de inteligência artificial construído sobre a plataforma de automação n8n (infraestrutura própria da deciban). Para gerar as respostas, as suas mensagens são processadas por modelos da OpenAI (GPT-4o); áudios são transcritos (Whisper) e imagens são descritas (visão computacional). Segundo os termos da API da OpenAI, esses dados não são usados para treinar os modelos. Você é sempre informado de que está conversando com uma IA — o agente se identifica como tal.",
+          en: "The chat is operated by an artificial-intelligence agent built on the n8n automation platform (deciban's own infrastructure). To generate replies, your messages are processed by OpenAI models (GPT-4o); voice notes are transcribed (Whisper) and images are described (computer vision). Under OpenAI's API terms, this data is not used to train their models. You are always informed that you are talking to an AI — the agent identifies itself as such.",
         },
       ],
     },
@@ -74,8 +74,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "5. Com quem os dados são compartilhados (operadores)", en: "5. Who data is shared with (processors)" },
       paragraphs: [
         {
-          pt: "Para prestar o serviço, usamos operadores que tratam dados em nosso nome: Vercel Inc. (hospedagem do site, EUA), OpenAI (processamento de linguagem do chat, EUA), Cal.com Inc. (agendamento, EUA, somente se você agendar) e a infraestrutura de automação n8n mantida pela própria Rabelo Co. O contato posterior pode ocorrer via WhatsApp (Meta) e e-mail.",
-          en: "To provide the service we use processors acting on our behalf: Vercel Inc. (website hosting, USA), OpenAI (chat language processing, USA), Cal.com Inc. (scheduling, USA, only if you book) and the n8n automation infrastructure maintained by Rabelo Co. itself. Follow-up contact may happen via WhatsApp (Meta) and email.",
+          pt: "Para prestar o serviço, usamos operadores que tratam dados em nosso nome: Vercel Inc. (hospedagem do site, EUA), OpenAI (processamento de linguagem do chat, EUA), Cal.com Inc. (agendamento, EUA, somente se você agendar) e a infraestrutura de automação n8n mantida pela própria deciban. O contato posterior pode ocorrer via WhatsApp (Meta) e e-mail.",
+          en: "To provide the service we use processors acting on our behalf: Vercel Inc. (website hosting, USA), OpenAI (chat language processing, USA), Cal.com Inc. (scheduling, USA, only if you book) and the n8n automation infrastructure maintained by deciban itself. Follow-up contact may happen via WhatsApp (Meta) and email.",
         },
         {
           pt: "Isso implica transferência internacional de dados (art. 33 da LGPD) para países com salvaguardas contratuais adequadas — todos os fornecedores citados operam sob termos de proteção de dados compatíveis (DPAs). Dados também podem ser compartilhados se exigido por lei ou ordem judicial.",
@@ -127,8 +127,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "10. Menores de idade", en: "10. Minors" },
       paragraphs: [
         {
-          pt: "Os serviços da Rabelo Co. destinam-se a negócios e não são direcionados a menores de 18 anos. Não coletamos intencionalmente dados de crianças ou adolescentes; se identificarmos esse tratamento, os dados serão eliminados.",
-          en: "Rabelo Co.'s services are aimed at businesses and are not directed at anyone under 18. We do not knowingly collect data from children or teenagers; if we identify such processing, the data will be deleted.",
+          pt: "Os serviços da deciban destinam-se a negócios e não são direcionados a menores de 18 anos. Não coletamos intencionalmente dados de crianças ou adolescentes; se identificarmos esse tratamento, os dados serão eliminados.",
+          en: "deciban's services are aimed at businesses and are not directed at anyone under 18. We do not knowingly collect data from children or teenagers; if we identify such processing, the data will be deleted.",
         },
       ],
     },

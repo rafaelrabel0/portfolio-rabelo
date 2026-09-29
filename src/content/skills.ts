@@ -94,7 +94,7 @@ export type ExperienceItem = {
 export const experience: ExperienceItem[] = [
   {
     role: { pt: "Fundador & Engenheiro de Automação com IA", en: "Founder & AI Automation Engineer" },
-    company: "Rabelo Co. (Remoto)",
+    company: "deciban (Remoto)",
     period: "Abr 2025 – Presente",
     bullets: [
       { pt: "Construiu e colocou em produção agentes de IA em n8n para 7+ negócios, integrando Claude/GPT com WhatsApp (Evolution API) e CRMs (Pipedrive, Kommo) — automatizando qualificação, follow-up e handoff humano com gestão de estado ao vivo.", en: "Built and shipped production AI agents on n8n for 7+ businesses, integrating Claude/GPT with WhatsApp (Evolution API) and CRMs (Pipedrive, Kommo) — automating qualification, follow-up, and human handoff with live state management." },

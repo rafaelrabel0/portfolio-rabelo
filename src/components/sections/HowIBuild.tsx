@@ -101,7 +101,7 @@ export function HowIBuild({ locale }: { locale: Locale }) {
               user="Rafael"
               cwd="~/portfolio-rabelo"
               model="Claude Opus · xhigh effort"
-              org="Rabelo Co."
+              org="deciban"
               tips={[locale === "pt" ? "Medir antes de mexer" : "Measure before touching"]}
               whatsNew={[
                 locale === "pt" ? "next/image: priority saiu, use loading=eager" : "next/image: priority is out, use loading=eager",

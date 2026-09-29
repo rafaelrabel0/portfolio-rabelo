@@ -47,9 +47,18 @@
   --color-cyan: #b45a13;
 }
 
-/* Logo branca vira preta no tema claro */
-:root[data-theme="light"] .logo-adaptive {
-  filter: invert(1);
+/* Marca deciban: o manual proíbe recolorir, então os dois arquivos oficiais
+   ficam no HTML e o tema escolhe qual aparece. */
+.brand-light {
+  display: none;
+}
+
+:root[data-theme="light"] .brand-dark {
+  display: none;
+}
+
+:root[data-theme="light"] .brand-light {
+  display: block;
 }
 
 :root[data-theme="light"] .bg-grain {
@@ -80,11 +89,6 @@ body {
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
 }
-
-/* Padrão de marca no fundo global — símbolo RC tesselado, bem sutil.
-   Blend screen: só as formas (cinza) clareiam levemente; o preto não soma. */
-.bg-pattern { opacity: 0.12; mix-blend-mode: screen; }
-:root[data-theme="light"] .bg-pattern { opacity: 0.04; mix-blend-mode: multiply; }
 
 /* Wallpaper Ember — vidro canelado (reeded) sobre glow ember, estilo wallpaper iPhone.
    Uso contido (ex.: topo do card de contato), não no fundo global. */

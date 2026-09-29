@@ -6,7 +6,7 @@ export type Localized = { pt: string; en: string };
 export const profile = {
   name: "Rafael Rabelo de Souza",
   shortName: "Rafael Rabelo",
-  company: "Rabelo Co.",
+  company: "deciban",
   role: {
     pt: "Engenheiro de AI Ops / Automação — Agentes de IA · Automação de Workflows · Ferramentas de GTM",
     en: "AI Ops / Automation Engineer — AI Agents · Workflow Automation · GTM Tooling",
@@ -27,8 +27,8 @@ export const profile = {
     { pt: "visão computacional", en: "computer vision" },
   ] satisfies Localized[],
   summary: {
-    pt: "Engenheiro de Automação com IA e fundador da Rabelo Co. Construo agentes de IA, workflows de automação e pipelines de dados que transformam contexto de negócio em ferramentas mensuráveis de receita. Atuo de ponta a ponta: orquestração de agentes em n8n, integração de LLMs (Claude, GPT), RAG com bancos vetoriais, automação de CRM e web apps de IA entregues do início ao fim. Fico naturalmente na interseção entre vendas, produto e engenharia de IA. Inglês C2 (certificado EF SET).",
-    en: "AI Automation Engineer and founder of Rabelo Co., building production AI agents, automation workflows, and data pipelines that turn business context into measurable revenue tools. Hands-on across the full stack: n8n agent orchestration, LLM integration (Claude, GPT), RAG with vector databases, CRM automation, and AI-powered web apps shipped end to end. I sit at the intersection of sales, product, and AI engineering. English C2 (EF SET Certified).",
+    pt: "Engenheiro de Automação com IA e fundador da deciban. Construo agentes de IA, workflows de automação e pipelines de dados que transformam contexto de negócio em ferramentas mensuráveis de receita. Atuo de ponta a ponta: orquestração de agentes em n8n, integração de LLMs (Claude, GPT), RAG com bancos vetoriais, automação de CRM e web apps de IA entregues do início ao fim. Fico naturalmente na interseção entre vendas, produto e engenharia de IA. Inglês C2 (certificado EF SET).",
+    en: "AI Automation Engineer and founder of deciban, building production AI agents, automation workflows, and data pipelines that turn business context into measurable revenue tools. Hands-on across the full stack: n8n agent orchestration, LLM integration (Claude, GPT), RAG with vector databases, CRM automation, and AI-powered web apps shipped end to end. I sit at the intersection of sales, product, and AI engineering. English C2 (EF SET Certified).",
   } satisfies Localized,
   location: { pt: "Remoto · Brasil", en: "Remote · Brazil" } satisfies Localized,
   availability: {

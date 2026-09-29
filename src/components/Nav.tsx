@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { type Locale } from "@/lib/i18n";
 import { getUi } from "@/dictionaries/ui";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { BrandMark } from "@/components/ui/brand-mark";
 import { LocaleToggle } from "@/components/ui/locale-toggle";
 
 export function Nav({ locale }: { locale: Locale }) {
@@ -29,9 +29,7 @@ export function Nav({ locale }: { locale: Locale }) {
     { href: `${base}#about`, label: ui.nav.about },
     { href: `${base}#experience`, label: ui.nav.experience },
     { href: `${base}#projects`, label: ui.nav.projects },
-    { href: `${base}#showcase`, label: ui.nav.showcase },
     { href: `${base}#how-i-build`, label: ui.nav.howIBuild },
-    { href: `${base}#companies`, label: ui.nav.companies },
     { href: `${base}#skills`, label: ui.nav.skills },
     { href: `${base}#contact`, label: ui.nav.contact },
     { href: `${base}/servicos`, label: ui.nav.services, accent: true },
@@ -48,12 +46,10 @@ export function Nav({ locale }: { locale: Locale }) {
       )}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <Link href={`/${locale}`} className="flex items-center gap-2.5 font-display text-sm font-bold tracking-tight">
-          <Image src="/logo-rc.png" alt="Rabelo Co." width={38} height={16} loading="eager" fetchPriority="high" className="logo-adaptive h-4 w-auto transition-transform duration-300 hover:scale-105" />
-          <span className="hidden sm:inline">
-            <span className="text-gradient">Rabelo</span>
-            <span className="text-muted"> Co.</span>
-          </span>
+        {/* A assinatura horizontal já traz o nome — nada de escrever a marca
+            ao lado dela (manual §1). */}
+        <Link href={`/${locale}`} className="flex items-center transition-opacity hover:opacity-80">
+          <BrandMark variante="horizontal" height={22} priority />
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">

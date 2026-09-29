@@ -18,8 +18,8 @@ export const timeline: Milestone[] = [
   {
     label: { pt: "Abr 2025 — início", en: "Apr 2025 — start" },
     title: {
-      pt: "Rabelo Co. — do comercial para a engenharia",
-      en: "Rabelo Co. — from sales into engineering",
+      pt: "deciban — do comercial para a engenharia",
+      en: "deciban — from sales into engineering",
     },
     bullets: [
       {

@@ -49,16 +49,6 @@ const blobs = [
 export function AnimatedBackground() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-50 overflow-hidden">
-      {/* padrão do wallpaper (símbolo RC tesselado) — camada base bem sutil */}
-      <div
-        className="bg-pattern absolute inset-0"
-        style={{
-          backgroundImage: "url(/bg-pattern.webp)",
-          backgroundSize: "50% auto",
-          backgroundRepeat: "repeat",
-          backgroundPosition: "center",
-        }}
-      />
       {blobs.map((b, i) => (
         <div
           key={i}
