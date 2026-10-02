@@ -33,12 +33,12 @@ export default async function PrivacidadePage({ params }: PageProps<"/[lang]/pri
 
   return (
     <>
-      <Nav locale={lang} />
+      <Nav locale={lang} world="portfolio" />
       <main className="mx-auto w-full max-w-3xl px-5 pb-24 pt-32">
         <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent">
           <ShieldCheck className="h-4 w-4" /> {ui.privacy.eyebrow}
         </p>
-        <h1 className="mt-4 font-display text-3xl font-bold tracking-tight md:text-5xl">{ui.privacy.title}</h1>
+        <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight md:text-5xl">{ui.privacy.title}</h1>
         <p className="mt-3 font-mono text-xs text-faint">
           {ui.privacy.updatedLabel}: {fmt.format(new Date(`${privacy.updated}T00:00:00Z`))}
         </p>
@@ -64,12 +64,12 @@ export default async function PrivacidadePage({ params }: PageProps<"/[lang]/pri
           >
             <ArrowLeft className="h-4 w-4" /> {ui.privacy.backHome}
           </Link>
-          <a href="mailto:rafael@rabelo.company?subject=LGPD" className="text-sm text-cyan transition-colors hover:text-fg">
-            rafael@rabelo.company
+          <a href="mailto:contato@deciban.com.br?subject=LGPD" className="text-sm text-muted transition-colors hover:text-fg">
+            contato@deciban.com.br
           </a>
         </div>
       </main>
-      <Footer locale={lang} />
+      <Footer locale={lang} world="portfolio" />
     </>
   );
 }

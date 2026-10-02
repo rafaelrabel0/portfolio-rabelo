@@ -4,9 +4,8 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { isLocale, locales } from "@/lib/i18n";
 import { profile } from "@/content/profile";
-import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { RevealObserver } from "@/components/RevealObserver";
-import { ScrollProgress } from "@/components/ScrollProgress";
+import { SceneEngine } from "@/components/motion/SceneEngine";
 
 const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
 const sans = Geist({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
@@ -49,7 +48,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
     url: `https://rabelo.company/${lang}`,
     email: `mailto:${profile.contact.email}`,
     jobTitle: profile.role[lang],
-    sameAs: [profile.contact.github],
+    sameAs: [profile.contact.github, profile.contact.linkedin],
     worksFor: { "@type": "Organization", name: profile.company, url: "https://rabelo.company" },
   };
 
@@ -64,8 +63,12 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       </head>
       <body className="min-h-screen antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <AnimatedBackground />
-        <ScrollProgress />
+        {/* campo de evidência (manual §6.5): malha de furos, um ou dois pares acesos */}
+        <div aria-hidden className="field" />
+        <div aria-hidden className="field-glow" />
+        <span aria-hidden className="field-hit" style={{ left: "calc(50% - 529.2px)", top: "213.8px" }} />
+        <span aria-hidden className="field-hit" style={{ left: "calc(50% + 431.8px)", top: "549.8px", animationDelay: "4.5s" }} />
+        <SceneEngine />
         <RevealObserver />
         {children}
       </body>

@@ -6,7 +6,7 @@ import type { Localized } from "@/content/profile";
 export type PrivacySection = { title: Localized; paragraphs: Localized[] };
 
 export const privacy: { updated: string; intro: Localized; sections: PrivacySection[] } = {
-  updated: "2026-07-09",
+  updated: "2026-10-01",
 
   intro: {
     pt: "Esta Política de Privacidade explica, de forma transparente, como a deciban coleta, usa, armazena e protege os seus dados pessoais quando você navega em rabelo.company, conversa com o nosso agente de IA ou solicita uma proposta comercial — em conformidade com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).",
@@ -18,8 +18,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "1. Quem é o controlador", en: "1. Who the controller is" },
       paragraphs: [
         {
-          pt: "O controlador dos dados tratados neste site é Rafael Rabelo de Souza (deciban), Brasil. Para qualquer assunto de privacidade — dúvidas, solicitações ou exercício de direitos — o canal do titular é o e-mail rafael@rabelo.company. Responderemos em até 15 dias.",
-          en: "The controller of the data processed on this website is Rafael Rabelo de Souza (deciban), Brazil. For any privacy matter — questions, requests or exercising your rights — the data subject channel is the email rafael@rabelo.company. We reply within 15 days.",
+          pt: "O controlador dos dados tratados neste site é a Deciban (CNPJ 66.323.849/0001-04), representada por Rafael Rabelo de Souza, São Paulo/SP, Brasil. Para qualquer assunto de privacidade — dúvidas, solicitações ou exercício de direitos — o canal do titular é o e-mail contato@deciban.com.br. Responderemos em até 15 dias.",
+          en: "The controller of the data processed on this website is Deciban (Brazilian company ID 66.323.849/0001-04), represented by Rafael Rabelo de Souza, São Paulo, Brazil. For any privacy matter — questions, requests or exercising your rights — the data subject channel is the email contato@deciban.com.br. We reply within 15 days.",
         },
       ],
     },
@@ -27,20 +27,20 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "2. Quais dados coletamos e quando", en: "2. What data we collect and when" },
       paragraphs: [
         {
-          pt: "Chat com o agente de IA (demo \"Na prática\" e \"Solicitar proposta\"): as mensagens que você digita, áudios que grava e imagens que envia, além dos dados que você informa na conversa — tipicamente nome, empresa/nicho, canal de atendimento, volume de leads, principal desafio, objetivo de automação, e-mail e WhatsApp. Um identificador aleatório de sessão (UUID) mantém o contexto da conversa.",
-          en: "AI agent chat (the \"In practice\" demo and \"Request a proposal\"): the messages you type, voice notes you record and images you send, plus the data you share in the conversation — typically name, company/niche, service channel, lead volume, main challenge, automation goal, email and WhatsApp. A random session identifier (UUID) keeps the conversation context.",
+          pt: "Chat com o agente de IA (seção de agentes e \"Solicitar proposta\"): as mensagens que você digita, áudios que grava e imagens que envia, além dos dados que você informa na conversa — tipicamente nome, empresa/nicho, canal de atendimento, volume de leads, principal desafio, objetivo de automação, e-mail e WhatsApp. Um identificador aleatório de sessão (UUID) mantém o contexto da conversa.",
+          en: "AI agent chat (the agents section and \"Request a proposal\"): the messages you type, voice notes you record and images you send, plus the data you share in the conversation — typically name, company/niche, service channel, lead volume, main challenge, automation goal, email and WhatsApp. A random session identifier (UUID) keeps the conversation context.",
         },
         {
-          pt: "Formulário \"Solicitar proposta\": nome, empresa/segmento, e-mail, WhatsApp e a descrição do seu negócio.",
-          en: "\"Request a proposal\" form: name, company/industry, email, WhatsApp and your business description.",
+          pt: "Formulário \"Solicitar proposta\": nome, cargo, empresa e segmento, e-mail, WhatsApp, o que você quer construir, o problema que isso resolve, ferramentas que já usa, prazo, faixa de investimento, quem decide e tentativas anteriores.",
+          en: "\"Request a proposal\" form: name, role, company and industry, email, WhatsApp, what you want to build, the problem it solves, tools you already use, deadline, investment range, who decides and previous attempts.",
         },
         {
-          pt: "Agendamento (Cal.com): se você agendar uma conversa, o Cal.com coleta nome, e-mail e horário escolhido, conforme a política de privacidade do próprio Cal.com.",
-          en: "Scheduling (Cal.com): if you book a call, Cal.com collects your name, email and chosen time slot, under Cal.com's own privacy policy.",
+          pt: "Agenda: se você pedir um horário de conversa, coletamos nome, e-mail, o assunto informado e o dia, horário e duração escolhidos, para confirmar a reunião por e-mail.",
+          en: "Scheduling: if you request a call slot, we collect your name, email, the topic you share and the chosen day, time and duration, to confirm the meeting by email.",
         },
         {
-          pt: "Dados técnicos: o endereço IP é usado de forma transitória para proteção contra abuso (limite de requisições) e não é armazenado pelo site em bancos de dados próprios. Não usamos cookies de rastreamento nem ferramentas de analytics; a única preferência salva no seu navegador (localStorage) é o tema claro/escuro, que não identifica você.",
-          en: "Technical data: your IP address is used transiently for abuse protection (rate limiting) and is not stored by the site in its own databases. We use no tracking cookies and no analytics tools; the only preference saved in your browser (localStorage) is the light/dark theme, which does not identify you.",
+          pt: "Dados técnicos: o endereço IP é usado de forma transitória para proteção contra abuso (limite de requisições) e não é armazenado pelo site em bancos de dados próprios. Não usamos cookies de rastreamento nem ferramentas de analytics; no seu navegador ficam salvos apenas o tema claro/escuro (localStorage) e, durante a visita, a marcação de que a abertura animada já foi vista (sessionStorage) — nenhum dos dois identifica você.",
+          en: "Technical data: your IP address is used transiently for abuse protection (rate limiting) and is not stored by the site in its own databases. We use no tracking cookies and no analytics tools; your browser only stores the light/dark theme (localStorage) and, during the visit, a flag that the opening animation was already seen (sessionStorage) — neither identifies you.",
         },
       ],
     },
@@ -74,8 +74,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "5. Com quem os dados são compartilhados (operadores)", en: "5. Who data is shared with (processors)" },
       paragraphs: [
         {
-          pt: "Para prestar o serviço, usamos operadores que tratam dados em nosso nome: Vercel Inc. (hospedagem do site, EUA), OpenAI (processamento de linguagem do chat, EUA), Cal.com Inc. (agendamento, EUA, somente se você agendar) e a infraestrutura de automação n8n mantida pela própria deciban. O contato posterior pode ocorrer via WhatsApp (Meta) e e-mail.",
-          en: "To provide the service we use processors acting on our behalf: Vercel Inc. (website hosting, USA), OpenAI (chat language processing, USA), Cal.com Inc. (scheduling, USA, only if you book) and the n8n automation infrastructure maintained by deciban itself. Follow-up contact may happen via WhatsApp (Meta) and email.",
+          pt: "Para prestar o serviço, usamos operadores que tratam dados em nosso nome: Vercel Inc. (hospedagem do site, EUA), OpenAI (processamento de linguagem do chat, EUA) e a infraestrutura de automação n8n mantida pela própria deciban. O contato posterior pode ocorrer via WhatsApp (Meta) e e-mail.",
+          en: "To provide the service we use processors acting on our behalf: Vercel Inc. (website hosting, USA), OpenAI (chat language processing, USA) and the n8n automation infrastructure maintained by deciban itself. Follow-up contact may happen via WhatsApp (Meta) and email.",
         },
         {
           pt: "Isso implica transferência internacional de dados (art. 33 da LGPD) para países com salvaguardas contratuais adequadas — todos os fornecedores citados operam sob termos de proteção de dados compatíveis (DPAs). Dados também podem ser compartilhados se exigido por lei ou ordem judicial.",
@@ -100,8 +100,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
           en: "At any time and free of charge you may: confirm that processing exists; access your data; correct incomplete, inaccurate or outdated data; request anonymization, blocking or deletion of unnecessary or non-compliant data; request portability; obtain information about sharing; and withdraw consent (withdrawal does not affect processing already lawfully performed).",
         },
         {
-          pt: "Para exercer qualquer direito, escreva para rafael@rabelo.company com o assunto \"LGPD\". Se entender que o tratamento viola a lei, você também pode peticionar à Autoridade Nacional de Proteção de Dados (ANPD — gov.br/anpd).",
-          en: "To exercise any right, write to rafael@rabelo.company with the subject \"LGPD\". If you believe processing violates the law, you may also petition the Brazilian Data Protection Authority (ANPD — gov.br/anpd).",
+          pt: "Para exercer qualquer direito, escreva para contato@deciban.com.br com o assunto \"LGPD\". Se entender que o tratamento viola a lei, você também pode peticionar à Autoridade Nacional de Proteção de Dados (ANPD — gov.br/anpd).",
+          en: "To exercise any right, write to contato@deciban.com.br with the subject \"LGPD\". If you believe processing violates the law, you may also petition the Brazilian Data Protection Authority (ANPD — gov.br/anpd).",
         },
       ],
     },
@@ -118,8 +118,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       title: { pt: "9. Cookies e armazenamento local", en: "9. Cookies and local storage" },
       paragraphs: [
         {
-          pt: "O site não usa cookies próprios de rastreamento nem analytics. O único item salvo no navegador é a preferência de tema (localStorage), essencial à experiência e sem identificação pessoal. O widget de agendamento do Cal.com, quando carregado e utilizado, pode definir cookies próprios sob responsabilidade do Cal.com.",
-          en: "The site uses no first-party tracking cookies and no analytics. The only item saved in your browser is the theme preference (localStorage), essential to the experience and with no personal identification. The Cal.com scheduling widget, when loaded and used, may set its own cookies under Cal.com's responsibility.",
+          pt: "O site não usa cookies próprios de rastreamento nem analytics. Ficam salvos no navegador só a preferência de tema (localStorage) e, durante a visita, a marcação de abertura já vista (sessionStorage) — essenciais à experiência e sem identificação pessoal.",
+          en: "The site uses no first-party tracking cookies and no analytics. Your browser only stores the theme preference (localStorage) and, during the visit, an opening-seen flag (sessionStorage) — essential to the experience and with no personal identification.",
         },
       ],
     },

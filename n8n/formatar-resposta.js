@@ -1,6 +1,7 @@
-// Nó "Formatar resposta" (Code, Run Once for Each Item ou All Items — usa o 1º).
+// Nó "Formatar resposta" (Code, Run Once for All Items — usa o 1º item).
 // O agente responde o contrato em JSON puro; aqui garantimos { reply, status,
-// stage?, tool? } para o site e extraímos o lead para o IF "Lead finalizado?".
+// stage?, tool? } para o site e extraímos o lead (o Paroli lê este nó no sync).
+// v4 (01/10/2026): lead com os campos do briefing comercial + kind "chat".
 // Cole este arquivo inteiro no nó Code do workflow ativo.
 
 const raw = String($json.output ?? $json.text ?? '');
@@ -39,11 +40,15 @@ if (out.tool) {
 // Lead coletado pelo agente (qualified/finalized) + dados da sessão.
 if (out.lead && typeof out.lead === 'object') {
   const src = $('Entrada').first().json;
-  const pick = (k) => (typeof out.lead[k] === 'string' ? out.lead[k].slice(0, 400) : '');
+  const pick = (k, max = 400) => (typeof out.lead[k] === 'string' ? out.lead[k].slice(0, max) : '');
   res.lead = {
-    name: pick('name'), company: pick('company'), niche: pick('niche'),
-    email: pick('email'), whatsapp: pick('whatsapp'), channel: pick('channel'),
-    volume: pick('volume'), pain: pick('pain'), goal: pick('goal'), summary: pick('summary'),
+    kind: 'chat',
+    name: pick('name'), role: pick('role'), company: pick('company'), niche: pick('niche'),
+    email: pick('email'), whatsapp: pick('whatsapp'),
+    needs: pick('needs'), pain: pick('pain', 1000), tools: pick('tools'),
+    channel: pick('channel'), volume: pick('volume'), goal: pick('goal'),
+    budget: pick('budget'), deadline: pick('deadline'), decider: pick('decider'), history: pick('history', 1000),
+    summary: pick('summary', 1000),
     sessionId: src.sessionId, mode: src.mode, locale: src.locale,
     ts: new Date().toISOString(),
   };

@@ -29,7 +29,7 @@ export function ProposalChat({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <div ref={cardRef} className="glow overflow-hidden rounded-2xl border border-border bg-surface/80">
+      <div ref={cardRef} className="overflow-hidden rounded-3xl border border-border bg-surface/90">
         {/* Header */}
         <div className="flex items-center gap-3 border-b border-border bg-surface-2/60 px-4 py-3">
           <div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-accent/15">
@@ -40,7 +40,7 @@ export function ProposalChat({ locale }: { locale: Locale }) {
           </div>
           <div className="flex-1">
             <p className="text-sm font-semibold">{ui.chat.headerTitle}</p>
-            <p className="font-mono text-[10px] text-faint">n8n · GPT-4o · webhook</p>
+            <p className="font-mono text-[10px] text-faint">n8n · {locale === "pt" ? "briefing comercial" : "commercial briefing"}</p>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-accent">
             <motion.span

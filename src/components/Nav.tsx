@@ -1,17 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+// Navegação dos dois lados do site. No centro, as cenas do lado atual; à
+// direita, o interruptor Portfólio ⇄ deciban (os dois "links" do site), tema e
+// idioma. A barra de progresso do topo é o --sp do motor de cenas.
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { type Locale } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 import { getUi } from "@/dictionaries/ui";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { BrandMark } from "@/components/ui/brand-mark";
 import { LocaleToggle } from "@/components/ui/locale-toggle";
 
-export function Nav({ locale }: { locale: Locale }) {
+export type World = "portfolio" | "services";
+
+export function Nav({ locale, world }: { locale: Locale; world: World }) {
   const ui = getUi(locale);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -24,87 +30,111 @@ export function Nav({ locale }: { locale: Locale }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const base = `/${locale}`;
-  const links: { href: string; label: string; accent?: boolean }[] = [
-    { href: `${base}#about`, label: ui.nav.about },
-    { href: `${base}#experience`, label: ui.nav.experience },
-    { href: `${base}#projects`, label: ui.nav.projects },
-    { href: `${base}#how-i-build`, label: ui.nav.howIBuild },
-    { href: `${base}#skills`, label: ui.nav.skills },
-    { href: `${base}#contact`, label: ui.nav.contact },
-    { href: `${base}/servicos`, label: ui.nav.services, accent: true },
-  ];
+  const home = `/${locale}`;
+  const svc = `/${locale}/servicos`;
+  const base = world === "portfolio" ? home : svc;
+  const links =
+    world === "portfolio"
+      ? [
+          { id: "sobre", label: ui.nav.about },
+          { id: "percurso", label: ui.nav.experience },
+          { id: "projetos", label: ui.nav.projects },
+          { id: "agentes", label: ui.nav.agents },
+          { id: "skills", label: ui.nav.skills },
+          { id: "contato", label: ui.nav.contact },
+        ]
+      : [
+          { id: "frentes", label: ui.nav.fronts },
+          { id: "deciban", label: ui.nav.company },
+          { id: "processo", label: ui.nav.process },
+          { id: "em-acao", label: ui.nav.demo },
+          { id: "proposta", label: ui.nav.proposal },
+          { id: "agenda", label: ui.nav.schedule },
+          { id: "perguntas", label: ui.nav.faq },
+        ];
 
-  // Mesma página, outro idioma.
   const hrefFor = (target: Locale) => pathname.replace(`/${locale}`, `/${target}`) || `/${target}`;
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled || open ? "border-b border-border bg-bg/80 backdrop-blur-xl" : "border-b border-transparent"
-      )}
-    >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        {/* A assinatura horizontal já traz o nome — nada de escrever a marca
-            ao lado dela (manual §1). */}
-        <Link href={`/${locale}`} className="flex items-center transition-opacity hover:opacity-80">
-          <BrandMark variante="horizontal" height={22} priority />
-        </Link>
-
-        <div className="hidden items-center gap-7 md:flex">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className={cn("text-sm transition-colors hover:text-fg", l.accent ? "font-medium text-accent" : "text-muted")}
-            >
-              {l.label}
-            </a>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <LocaleToggle locale={locale} hrefFor={hrefFor} />
-          <button
-            onClick={() => setOpen((o) => !o)}
-            aria-label="Menu"
-            aria-expanded={open}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition-colors hover:border-border-strong hover:text-fg md:hidden"
-          >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Menu mobile — altura animada via grid-template-rows (CSS, sem framer) */}
-      <div
-        data-open={open}
+    <>
+      <div aria-hidden className="top-progress" />
+      <header
         className={cn(
-          "mobile-menu bg-bg/95 backdrop-blur-xl md:hidden",
-          open ? "border-t border-border" : ""
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500",
+          scrolled || open ? "border-b border-border bg-bg/75 backdrop-blur-xl" : "border-b border-transparent"
         )}
       >
-        <div>
-          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4">
+        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+          <Link href={home} className="flex shrink-0 items-center transition-opacity hover:opacity-80" aria-label="deciban">
+            <span className="hidden sm:inline-flex">
+              <BrandMark variante="horizontal" height={20} priority />
+            </span>
+            <span className="inline-flex sm:hidden">
+              <BrandMark variante="simbolo" height={20} priority />
+            </span>
+          </Link>
+
+          <div className="hidden items-center gap-6 xl:flex">
             {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                tabIndex={open ? 0 : -1}
-                className={cn(
-                  "rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-surface hover:text-fg",
-                  l.accent ? "font-medium text-accent" : "text-muted"
-                )}
-              >
+              <a key={l.id} href={`${base}#${l.id}`} className="text-[13px] text-muted transition-colors hover:text-fg">
                 {l.label}
               </a>
             ))}
           </div>
+
+          <div className="flex items-center gap-2">
+            <div
+              className="world"
+              role="navigation"
+              aria-label={ui.world.label}
+              style={{ ["--w" as string]: world === "portfolio" ? 0 : 1 }}
+            >
+              <Link href={home} aria-current={world === "portfolio" ? "page" : undefined}>
+                {ui.world.portfolio}
+              </Link>
+              <Link href={svc} aria-current={world === "services" ? "page" : undefined}>
+                <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
+                {ui.world.services}
+              </Link>
+            </div>
+            <span className="hidden sm:contents">
+              <ThemeToggle />
+              <LocaleToggle locale={locale} hrefFor={hrefFor} />
+            </span>
+            <button
+              onClick={() => setOpen((o) => !o)}
+              aria-label={ui.nav.menu}
+              aria-expanded={open}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted transition-colors hover:border-border-strong hover:text-fg xl:hidden"
+            >
+              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
+        </nav>
+
+        <div data-open={open} className="mobile-menu xl:hidden">
+          <div>
+            <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 pb-5 pt-2 sm:px-6">
+              {links.map((l, i) => (
+                <a
+                  key={l.id}
+                  href={`${base}#${l.id}`}
+                  onClick={() => setOpen(false)}
+                  tabIndex={open ? 0 : -1}
+                  className="flex items-baseline gap-3 rounded-lg px-2 py-2.5 font-display text-xl text-muted transition-colors hover:text-fg"
+                >
+                  <span className="font-mono text-[10px] text-faint">{String(i + 1).padStart(2, "0")}</span>
+                  {l.label}
+                </a>
+              ))}
+              <div className="mt-3 flex items-center gap-2 border-t border-border px-2 pt-4 sm:hidden">
+                <ThemeToggle />
+                <LocaleToggle locale={locale} hrefFor={hrefFor} />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }

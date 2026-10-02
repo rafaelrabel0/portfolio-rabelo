@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { clientIp, rateLimit, sameOrigin } from "@/lib/api-security";
 
-// Recebe o form "Solicitar proposta" e repassa para o webhook n8n/CRM.
+// Recebe o pedido de proposta (3 etapas: quem é, o que precisa, prazo e
+// investimento) e repassa ao webhook n8n/CRM.
 // Configurar PROPOSAL_WEBHOOK_URL no ambiente (Vercel). Sem ela, responde 503
 // e o front oferece o fallback de WhatsApp.
 
@@ -26,15 +27,38 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const name = typeof data.name === "string" ? data.name.trim() : "";
-  const email = typeof data.email === "string" ? data.email.trim() : "";
-  const whatsapp = typeof data.whatsapp === "string" ? data.whatsapp.trim() : "";
-  const company = typeof data.company === "string" ? data.company.trim() : "";
-  const message = typeof data.message === "string" ? data.message.trim() : "";
+  // Whitelist: só os campos do formulário, cada um com teto de tamanho.
+  const str = (k: string, max: number) => (typeof data[k] === "string" ? (data[k] as string).trim().slice(0, max) : "");
+  const pick = (k: string, allowed: string[]) => (allowed.includes(str(k, 40)) ? str(k, 40) : "");
+  const NEEDS = ["agente", "crm", "plataforma", "processos", "dados", "outro"];
+  const fields = {
+    name: str("name", 200),
+    role: str("role", 120),
+    company: str("company", 200),
+    segment: str("segment", 160),
+    email: str("email", 200),
+    whatsapp: str("whatsapp", 50),
+    needs: Array.isArray(data.needs) ? (data.needs as unknown[]).filter((n): n is string => typeof n === "string" && NEEDS.includes(n)) : [],
+    pain: str("pain", 3000),
+    tools: str("tools", 600),
+    budget: pick("budget", ["ate-3k", "3-10k", "10-30k", "30k+", "mensal", "nao-sei"]),
+    deadline: pick("deadline", ["urgente", "1-3m", "data", "sem-pressa"]),
+    deadlineDate: str("deadlineDate", 200),
+    decider: pick("decider", ["eu", "socios", "outro"]),
+    history: str("history", 1000),
+    // compatibilidade com o formulário antigo e com o chat
+    message: str("message", 4000),
+  };
   const locale = data.locale === "en" ? "en" : "pt";
 
-  if (!name || !message || (!email && !whatsapp)) {
+  const hasContact = !!fields.email || !!fields.whatsapp;
+  const hasNeed = !!fields.pain || !!fields.message;
+  if (!fields.name || !hasContact || !hasNeed) {
     return NextResponse.json({ error: "missing_fields" }, { status: 400 });
+  }
+  // Sem consentimento registrado, nada sai daqui (LGPD art. 7º, I).
+  if (data.consent !== true) {
+    return NextResponse.json({ error: "no_consent" }, { status: 400 });
   }
 
   const url = process.env.PROPOSAL_WEBHOOK_URL;
@@ -45,11 +69,7 @@ export async function POST(req: Request) {
   const payload = {
     source: "portfolio",
     event: "proposal_requested",
-    name: name.slice(0, 200),
-    email: email.slice(0, 200),
-    whatsapp: whatsapp.slice(0, 50),
-    company: company.slice(0, 200),
-    message: message.slice(0, 4000),
+    ...fields,
     locale,
     // Registro do consentimento LGPD dado no form (art. 8º, §1º).
     consent: data.consent === true,

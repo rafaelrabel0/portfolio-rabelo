@@ -1,0 +1,19 @@
+# deciban — Rafael Rabelo
+
+> Automações e sistemas com IA. Este site tem dois lados: o portfólio de Rafael Rabelo (engenheiro de automação com IA, fundador da deciban) e a página de serviços da deciban.
+
+## Portfólio
+- [Portfólio (PT)](https://rabelo.company/pt): percurso desde 2022, projetos em destaque (uai?, Face Finder, Grudaí, <пароли/>), agente de IA ao vivo, skills e contato
+- [Portfolio (EN)](https://rabelo.company/en)
+- [Todos os projetos](https://rabelo.company/pt/projetos): produtos próprios e trabalhos para clientes, sem nome de empresa
+- [Currículo (PDF)](https://rabelo.company/cv.pdf)
+
+## Serviços — deciban
+- [deciban (PT)](https://rabelo.company/pt/servicos): agentes de IA, automação de CRM e GTM, plataformas web e SaaS, dados e visão computacional, apps de desktop, sites
+- Como funciona: conversa, briefing em 24 h, proposta em até 48 horas úteis, construção em fatias com demonstração, homologação, entrega e sustentação opcional
+- Pedido de proposta e agenda (dias úteis, 9h–17h, horário de Brasília) na própria página
+
+## Contato
+- E-mail: contato@deciban.com.br
+- LinkedIn: https://www.linkedin.com/in/dev-rafael-rabelo
+- GitHub: https://github.com/rafaelrabel0

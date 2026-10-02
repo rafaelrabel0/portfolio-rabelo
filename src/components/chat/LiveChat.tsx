@@ -13,7 +13,6 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Bot, Check, CheckCircle2, ImagePlus, Loader2, Mic, PencilLine, RotateCcw, Send, X } from "lucide-react";
-import { WhatsappIcon } from "@/components/icons";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -76,7 +75,6 @@ export function LiveChat({
   onClose: () => void;
 }) {
   const ui = getUi(locale);
-  const waHref = `https://wa.me/${profile.contact.phone.replace(/\D/g, "")}`;
 
   const [mounted, setMounted] = useState(false);
   const [target, setTarget] = useState<Rect | null>(null);
@@ -411,11 +409,10 @@ export function LiveChat({
                   </button>
                 )}
                 <a
-                  href={waHref}
-                  target="_blank"
+                  href={`mailto:${profile.contact.email}`}
                   className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-1.5 font-medium text-fg transition-colors hover:bg-accent/20"
                 >
-                  <WhatsappIcon className="h-3.5 w-3.5 text-accent" /> {ui.proposal.whatsappCta}
+                  {profile.contact.email}
                 </a>
               </motion.div>
             )}

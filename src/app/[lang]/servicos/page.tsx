@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight, CalendarClock, Check, FileText } from "lucide-react";
-import { WhatsappIcon } from "@/components/icons";
+import { Mail } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { Reveal } from "@/components/Reveal";
-import { Section, SectionHeader } from "@/components/Section";
-import { Companies } from "@/components/sections/Companies";
-import { ShowcaseStageLazy } from "@/components/showcase/ShowcaseStageLazy";
-import { Faq } from "@/components/ui/faq";
-import { HoverPreviewLink } from "@/components/ui/hover-preview";
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
-import { Marquee } from "@/components/ui/marquee";
-import { tools } from "@/content/skills";
-import { HowItWorks } from "@/components/ui/how-it-works";
-import { ProposalForm } from "@/components/services/ProposalForm";
-import { ProposalChat } from "@/components/chat/ProposalChat";
-import { CalEmbed } from "@/components/services/CalEmbed";
+import { BrandIntro } from "@/components/motion/BrandIntro";
+import { SceneHud } from "@/components/motion/SceneHud";
+import { AgentSection } from "@/components/agent/AgentSection";
+import { ServicesHero } from "@/components/services/Hero";
+import { Fronts } from "@/components/services/Fronts";
+import { NameScene } from "@/components/services/NameScene";
+import { Process } from "@/components/services/Process";
+import { Proposal } from "@/components/services/Proposal";
+import { Schedule } from "@/components/services/Schedule";
+import { Faq } from "@/components/services/Faq";
 import { profile } from "@/content/profile";
 import { services } from "@/content/services";
 import { getUi } from "@/dictionaries/ui";
 import { isLocale, locales } from "@/lib/i18n";
+
+// Serviços — a apresentação da deciban, em cenas:
+// abertura da marca → o que construímos → o nome e os valores → como
+// funciona → um agente em ação → proposta → agenda → perguntas → rodapé.
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -30,8 +29,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/[lang]/servicos">): Promise<Metadata> {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : "pt";
-  const title = locale === "pt" ? "Serviços — deciban" : "Services — deciban";
-  const description = services.hero.subtitle[locale];
+  const title = locale === "pt" ? "deciban — automações e sistemas com IA" : "deciban — AI automations and systems";
+  const description = services.hero.sub[locale];
   return {
     title,
     description,
@@ -40,194 +39,88 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/servicos">
   };
 }
 
-const CAL_LINK = process.env.NEXT_PUBLIC_CAL_LINK;
 const LIVE_CHAT = !!process.env.CHAT_WEBHOOK_URL;
 
 export default async function ServicosPage({ params }: PageProps<"/[lang]/servicos">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const ui = getUi(lang);
-  const waHref = `https://wa.me/${profile.contact.phone.replace(/\D/g, "")}`;
+
+  // JSON-LD (Processo Mestre 7.2): a empresa e as perguntas frequentes, com os
+  // mesmos dados que aparecem na tela.
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      name: "deciban",
+      description: services.hero.sub[lang],
+      url: `https://rabelo.company/${lang}/servicos`,
+      logo: "https://rabelo.company/brand/icon-512-carvao.png",
+      email: profile.contact.email,
+      telephone: profile.contact.phone,
+      founder: { "@type": "Person", name: profile.name },
+      address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" },
+      areaServed: ["BR", "Worldwide"],
+      sameAs: [profile.contact.linkedin, profile.contact.github],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: services.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q[lang],
+        acceptedAnswer: { "@type": "Answer", text: f.a[lang] },
+      })),
+    },
+  ];
 
   return (
     <>
-      <Nav locale={lang} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <BrandIntro id="servicos" label={ui.intro.services} skipLabel={ui.intro.skip} />
+      <Nav locale={lang} world="services" />
       <main>
-        {/* Hero comercial */}
-        <section className="relative flex min-h-[70vh] items-center overflow-hidden pt-24">
-          <div
-            className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full opacity-30 blur-[120px]"
-            style={{ background: "radial-gradient(closest-side, var(--color-accent), transparent)" }}
-          />
-          <div className="mx-auto w-full max-w-6xl px-5 py-12">
-            <Reveal>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{ui.services.eyebrow}</p>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.08] tracking-tight md:text-6xl">
-                {services.hero.title[lang]}
-              </h1>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mt-5 max-w-2xl text-lg text-muted">{services.hero.subtitle[lang]}</p>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <div className="mt-9 flex flex-wrap items-center gap-3">
-                <a href="#proposta">
-                  <InteractiveHoverButton icon={<FileText className="h-4 w-4" />}>
-                    {ui.cta.requestProposal}
-                  </InteractiveHoverButton>
-                </a>
-                <a href="#agenda">
-                  <InteractiveHoverButton variant="outline" icon={<CalendarClock className="h-4 w-4" />}>
-                    {ui.cta.scheduleCall}
-                  </InteractiveHoverButton>
-                </a>
-                <a href={waHref} target="_blank" rel="noreferrer">
-                  <InteractiveHoverButton variant="outline" icon={<WhatsappIcon className="h-4 w-4" />}>
-                    WhatsApp
-                  </InteractiveHoverButton>
-                </a>
+        <ServicesHero locale={lang} />
+        <Fronts locale={lang} />
+        <NameScene locale={lang} />
+        <Process locale={lang} />
+        <AgentSection locale={lang} id="em-acao" index="04" variant="services" />
+        <Proposal locale={lang} live={LIVE_CHAT} />
+
+        <section id="agenda" data-chapter="agenda" className="relative scroll-mt-16 px-4 py-28 sm:px-6 md:py-36">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-10 flex flex-wrap items-end justify-between gap-6" data-r>
+              <div>
+                <p className="label mb-3 flex items-center gap-3">
+                  <span className="text-accent">06</span> {ui.services.scheduleLabel}
+                </p>
+                <h2 className="font-display text-3xl font-medium tracking-tight md:text-5xl">{ui.services.scheduleTitle}</h2>
+                <p className="mt-4 max-w-xl text-base text-muted md:text-lg">{ui.services.scheduleSub}</p>
               </div>
-            </Reveal>
-            <Reveal delay={0.22}>
-              <p className="mt-10 text-sm text-faint">
-                {ui.services.recruiterNote}{" "}
-                <Link href={`/${lang}`} className="inline-flex items-center gap-1 text-cyan transition-colors hover:text-fg">
-                  {ui.services.recruiterLink} <ArrowUpRight className="h-3.5 w-3.5" />
-                </Link>
-              </p>
-            </Reveal>
+              <a href={`mailto:${profile.contact.email}`} className="btn btn-line">
+                <Mail className="h-4 w-4" /> {ui.services.emailInstead}
+              </a>
+            </div>
+            <div data-r>
+              <Schedule locale={lang} />
+            </div>
           </div>
         </section>
 
-        {/* Pacotes */}
-        <Section id="pacotes">
-          <SectionHeader eyebrow="01" title={ui.services.packagesTitle} subtitle={ui.services.packagesSubtitle} />
-          <div className="grid gap-5 md:grid-cols-3">
-            {services.packages.map((p, i) => (
-              <Reveal key={p.slug} delay={i * 0.08}>
-                <article
-                  className={`flex h-full flex-col rounded-2xl border p-6 transition-all hover:border-border-strong ${
-                    p.featured ? "glow border-accent/30 bg-surface/80" : "border-border bg-surface/50"
-                  }`}
-                >
-                  <h3 className="font-display text-lg font-semibold">
-                    <HoverPreviewLink preview={{ image: p.image, title: p.name[lang], subtitle: p.tagline[lang] }}>
-                      {p.name[lang]}
-                    </HoverPreviewLink>
-                  </h3>
-                  <p className="mt-2 text-sm text-muted">{p.tagline[lang]}</p>
-                  <ul className="mt-5 flex-1 space-y-2.5">
-                    {p.items.map((item, j) => (
-                      <li key={j} className="flex gap-2 text-sm text-fg/85">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                        {item[lang]}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-5 flex flex-wrap gap-1.5 border-t border-border pt-4">
-                    {p.stack.map((s) => (
-                      <span key={s} className="rounded-md border border-border px-2 py-0.5 font-mono text-[11px] text-muted">{s}</span>
-                    ))}
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </Section>
-
-        {/* Faixa de stack — prova visual antes de falar de processo */}
-        <div className="w-full overflow-hidden pb-8">
-          <Marquee duration={50} gap={12} repeat={2}>
-            {tools.map((tool) => (
-              <span
-                key={tool}
-                className="whitespace-nowrap rounded-full border border-border bg-surface/60 px-3.5 py-1.5 text-sm text-muted"
-              >
-                {tool}
-              </span>
-            ))}
-          </Marquee>
-        </div>
-
-        {/* Processo */}
-        <Section id="processo">
-          <SectionHeader eyebrow="02" title={ui.services.processTitle} subtitle={ui.services.processSubtitle} />
-          <Reveal>
-            <HowItWorks
-              steps={services.process.map((step) => ({ title: step.title[lang], desc: step.desc[lang] }))}
-            />
-          </Reveal>
-        </Section>
-
-        {/* Demo interativa */}
-        <Section id="demo">
-          <SectionHeader eyebrow="03" title={ui.services.demoTitle} subtitle={ui.services.demoSubtitle} />
-          <Reveal>
-            <ShowcaseStageLazy locale={lang} ctaHref="#proposta" liveChat={LIVE_CHAT} />
-          </Reveal>
-        </Section>
-
-        <Companies locale={lang} />
-
-        {/* Solicitar proposta */}
-        <Section id="proposta">
-          <SectionHeader eyebrow="05" title={ui.services.proposalTitle} subtitle={ui.services.proposalSubtitle} />
-          <div className="max-w-2xl">
-            {LIVE_CHAT ? (
-              <>
-                <ProposalChat locale={lang} />
-                <details className="group mt-4">
-                  <summary className="inline-flex cursor-pointer list-none items-center gap-2 text-sm text-muted transition-colors hover:text-fg [&::-webkit-details-marker]:hidden">
-                    <ArrowRight className="h-3.5 w-3.5 text-accent transition-transform group-open:rotate-90" />
-                    {ui.chat.preferForm}
-                  </summary>
-                  <div className="mt-4">
-                    <ProposalForm locale={lang} />
-                  </div>
-                </details>
-              </>
-            ) : (
-              <ProposalForm locale={lang} />
-            )}
-          </div>
-        </Section>
-
-        {/* Agenda */}
-        <Section id="agenda">
-          <SectionHeader eyebrow="06" title={ui.services.agendaTitle} subtitle={ui.services.agendaSubtitle} />
-          {CAL_LINK ? (
-            <Reveal>
-              <CalEmbed calLink={CAL_LINK} />
-            </Reveal>
-          ) : (
-            <Reveal>
-              <div className="glow flex flex-col items-start gap-4 rounded-2xl border border-border bg-surface/60 p-8 sm:flex-row sm:items-center sm:justify-between">
-                <p className="max-w-md text-sm text-muted">{ui.services.agendaFallback}</p>
-                <a
-                  href={waHref}
-                  target="_blank"
-                  className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
-                >
-                  <WhatsappIcon className="h-4 w-4" /> {ui.proposal.whatsappCta}
-                </a>
-              </div>
-            </Reveal>
-          )}
-        </Section>
-
-        {/* FAQ */}
-        <Section id="faq">
-          <SectionHeader eyebrow="07" title={ui.services.faqTitle} />
-          <div className="max-w-3xl">
-            <Reveal>
-              <Faq entries={services.faq.map((f) => ({ q: f.q[lang], a: f.a[lang] }))} />
-            </Reveal>
-          </div>
-        </Section>
+        <Faq locale={lang} />
       </main>
-      <Footer locale={lang} />
+      <Footer locale={lang} world="services" />
+      <SceneHud
+        chapters={[
+          { id: "frentes", label: ui.nav.fronts },
+          { id: "deciban", label: ui.nav.company },
+          { id: "processo", label: ui.nav.process },
+          { id: "em-acao", label: ui.nav.demo },
+          { id: "proposta", label: ui.nav.proposal },
+          { id: "agenda", label: ui.nav.schedule },
+          { id: "perguntas", label: ui.nav.faq },
+        ]}
+      />
     </>
   );
 }
