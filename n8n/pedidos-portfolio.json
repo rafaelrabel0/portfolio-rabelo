@@ -1,0 +1,190 @@
+{
+  "name": "Pedidos do Portfólio — deciban (proposta + horário)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "portfolio-pedidos",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "e7706888-d525-5e4b-8f88-225c8934aba3",
+      "name": "Webhook Pedidos",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "portfolio-pedidos"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pedidos do site da deciban (POST /api/proposal e /api/booking → este webhook).\n// Normaliza os dois formatos num lead só, com os rótulos legíveis no lugar\n// dos ids. O Paroli lê os nós \"Entrada\" e \"Formatar resposta\" no sync.\nconst b = $json.body ?? $json;\nconst s = (v, max = 400) => (typeof v === 'string' ? v.trim().slice(0, max) : '');\n\nconst NEEDS = { agente: 'Agente de IA', crm: 'Automação de CRM / vendas', plataforma: 'Sistema web / SaaS', processos: 'Automação de processos', dados: 'Dados, busca ou painel', outro: 'Outra coisa' };\nconst BUDGET = { 'ate-3k': 'Até R$ 3 mil', '3-10k': 'R$ 3–10 mil', '10-30k': 'R$ 10–30 mil', '30k+': 'Acima de R$ 30 mil', mensal: 'Prefere mensalidade', 'nao-sei': 'Ainda não sabe' };\nconst DEADLINE = { urgente: 'Em até 30 dias', '1-3m': '1 a 3 meses', data: 'Tem uma data', 'sem-pressa': 'Sem pressa' };\nconst DECIDER = { eu: 'Só a pessoa', socios: 'A pessoa e sócio(s)', outro: 'Outra pessoa' };\n\nconst meeting = b.event === 'meeting_requested';\nconst kind = meeting ? 'reuniao' : 'proposta';\nconst sessionId = `${kind}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;\n\n// horário de Brasília (UTC−3, sem horário de verão) → ISO com fuso\nconst meetingAt = meeting && /^\\d{4}-\\d{2}-\\d{2}$/.test(b.date) && /^\\d{2}:\\d{2}$/.test(b.time) ? `${b.date}T${b.time}:00-03:00` : '';\n\nreturn [{\n  json: {\n    sessionId,\n    mode: meeting ? 'meeting' : 'form',\n    locale: b.locale === 'en' ? 'en' : 'pt',\n    kind,\n    name: s(b.name), role: s(b.role), company: s(b.company), niche: s(b.segment),\n    email: s(b.email), whatsapp: s(b.whatsapp, 50),\n    needs: Array.isArray(b.needs) ? b.needs.map((n) => NEEDS[n] ?? n).join(', ') : '',\n    pain: s(b.pain, 3000) || s(b.message, 3000),\n    tools: s(b.tools, 600),\n    budget: BUDGET[b.budget] ?? '',\n    deadline: [DEADLINE[b.deadline], s(b.deadlineDate, 200)].filter(Boolean).join(' — '),\n    decider: DECIDER[b.decider] ?? '',\n    history: s(b.history, 1000),\n    topic: s(b.topic, 500),\n    meetingAt,\n    meetingDuration: meeting ? Number(b.duration) || 30 : null,\n    consent: b.consent === true,\n    consentTs: s(b.consentTs, 40),\n    ts: s(b.ts, 40) || new Date().toISOString(),\n  },\n}];\n"
+      },
+      "id": "02097664-c994-52c2-bfa7-01a12fd0f32b",
+      "name": "Entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta o lead no mesmo formato do agente (o Paroli sincroniza daqui).\nconst e = $('Entrada').first().json;\nconst resumo = e.kind === 'reuniao'\n  ? `Pediu conversa de ${e.meetingDuration} min em ${e.meetingAt.replace('T', ' ').slice(0, 16)} (Brasília). Assunto: ${e.topic || '—'}`\n  : `Quer: ${e.needs || '—'}. Dor: ${e.pain || '—'}. Prazo: ${e.deadline || '—'}. Faixa: ${e.budget || '—'}.`;\n\nreturn [{\n  json: {\n    ok: true,\n    status: 'finalized',\n    lead: {\n      kind: e.kind,\n      name: e.name, role: e.role, company: e.company, niche: e.niche,\n      email: e.email, whatsapp: e.whatsapp,\n      needs: e.needs, pain: e.pain, tools: e.tools,\n      budget: e.budget, deadline: e.deadline, decider: e.decider, history: e.history,\n      topic: e.topic, meetingAt: e.meetingAt, meetingDuration: e.meetingDuration,\n      summary: resumo.slice(0, 1000),\n      sessionId: e.sessionId, mode: e.mode, locale: e.locale, ts: e.ts,\n    },\n  },\n}];\n"
+      },
+      "id": "5dea7712-f8e5-51cf-87f6-30ed0d3e4955",
+      "name": "Formatar resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": true } }}",
+        "options": {}
+      },
+      "id": "94f0661d-1fc1-52b3-b000-8f7e972b6307",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-reuniao",
+              "leftValue": "={{ $json.lead.kind }}",
+              "rightValue": "reuniao",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f062e190-e879-5e2d-a267-5319b8b8d8f8",
+      "name": "É pedido de horário?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "06e94200-955c-552d-b259-0d7230d513a2",
+      "name": "Confirmar horário → conecte aqui (e-mail)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -100
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e9e04dec-80e5-586b-bf16-1b6ab83323a0",
+      "name": "Avisar proposta → conecte aqui (e-mail / WhatsApp)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        100
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Pedidos": {
+      "main": [
+        [
+          {
+            "node": "Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada": {
+      "main": [
+        [
+          {
+            "node": "Formatar resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar resposta": {
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder": {
+      "main": [
+        [
+          {
+            "node": "É pedido de horário?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É pedido de horário?": {
+      "main": [
+        [
+          {
+            "node": "Confirmar horário → conecte aqui (e-mail)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Avisar proposta → conecte aqui (e-mail / WhatsApp)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
