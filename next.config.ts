@@ -55,15 +55,15 @@ const nextConfig: NextConfig = {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
   async redirects() {
-    // deciban.com.br é o endereço do site desde 02/10/2026. O domínio antigo
-    // redireciona com o caminho junto; proposta.rabelo.company não entra aqui
-    // (outro host, continua servindo as propostas).
-    return ["rabelo.company", "www.rabelo.company"].map((host) => ({
-      source: "/:path*",
-      has: [{ type: "host" as const, value: host }],
-      destination: "https://deciban.com.br/:path*",
-      permanent: true,
-    }));
+    // deciban.com.br é o endereço do site desde 02/10/2026. O domínio antigo e
+    // o www redirecionam com o caminho junto; proposta.rabelo.company não entra
+    // aqui (outro host, continua servindo as propostas). A raiz tem regra
+    // própria: "/:path*" vazio gerava "https://deciban.com.br//".
+    const hosts = ["rabelo.company", "www.rabelo.company", "www.deciban.com.br"];
+    return hosts.flatMap((host) => [
+      { source: "/", has: [{ type: "host" as const, value: host }], destination: "https://deciban.com.br/", permanent: true },
+      { source: "/:path+", has: [{ type: "host" as const, value: host }], destination: "https://deciban.com.br/:path+", permanent: true },
+    ]);
   },
   async rewrites() {
     return [
