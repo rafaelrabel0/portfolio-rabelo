@@ -17,6 +17,7 @@ import { profile } from "@/content/profile";
 import { services } from "@/content/services";
 import { getUi } from "@/dictionaries/ui";
 import { isLocale, locales } from "@/lib/i18n";
+import { SITE_URL } from "@/lib/site";
 
 // Serviços — a apresentação da deciban, em cenas:
 // abertura da marca → o que construímos → o nome e os valores → como
@@ -54,8 +55,8 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
       "@type": "ProfessionalService",
       name: "deciban",
       description: services.hero.sub[lang],
-      url: `https://rabelo.company/${lang}/servicos`,
-      logo: "https://rabelo.company/brand/icon-512-carvao.png",
+      url: `${SITE_URL}/${lang}/servicos`,
+      logo: `${SITE_URL}/brand/icon-512-carvao.png`,
       email: profile.contact.email,
       telephone: profile.contact.phone,
       founder: { "@type": "Person", name: profile.name },

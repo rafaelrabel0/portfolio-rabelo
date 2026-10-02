@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n";
+import { SITE_URL } from "@/lib/site";
 
-const base = "https://rabelo.company";
+const base = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

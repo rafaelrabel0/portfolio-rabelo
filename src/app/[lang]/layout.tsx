@@ -6,6 +6,7 @@ import { isLocale, locales } from "@/lib/i18n";
 import { profile } from "@/content/profile";
 import { RevealObserver } from "@/components/RevealObserver";
 import { SceneEngine } from "@/components/motion/SceneEngine";
+import { SITE_URL } from "@/lib/site";
 
 const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
 const sans = Geist({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   const title = `${profile.shortName} — ${profile.role[locale]}`;
   const description = profile.summary[locale];
   return {
-    metadataBase: new URL("https://rabelo.company"),
+    metadataBase: new URL(SITE_URL),
     alternates: { canonical: `/${locale}`, languages: { "pt-BR": "/pt", en: "/en" } },
     title,
     description,
@@ -45,11 +46,11 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
     "@type": "Person",
     name: profile.name,
     alternateName: profile.shortName,
-    url: `https://rabelo.company/${lang}`,
+    url: `${SITE_URL}/${lang}`,
     email: `mailto:${profile.contact.email}`,
     jobTitle: profile.role[lang],
     sameAs: [profile.contact.github, profile.contact.linkedin],
-    worksFor: { "@type": "Organization", name: profile.company, url: "https://rabelo.company" },
+    worksFor: { "@type": "Organization", name: profile.company, url: `${SITE_URL}/${lang}/servicos` },
   };
 
   return (

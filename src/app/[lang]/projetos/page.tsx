@@ -9,6 +9,7 @@ import { categoryOrder, projects } from "@/content/projects";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import { isLocale } from "@/lib/i18n";
+import { SITE_URL } from "@/lib/site";
 
 // Todos os projetos — próprios e de cliente, agrupados por categoria. Cada um
 // com o diagrama do próprio fluxo (sem print, sem nome de cliente).
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/projetos">
   const ui = getUi(locale);
   const title = `${ui.projects.allTitle} — ${profile.shortName}`;
   return {
-    metadataBase: new URL("https://rabelo.company"),
+    metadataBase: new URL(SITE_URL),
     alternates: { canonical: `/${locale}/projetos`, languages: { "pt-BR": "/pt/projetos", en: "/en/projetos" } },
     title,
     description: ui.projects.allSubtitle,

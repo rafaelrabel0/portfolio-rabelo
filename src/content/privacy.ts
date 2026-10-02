@@ -9,8 +9,8 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
   updated: "2026-10-01",
 
   intro: {
-    pt: "Esta Política de Privacidade explica, de forma transparente, como a deciban coleta, usa, armazena e protege os seus dados pessoais quando você navega em rabelo.company, conversa com o nosso agente de IA ou solicita uma proposta comercial — em conformidade com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).",
-    en: "This Privacy Policy explains, transparently, how deciban collects, uses, stores and protects your personal data when you browse rabelo.company, talk to our AI agent or request a business proposal — in compliance with the Brazilian General Data Protection Law (LGPD, Law no. 13,709/2018).",
+    pt: "Esta Política de Privacidade explica, de forma transparente, como a deciban coleta, usa, armazena e protege os seus dados pessoais quando você navega em deciban.com.br, conversa com o nosso agente de IA ou solicita uma proposta comercial — em conformidade com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).",
+    en: "This Privacy Policy explains, transparently, how deciban collects, uses, stores and protects your personal data when you browse deciban.com.br, talk to our AI agent or request a business proposal — in compliance with the Brazilian General Data Protection Law (LGPD, Law no. 13,709/2018).",
   },
 
   sections: [
