@@ -8,8 +8,8 @@ export const profile = {
   shortName: "Rafael Rabelo",
   company: "deciban",
   role: {
-    pt: "Engenheiro de AI Ops / Automação — Agentes de IA · Automação de Workflows · Ferramentas de GTM",
-    en: "AI Ops / Automation Engineer — AI Agents · Workflow Automation · GTM Tooling",
+    pt: "Engenheiro de Automação com IA — Agentes de IA · Automação · Sistemas",
+    en: "AI Automation Engineer — AI Agents · Automation · Systems",
   } satisfies Localized,
   headline: {
     pt: "Construo agentes de IA e automações em produção que viram receita.",
@@ -36,16 +36,24 @@ export const profile = {
     en: "Open to opportunities",
   } satisfies Localized,
   contact: {
-    email: "rafael@rabelo.company",
+    email: "contato@deciban.com.br",
     phone: "+55 62 99207-9570",
     github: "https://github.com/rafaelrabel0",
     githubHandle: "rafaelrabel0",
-    liveWork: ["solidapp.shop", "terrasen.life"],
+    linkedin: "https://www.linkedin.com/in/dev-rafael-rabelo",
+    linkedinHandle: "dev-rafael-rabelo",
+  },
+  /** Dados públicos da empresa (rodapé e páginas legais). */
+  business: {
+    legalName: "Deciban",
+    cnpj: "66.323.849/0001-04",
+    city: { pt: "São Paulo · SP", en: "São Paulo, Brazil" } satisfies Localized,
+    reach: { pt: "Atendimento remoto em todo o Brasil e no exterior", en: "Remote, across Brazil and abroad" } satisfies Localized,
   },
   stats: [
     { value: "7+", label: { pt: "Negócios B2B atendidos", en: "B2B clients served" } },
     { value: "20+", label: { pt: "Contas em onboarding", en: "Accounts onboarded" } },
-    { value: "40+", label: { pt: "Skills & ferramentas", en: "Skills & tools" } },
+    { value: "4", label: { pt: "Produtos próprios", en: "In-house products" } },
     { value: "C2", label: { pt: "Inglês (EF SET)", en: "English (EF SET)" } },
   ],
   languages: [
