@@ -46,8 +46,37 @@ export default async function ServicosPage({ params }: PageProps<"/[lang]/servic
   if (!isLocale(lang)) notFound();
   const ui = getUi(lang);
 
+  // JSON-LD (Processo Mestre 7.2): a empresa e as perguntas frequentes, com os
+  // mesmos dados que aparecem na tela.
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      name: "deciban",
+      description: services.hero.sub[lang],
+      url: `https://rabelo.company/${lang}/servicos`,
+      logo: "https://rabelo.company/brand/icon-512-carvao.png",
+      email: profile.contact.email,
+      telephone: profile.contact.phone,
+      founder: { "@type": "Person", name: profile.name },
+      address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" },
+      areaServed: ["BR", "Worldwide"],
+      sameAs: [profile.contact.linkedin, profile.contact.github],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: services.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q[lang],
+        acceptedAnswer: { "@type": "Answer", text: f.a[lang] },
+      })),
+    },
+  ];
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BrandIntro id="servicos" label={ui.intro.services} skipLabel={ui.intro.skip} />
       <Nav locale={lang} world="services" />
       <main>

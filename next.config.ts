@@ -2,16 +2,17 @@ import path from "node:path";
 import type { NextConfig } from "next";
 
 // CSP: 'unsafe-inline' em script-src é exigido pelos inline scripts do Next
-// (tema, JSON-LD) sem infra de nonce; cal.com liberado para o embed da agenda;
-// blob:/data: para previews de imagem e gravação de áudio do chat.
+// (tema, abertura, JSON-LD) sem infra de nonce. Sem terceiros desde 01/10/2026:
+// a agenda é própria (o Cal.com saiu). blob:/data: para previews de imagem e
+// gravação de áudio do chat.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://app.cal.com https://cal.com",
-  "style-src 'self' 'unsafe-inline' https://app.cal.com https://fonts.googleapis.com",
-  "img-src 'self' data: blob: https://*.cal.com",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob:",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "connect-src 'self' https://*.cal.com wss://*.cal.com",
-  "frame-src https://app.cal.com https://cal.com",
+  "connect-src 'self'",
+  "frame-src 'none'",
   "media-src 'self' blob:",
   "worker-src 'self' blob:",
   "object-src 'none'",
@@ -30,7 +31,7 @@ const securityHeaders = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(), payment=(), usb=()" },
   { key: "X-DNS-Prefetch-Control", value: "on" },
   // Isola o browsing context de janelas abertas por terceiros. allow-popups
-  // porque o embed do cal.com pode abrir o fluxo de agendamento em popup.
+  // porque links externos (Google Agenda, projetos) abrem em nova aba.
   { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
 ];
 
@@ -44,6 +45,9 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2678400, // 31 dias - assets locais versionados por deploy
   },
   experimental: {
+    // 404 propria: o layout raiz e dinamico ([lang]), entao a pagina de nao
+    // encontrado precisa ser global (app/global-not-found.tsx).
+    globalNotFound: true,
     // Tailwind e atomico: inlinar o CSS no <head> corta um round-trip render-blocking.
     inlineCss: true,
   },
