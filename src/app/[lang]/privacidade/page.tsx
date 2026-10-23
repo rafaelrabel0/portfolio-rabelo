@@ -46,7 +46,7 @@ export default async function PrivacidadePage({ params }: PageProps<"/[lang]/pri
 
         <div className="mt-12 space-y-10">
           {privacy.sections.map((s, i) => (
-            <section key={i}>
+            <section key={i} id={s.id} className={s.id ? "scroll-mt-28" : undefined}>
               <h2 className="font-display text-lg font-semibold tracking-tight">{s.title[lang]}</h2>
               {s.paragraphs.map((p, j) => (
                 <p key={j} className="mt-3 text-sm leading-relaxed text-muted">
