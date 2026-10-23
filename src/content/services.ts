@@ -42,7 +42,7 @@ export const services = {
         { pt: "Agente SDR multimodal no WhatsApp", en: "Multimodal WhatsApp SDR agent" },
         { pt: "Agente RAG de agendamento para salão", en: "RAG scheduling agent for a salon" },
         { pt: "Onboarding de cliente por conversa com IA", en: "Client onboarding through an AI conversation" },
-        { pt: "Secretária virtual com demo ao vivo", en: "Virtual assistant with a live demo" },
+        { pt: "Agentes de atendimento para clínicas", en: "Service agents for clinics" },
       ],
       stack: ["n8n", "Claude", "GPT-4o", "Whisper"],
     },
