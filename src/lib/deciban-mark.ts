@@ -83,9 +83,13 @@ export function drawDecibanMark(ctx: CanvasRenderingContext2D, w: number, h: num
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.globalAlpha = 1;
   ctx.filter = "none";
+  // Limpa o canvas inteiro em pixels do aparelho. (w, h) vem em pixels de CSS: com
+  // devicePixelRatio > 1 cobria só o canto superior esquerdo e os quadros se acumulavam.
+  const cw = ctx.canvas.width, ch = ctx.canvas.height;
+  ctx.clearRect(0, 0, cw, ch);
   if (o.fill !== false) {
     ctx.fillStyle = DECIBAN.bg;
-    ctx.fillRect(0, 0, w, h);
+    ctx.fillRect(0, 0, cw, ch);
   }
   const dpr = (ctx.canvas.width / (ctx.canvas.clientWidth || w)) || 1;
   const k = s;
