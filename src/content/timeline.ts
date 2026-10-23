@@ -113,8 +113,8 @@ export const timeline: Milestone[] = [
     kicker: { pt: "Profissionalização", en: "Going pro" },
     title: { pt: "Rabelo Co. vira deciban", en: "Rabelo Co. becomes deciban" },
     text: {
-      pt: "O nome troca o sobrenome por aquilo que a empresa faz: decidir com evidência. Identidade nova, manual de marca e os primeiros apps de desktop — Grudaí e uai?, que abre beta fechado no dia 29.",
-      en: "The name swaps a surname for what the company does: deciding on evidence. A new identity, a brand manual and the first desktop apps — Grudaí and uai?, which opens a closed beta on the 29th.",
+      pt: "O nome troca o sobrenome por aquilo que a empresa faz: decidir com evidência. Identidade nova, manual de marca e os primeiros apps de desktop — grudí e uai?, que abre beta fechado no dia 29.",
+      en: "The name swaps a surname for what the company does: deciding on evidence. A new identity, a brand manual and the first desktop apps — grudí and uai?, which opens a closed beta on the 29th.",
     },
     tags: ["marca", "Tauri", "beta"],
   },
@@ -125,8 +125,8 @@ export const timeline: Milestone[] = [
     kicker: { pt: "Agora", en: "Now" },
     title: { pt: "deciban em operação", en: "deciban in operation" },
     text: {
-      pt: "Agentes, plataformas e produtos próprios em produção. Aberto a vagas de AI Automation Engineer e a novos projetos pela deciban.",
-      en: "Agents, platforms and in-house products in production. Open to AI Automation Engineer roles and to new projects through deciban.",
+      pt: "Agentes e plataformas para clientes e oito produtos próprios, cada um com site no ar: uai?, grudí, Sistere, Limiar, Face Finder, Bora Jogar?! e CineFeed. Aberto a vagas de AI Automation Engineer e a novos projetos pela deciban.",
+      en: "Agents and platforms for clients and eight in-house products, each with a live site: uai?, grudí, Sistere, Limiar, Face Finder, Bora Jogar?! and CineFeed. Open to AI Automation Engineer roles and to new projects through deciban.",
     },
     tags: ["disponível"],
   },

@@ -3,10 +3,19 @@
 > Automações e sistemas com IA. Este site tem dois lados: o portfólio de Rafael Rabelo (engenheiro de automação com IA, fundador da deciban) e a página de serviços da deciban.
 
 ## Portfólio
-- [Portfólio (PT)](https://deciban.com.br/pt): percurso desde 2022, projetos em destaque (uai?, Face Finder, Grudaí, <пароли/>), agente de IA ao vivo, skills e contato
+- [Portfólio (PT)](https://deciban.com.br/pt): percurso desde 2022, projetos em destaque (uai?, grudí, Sistere, Limiar), agente de IA ao vivo, skills e contato
 - [Portfolio (EN)](https://deciban.com.br/en)
 - [Todos os projetos](https://deciban.com.br/pt/projetos): produtos próprios e trabalhos para clientes, sem nome de empresa
 - [Currículo (PDF)](https://deciban.com.br/cv.pdf)
+
+## Produtos próprios (sites oficiais)
+- [uai?](https://uai.deciban.com.br): tradutor de bolso que mora do lado do cursor (Windows)
+- [grudí](https://grudi.deciban.com.br): notas à vista por cima das janelas (Windows)
+- [Sistere](https://sistere.deciban.com.br): hábitos numa grade de calor (Windows)
+- [Limiar](https://limiar.deciban.com.br): gestão financeira simples (computador e iPhone)
+- [Face Finder](https://facefinder.deciban.com.br): uma selfie devolve todas as suas fotos de um evento
+- [Bora Jogar?!](https://borajogar.deciban.com.br): o grupo decide o jogo, marca a hora e o alarme chama todo mundo
+- [CineFeed](https://cinefeed.deciban.com.br): trailers dos seus streamings e onde assistir (iPhone e iPad)
 
 ## Serviços — deciban
 - [deciban (PT)](https://deciban.com.br/pt/servicos): agentes de IA, automação de CRM e GTM, plataformas web e SaaS, dados e visão computacional, apps de desktop, sites

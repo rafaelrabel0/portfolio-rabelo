@@ -5,14 +5,16 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { FlowDiagram } from "@/components/ui/flow-diagram";
+import { ProductList } from "@/components/portfolio/ProductList";
 import { categoryOrder, projects } from "@/content/projects";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import { isLocale } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 
-// Todos os projetos — próprios e de cliente, agrupados por categoria. Cada um
-// com o diagrama do próprio fluxo (sem print, sem nome de cliente).
+// Todos os projetos. Produtos próprios primeiro, na mesma lista da home: a tela
+// inicial do site oficial segue o cursor e o clique abre o site. Depois, o que
+// foi feito para clientes, cada um pelo próprio fluxo (sem print, sem nome).
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/projetos">): Promise<Metadata> {
   const { lang } = await params;
@@ -53,13 +55,25 @@ export default async function ProjetosPage({ params }: PageProps<"/[lang]/projet
           {categoryOrder.map((cat, c) => {
             const list = projects.filter((p) => p.category === cat);
             if (!list.length) return null;
+            const heading = (
+              <h2 className="mb-8 flex items-baseline gap-3 border-b border-border pb-4 font-display text-2xl font-medium tracking-tight md:text-3xl" data-r>
+                <span className="font-mono text-xs text-accent">{String(c + 1).padStart(2, "0")}</span>
+                {ui.projectCategories[cat]}
+                <span className="font-mono text-xs text-faint">({list.length})</span>
+              </h2>
+            );
+            if (cat === "produto") {
+              return (
+                <section key={cat}>
+                  {heading}
+                  <p className="label -mt-4 mb-6 hidden md:block">{ui.projects.hint}</p>
+                  <ProductList items={list} locale={lang} />
+                </section>
+              );
+            }
             return (
               <section key={cat}>
-                <h2 className="mb-8 flex items-baseline gap-3 border-b border-border pb-4 font-display text-2xl font-medium tracking-tight md:text-3xl" data-r>
-                  <span className="font-mono text-xs text-accent">{String(c + 1).padStart(2, "0")}</span>
-                  {ui.projectCategories[cat]}
-                  <span className="font-mono text-xs text-faint">({list.length})</span>
-                </h2>
+                {heading}
                 <div className="grid gap-5 lg:grid-cols-2">
                   {list.map((p) => (
                     <article key={p.slug} className="all-card" data-r>
@@ -73,7 +87,7 @@ export default async function ProjetosPage({ params }: PageProps<"/[lang]/projet
                       <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight">{p.name}</h3>
                       <p className="mt-1 text-sm text-fg/90">{p.tagline[lang]}</p>
                       <p className="mt-4 text-sm leading-relaxed text-muted">{p.summary[lang]}</p>
-                      <FlowDiagram flow={p.flow} compact className="mt-5" />
+                      {p.flow && <FlowDiagram flow={p.flow} compact className="mt-5" />}
                       {p.metrics && (
                         <dl className="mt-5 flex flex-wrap gap-x-7 gap-y-2">
                           {p.metrics.map((m) => (

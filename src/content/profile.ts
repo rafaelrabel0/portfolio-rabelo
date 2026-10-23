@@ -53,7 +53,7 @@ export const profile = {
   stats: [
     { value: "7+", label: { pt: "Negócios B2B atendidos", en: "B2B clients served" } },
     { value: "20+", label: { pt: "Contas em onboarding", en: "Accounts onboarded" } },
-    { value: "4", label: { pt: "Produtos próprios", en: "In-house products" } },
+    { value: "8", label: { pt: "Produtos próprios", en: "In-house products" } },
     { value: "C2", label: { pt: "Inglês (EF SET)", en: "English (EF SET)" } },
   ],
   languages: [
