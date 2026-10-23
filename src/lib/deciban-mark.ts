@@ -72,6 +72,9 @@ export type MarkOptions = {
   /** Ponto do desenho (em px do vídeo original) que fica no centro vertical do canvas.
    *  540 = o original; 430 centraliza a marca final (legenda + símbolo + nome). */
   focusY?: number;
+  /** Onde (px de CSS do canvas) fica o centro horizontal do desenho. Padrão: o
+   *  meio do canvas. O rodapé usa para deslizar a marca do centro para a esquerda. */
+  centerX?: number;
 };
 
 /** Desenha o instante t (s). O desenho é centrado no canvas. */
@@ -94,7 +97,8 @@ export function drawDecibanMark(ctx: CanvasRenderingContext2D, w: number, h: num
   const dpr = (ctx.canvas.width / (ctx.canvas.clientWidth || w)) || 1;
   const k = s;
   const fy = o.focusY ?? 540;
-  ctx.setTransform(k * dpr, 0, 0, k * dpr, (w / 2 - 960 * k) * dpr, (h / 2 - fy * k) * dpr);
+  const cx = o.centerX ?? w / 2;
+  ctx.setTransform(k * dpr, 0, 0, k * dpr, (cx - 960 * k) * dpr, (h / 2 - fy * k) * dpr);
   const CX = 960, CY = 540;
 
   const dot = (x: number, y: number, r: number, c: string, a: number) => {

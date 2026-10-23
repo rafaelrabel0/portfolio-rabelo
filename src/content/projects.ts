@@ -4,9 +4,13 @@
 // descrito pelo que faz e pelo setor ("clínicas", "varejo"), nunca por quem
 // contratou. Links que expõem o cliente no domínio também ficam de fora.
 //
-// Os prints antigos mostravam marcas de cliente e a marca "Rabelo Co.". No
-// lugar deles, cada projeto descreve o próprio fluxo (`flow`) e a interface
-// desenha o diagrama em DOM, na identidade atual.
+// Produto com site oficial aparece pela TELA INICIAL DO SITE (captura em
+// public/projects/sites/, refeita quando o site mudar) e leva ao site. Projeto
+// de cliente nunca aparece por print (mostrava marca de cliente):
+// - agente: o fluxo (`flow`) e, ao apontar, uma conversa ilustrativa (`chat`);
+// - plataforma: um rascunho de tela em cinza (`sketch`) e a jornada em
+//   linguagem simples (`journey`) — quem lê é cliente, não engenheiro;
+// - dados: o fluxo.
 
 import type { Localized } from "./profile";
 
@@ -18,9 +22,20 @@ export const categoryOrder: ProjectCategory[] = ["produto", "agente", "plataform
 export type FlowNode = { t: string; s: string; hot?: boolean };
 
 export type Visual =
-  | { kind: "image"; src: string; alt: Localized }
-  | { kind: "mock"; mock: "uai" | "grudai" | "paroli" | "facefinder" }
-  | { kind: "flow" };
+  /** Tela inicial do site oficial, capturada (public/projects/sites/). */
+  | { kind: "site"; src: string }
+  /** Interface desenhada em HTML — só para quem não tem site público. */
+  | { kind: "mock"; mock: "paroli" }
+  /** Diagrama do fluxo (agentes, dados). */
+  | { kind: "flow" }
+  /** Rascunho de tela em cinza (plataformas de cliente). */
+  | { kind: "sketch"; sketch: SketchKind };
+
+export type SketchKind = "approval" | "calendar" | "crm" | "chat" | "pipeline";
+
+/** Uma fala da conversa ilustrativa: `in` = quem escreve, `out` = o agente,
+ *  `note` = o que o sistema fez por trás. `audio` = duração de um áudio. */
+export type ChatLine = { who: "in" | "out" | "note"; text: Localized; audio?: string };
 
 export type Project = {
   slug: string;
@@ -34,14 +49,21 @@ export type Project = {
   tagline: Localized;
   summary: Localized;
   stack: string[];
-  flow: FlowNode[][];
+  /** Nós do diagrama — só para quem é mostrado pelo fluxo. */
+  flow?: FlowNode[][];
+  /** Conversa ilustrativa do agente (dados fictícios). */
+  chat?: ChatLine[];
+  /** Jornada da plataforma em linguagem simples, passo a passo. */
+  journey?: Localized[];
   metrics?: { value: string; label: Localized }[];
   link?: { label: string; url: string };
   visual: Visual;
 };
 
 export const projects: Project[] = [
-  // ------------------------------------------------------------ destaques
+  // ------------------------------------------------------------ produtos
+  // Ordem pedida pelo Rafael (23/10/2026): uai?, grudí, Sistere e Limiar em
+  // destaque na home; o resto dos produtos abre "ver todos".
   {
     slug: "uai",
     category: "produto",
@@ -55,22 +77,76 @@ export const projects: Project[] = [
       en: "The pocket translator that lives next to your cursor",
     },
     summary: {
-      pt: "App de fundo para Windows: selecionou um texto em qualquer programa e parou, aparece a tradução, a moeda convertida e o atalho para pesquisar ou perguntar à IA. Leitura da seleção por UI Automation em ~20 ms, com plano B que devolve a área de transferência intacta. Beta fechado com site, trailer, convites e atualização automática.",
-      en: "A Windows background app: select text in any program and pause, and the translation, the converted currency and a shortcut to search or ask the AI appear. Selection is read through UI Automation in ~20 ms, with a fallback that leaves the clipboard untouched. Closed beta with site, trailer, invites and auto-update.",
+      pt: "Selecione qualquer texto, em qualquer programa do Windows, e pare: a tradução aparece do lado do cursor, com o preço convertido e a IA para explicar ou responder. Leitura da seleção por UI Automation em ~20 ms, com plano B que devolve a área de transferência intacta. Beta fechado por convite, com plano Pro e atualização automática.",
+      en: "Select any text, in any Windows program, and pause: the translation shows up next to your cursor, with the price converted and AI to explain or reply. Selection is read through UI Automation in ~20 ms, with a fallback that leaves the clipboard untouched. Invite-only closed beta, with a Pro plan and auto-update.",
     },
     stack: ["Rust", "Tauri 2", "UI Automation", "Next.js", "Supabase", "OpenAI"],
-    flow: [
-      [{ t: "Seleção", s: "qualquer app" }],
-      [{ t: "UI Automation", s: "~20 ms", hot: true }, { t: "Plano B", s: "Ctrl+Insert" }],
-      [{ t: "Tradução", s: "+ moeda" }, { t: "IA", s: "explicar · responder" }],
-      [{ t: "Ilha", s: "junto ao cursor" }],
-    ],
     metrics: [
       { value: "~20ms", label: { pt: "Leitura da seleção", en: "Selection read" } },
       { value: "42MB", label: { pt: "Em repouso (era 465)", en: "Idle (was 465)" } },
     ],
-    link: { label: "uai-beta.vercel.app", url: "https://uai-beta.vercel.app" },
-    visual: { kind: "mock", mock: "uai" },
+    link: { label: "uai.deciban.com.br", url: "https://uai.deciban.com.br" },
+    visual: { kind: "site", src: "/projects/sites/uai.webp" },
+  },
+  {
+    slug: "grudi",
+    category: "produto",
+    name: "grudí",
+    origin: "own",
+    status: "beta",
+    year: "2026",
+    featured: true,
+    tagline: {
+      pt: "Suas anotações à vista enquanto você trabalha",
+      en: "Your notes in sight while you work",
+    },
+    summary: {
+      pt: "Notas para Windows que ficam visíveis por cima das janelas: lembretes, listas e rascunhos sem precisar abrir, procurar ou alternar de programa. Abre por atalho de qualquer app, fixa a nota solta na tela, faz a nota saltar na hora do lembrete, guarda pasta privada com PIN e se atualiza sozinho. Gratuito e sem conta.",
+      en: "Windows notes that stay visible on top of your windows: reminders, lists and drafts without opening, searching or switching apps. Opens from a shortcut in any app, pins a note loose on screen, makes it pop up on time, keeps a PIN-locked private folder and updates itself. Free, no account.",
+    },
+    stack: ["Tauri 2", "Rust", "TypeScript", "Vite", "DPAPI"],
+    link: { label: "grudi.deciban.com.br", url: "https://grudi.deciban.com.br" },
+    visual: { kind: "site", src: "/projects/sites/grudi.webp" },
+  },
+  {
+    slug: "sistere",
+    category: "produto",
+    name: "Sistere",
+    origin: "own",
+    status: "dev",
+    year: "2026",
+    featured: true,
+    tagline: {
+      pt: "Fique firme. Um quadrado por dia",
+      en: "Hold steady. One square a day",
+    },
+    summary: {
+      pt: "App de hábitos para Windows que abre nos hábitos de hoje — a única ação é marcar. Cada dia acende numa grade de calor, a ofensiva conta os dias seguidos (com congelamento semanal) e os relatórios mostram o ano por categoria e por hábito. Sem conta e sem nuvem: tudo fica no computador.",
+      en: "A Windows habit app that opens on today's habits — the only action is to check them off. Each day lights up a heat grid, the streak counts consecutive days (with a weekly freeze) and the reports show the year by category and by habit. No account, no cloud: everything stays on your computer.",
+    },
+    stack: ["Tauri 2", "Rust", "TypeScript", "Local-first"],
+    link: { label: "sistere.deciban.com.br", url: "https://sistere.deciban.com.br" },
+    visual: { kind: "site", src: "/projects/sites/sistere.webp" },
+  },
+  {
+    slug: "limiar",
+    category: "produto",
+    name: "Limiar",
+    origin: "own",
+    status: "dev",
+    year: "2026",
+    featured: true,
+    tagline: {
+      pt: "Veja para onde vai o seu dinheiro",
+      en: "See where your money goes",
+    },
+    summary: {
+      pt: "Gestão financeira simples: assinaturas, contas e gastos do dia a dia num lugar só. Mostra o que vence no mês, quanto já saiu e quanto ainda dá para gastar hoje, com limite de gasto, calendário e o total por ano. Sem senha de banco e com tudo guardado no próprio aparelho — computador e iPhone.",
+      en: "Simple money management: subscriptions, bills and everyday spending in one place. Shows what's due this month, how much has gone out and how much you can still spend today, with a spending limit, a calendar and the yearly total. No bank password, everything stored on your own device — desktop and iPhone.",
+    },
+    stack: ["TypeScript", "Tauri 2", "Expo / React Native", "SQLite"],
+    link: { label: "limiar.deciban.com.br", url: "https://limiar.deciban.com.br" },
+    visual: { kind: "site", src: "/projects/sites/limiar.webp" },
   },
   {
     slug: "face-finder",
@@ -79,55 +155,59 @@ export const projects: Project[] = [
     origin: "own",
     status: "producao",
     year: "2026",
-    featured: true,
     tagline: {
       pt: "Uma selfie devolve todas as fotos em que você aparece",
       en: "One selfie returns every photo you appear in",
     },
     summary: {
-      pt: "Busca por reconhecimento facial num acervo de evento: detecção e embedding de rosto em ONNX Runtime na GPU, similaridade em pgvector com índice HNSW e um PWA onde o convidado tira a selfie e baixa o ZIP. A selfie não é armazenada e o consentimento vem antes do scan. Demo pública com as fotos do próprio visitante.",
-      en: "Face-recognition search over an event archive: face detection and embeddings on ONNX Runtime (GPU), similarity in pgvector with an HNSW index, and a PWA where a guest takes a selfie and downloads a ZIP. The selfie is never stored and consent comes before the scan. Public demo using the visitor's own photos.",
+      pt: "Reconhecimento facial sobre o acervo de um evento: o convidado tira uma selfie e recebe todas as fotos em que aparece. 3.995 fotos e 15.681 rostos indexados com ONNX Runtime na GPU, busca em pgvector com índice HNSW, consentimento antes do scan e nenhuma selfie armazenada. O site tem uma demo para testar com as suas próprias fotos.",
+      en: "Face recognition over an event archive: a guest takes a selfie and gets every photo they appear in. 3,995 photos and 15,681 faces indexed with ONNX Runtime on GPU, pgvector search with an HNSW index, consent before the scan and no selfie stored. The site has a demo to try with your own photos.",
     },
     stack: ["Python", "ONNX Runtime (GPU)", "pgvector · HNSW", "PWA", "Vercel"],
-    flow: [
-      [{ t: "Acervo", s: "3.995 fotos" }],
-      [{ t: "Detecção", s: "ONNX · GPU", hot: true }],
-      [{ t: "Embeddings", s: "15.681 rostos" }],
-      [{ t: "pgvector", s: "HNSW" }, { t: "Selfie", s: "não armazenada" }],
-      [{ t: "ZIP", s: "< 1 s" }],
-    ],
     metrics: [
       { value: "3.995", label: { pt: "Fotos indexadas", en: "Photos indexed" } },
       { value: "15.681", label: { pt: "Rostos", en: "Faces" } },
-      { value: "<1s", label: { pt: "Busca", en: "Search" } },
     ],
-    link: { label: "ache-suas-fotos.vercel.app/demo", url: "https://ache-suas-fotos.vercel.app/demo" },
-    visual: { kind: "mock", mock: "facefinder" },
+    link: { label: "facefinder.deciban.com.br", url: "https://facefinder.deciban.com.br" },
+    visual: { kind: "site", src: "/projects/sites/facefinder.webp" },
   },
   {
-    slug: "grudai",
+    slug: "bora-jogar",
     category: "produto",
-    name: "Grudaí",
+    name: "Bora Jogar?!",
     origin: "own",
-    status: "beta",
+    status: "dev",
     year: "2026",
-    featured: true,
     tagline: {
-      pt: "Notas que grudam por cima do computador",
-      en: "Notes that stick on top of your computer",
+      pt: "O grupo decide o jogo, marca a hora e o alarme chama todo mundo",
+      en: "The group picks the game, sets the time and the alarm calls everyone",
     },
     summary: {
-      pt: "Quadro de notas que roda em segundo plano: abre por atalho ou por um ponto flutuante, e cada nota pode ser fixada solta na tela, por cima de qualquer janela. Formatação detectada sozinha, nota com senha cifrada pelo Windows, lembretes que fazem a nota saltar na hora certa e captura rápida pelo atalho.",
-      en: "A notes board that runs in the background: it opens from a shortcut or a floating dot, and any note can be pinned loose on screen, above every window. Auto-detected formatting, password-protected notes encrypted by Windows, reminders that make a note pop up on time, and quick capture from the shortcut.",
+      pt: "App de comunidade para grupos de amigos: alguém traz um jogo, o grupo avalia, vota e marca a party — e na hora o alarme chama todo mundo. Celular, computador e navegador, com perfis, moderação e convites.",
+      en: "A community app for groups of friends: someone brings a game, the group rates it, votes and schedules the party — and when it's time, the alarm calls everyone. Phone, desktop and browser, with profiles, moderation and invites.",
     },
-    stack: ["Tauri 2", "Rust", "TypeScript", "Vite", "DPAPI"],
-    flow: [
-      [{ t: "Atalho", s: "ou ponto flutuante" }],
-      [{ t: "Captura", s: "rápida", hot: true }],
-      [{ t: "Nota", s: "formato automático" }, { t: "Cofre", s: "DPAPI" }],
-      [{ t: "Fixar", s: "por cima de tudo" }, { t: "Lembrete", s: "salta na tela" }],
-    ],
-    visual: { kind: "mock", mock: "grudai" },
+    stack: ["Next.js 16", "Supabase", "Expo / React Native", "Tauri 2"],
+    link: { label: "borajogar.deciban.com.br", url: "https://borajogar.deciban.com.br" },
+    visual: { kind: "site", src: "/projects/sites/borajogar.webp" },
+  },
+  {
+    slug: "cinefeed",
+    category: "produto",
+    name: "CineFeed",
+    origin: "own",
+    status: "dev",
+    year: "2026",
+    tagline: {
+      pt: "Role trailers, ache onde assistir",
+      en: "Scroll trailers, find where to watch",
+    },
+    summary: {
+      pt: "App de iPhone e iPad com um feed vertical de trailers só dos streamings que a pessoa assina. Um toque mostra nota, gênero e onde assistir, e abre o filme no app do streaming. Por cima, um perfil de cinéfilo: nota de 1 a 10, pódio Top 3, rankings, desafio com amigos e cartões para Stories.",
+      en: "An iPhone and iPad app with a vertical feed of trailers only from the streaming services you subscribe to. One tap shows the rating, genre and where to watch, and opens the movie in the streaming app. On top, a film-lover profile: 1-to-10 ratings, a Top 3 podium, rankings, friend challenges and Stories cards.",
+    },
+    stack: ["iPhone e iPad", "React Native", "Next.js (site)"],
+    link: { label: "cinefeed.deciban.com.br", url: "https://cinefeed.deciban.com.br" },
+    visual: { kind: "site", src: "/projects/sites/cinefeed.webp" },
   },
   {
     slug: "paroli",
@@ -136,22 +216,15 @@ export const projects: Project[] = [
     origin: "own",
     status: "local",
     year: "2026",
-    featured: true,
     tagline: {
       pt: "Cofre de senhas 100% local, que virou o painel da operação",
       en: "A 100% local password vault that became the operations hub",
     },
     summary: {
-      pt: "Gerenciador de senhas que nunca sai da máquina: AES-256-GCM, chave derivada da senha mestra e nada em nuvem. Cresceu para hub pessoal: módulos de clientes, tarefas, finanças e agente pessoal, com cofre de credenciais isolado por cliente. Projeto pessoal, sem link público — a interface fala por ele.",
-      en: "A password manager that never leaves the machine: AES-256-GCM, a key derived from the master password and nothing in the cloud. It grew into a personal hub: clients, tasks, finance and a personal agent, with a credentials vault isolated per client. A personal project with no public link — the interface speaks for it.",
+      pt: "Gerenciador de senhas que nunca sai da máquina: AES-256-GCM, chave derivada da senha mestra e nada em nuvem. Cresceu para hub pessoal: clientes, leads do site, tarefas, finanças e agenda, com cofre de credenciais isolado por cliente. Projeto pessoal, sem site público — a interface abaixo é desenhada, com dados fictícios.",
+      en: "A password manager that never leaves the machine: AES-256-GCM, a key derived from the master password and nothing in the cloud. It grew into a personal hub: clients, site leads, tasks, finance and calendar, with a credentials vault isolated per client. A personal project with no public site — the interface below is drawn, with fictional data.",
     },
     stack: ["Next.js 16", "React 19", "better-sqlite3", "AES-256-GCM", "Tailwind v4"],
-    flow: [
-      [{ t: "Senha mestra", s: "nunca salva" }],
-      [{ t: "Derivação", s: "chave", hot: true }],
-      [{ t: "AES-256-GCM", s: "por item" }],
-      [{ t: "SQLite", s: "local" }, { t: "Clientes", s: "cofre isolado" }],
-    ],
     visual: { kind: "mock", mock: "paroli" },
   },
 
@@ -176,10 +249,45 @@ export const projects: Project[] = [
       [{ t: "Memória", s: "Postgres" }, { t: "Leads", s: "Supabase" }],
       [{ t: "CRM", s: "etapas + tags" }, { t: "Follow-up", s: "10 min → 14 d" }],
     ],
+    chat: [
+      { who: "in", text: { pt: "Oi! Vi o anúncio de vocês. Serve para a minha loja?", en: "Hi! I saw your ad. Does it work for my store?" } },
+      { who: "out", text: { pt: "Serve sim! Quantas pessoas atendem o WhatsApp hoje e quantos contatos chegam por dia?", en: "It does! How many people answer WhatsApp today and how many contacts come in per day?" } },
+      { who: "in", text: { pt: "Áudio", en: "Voice note" }, audio: "0:14" },
+      { who: "out", text: { pt: "Entendi: duas pessoas e uns 80 contatos por dia. Posso marcar 20 minutos com um especialista amanhã às 10h?", en: "Got it: two people and about 80 contacts a day. Can I book 20 minutes with a specialist tomorrow at 10am?" } },
+      { who: "note", text: { pt: "lead qualificado · etapa movida no CRM", en: "lead qualified · CRM stage moved" } },
+    ],
     metrics: [
       { value: "24/7", label: { pt: "Atendimento", en: "Coverage" } },
       { value: "9", label: { pt: "Workflows", en: "Workflows" } },
       { value: "107", label: { pt: "Nós no agente", en: "Agent nodes" } },
+    ],
+    visual: { kind: "flow" },
+  },
+  {
+    slug: "agentes-clinicas",
+    category: "agente",
+    name: "Agentes de atendimento para clínicas",
+    origin: "client",
+    status: "producao",
+    year: "2026",
+    tagline: { pt: "Agenda, confirma, lembra e tira dúvida no WhatsApp do consultório", en: "Books, confirms, reminds and answers on the clinic's WhatsApp" },
+    summary: {
+      pt: "Agentes para consultórios médicos de uma agência de marketing em saúde, um por clínica: agendamento pelo WhatsApp, confirmação de presença, lembretes, perguntas frequentes e triagem inicial. O tom e as regras de cada clínica saem do dossiê de onboarding feito por conversa com IA.",
+      en: "Agents for medical practices served by a healthcare marketing agency, one per clinic: WhatsApp booking, attendance confirmation, reminders, FAQs and initial triage. Each clinic's tone and rules come from the onboarding dossier built through an AI conversation.",
+    },
+    stack: ["n8n", "GPT", "Evolution API", "Postgres"],
+    flow: [
+      [{ t: "Paciente", s: "WhatsApp" }],
+      [{ t: "Agente", s: "regras da clínica", hot: true }],
+      [{ t: "Agenda", s: "horários" }, { t: "Triagem", s: "perguntas" }],
+      [{ t: "Confirmação", s: "+ lembrete" }, { t: "Equipe", s: "handoff" }],
+    ],
+    chat: [
+      { who: "in", text: { pt: "Boa tarde! Queria marcar uma consulta com a dermatologista.", en: "Good afternoon! I'd like to book an appointment with the dermatologist." } },
+      { who: "out", text: { pt: "Claro! Tenho quinta às 14h30 ou sexta às 9h. Qual fica melhor?", en: "Of course! I have Thursday at 2:30pm or Friday at 9am. Which works better?" } },
+      { who: "in", text: { pt: "Sexta às 9.", en: "Friday at 9." } },
+      { who: "out", text: { pt: "Pronto, sexta às 9h confirmada. Te lembro na véspera — é só responder SIM.", en: "Done, Friday at 9am is confirmed. I'll remind you the day before — just reply YES." } },
+      { who: "note", text: { pt: "consulta na agenda · lembrete programado", en: "appointment booked · reminder scheduled" } },
     ],
     visual: { kind: "flow" },
   },
@@ -201,6 +309,12 @@ export const projects: Project[] = [
       [{ t: "Roteador", s: "estático ou ao vivo", hot: true }],
       [{ t: "pgvector", s: "1536d" }, { t: "API da agenda", s: "auth Cognito" }],
       [{ t: "Resposta", s: "+ handoff" }, { t: "Cron", s: "reingestão" }],
+    ],
+    chat: [
+      { who: "in", text: { pt: "Vocês fazem luzes? Quanto tempo leva?", en: "Do you do highlights? How long does it take?" } },
+      { who: "out", text: { pt: "Fazemos! Leva umas 3 horas, com hidratação no fim. Quer ver os horários?", en: "We do! It takes about 3 hours, with a treatment at the end. Want to see the times?" } },
+      { who: "note", text: { pt: "resposta da base · agenda consultada ao vivo", en: "answer from the knowledge base · calendar checked live" } },
+      { who: "out", text: { pt: "Sábado tenho 9h ou 10h30. Reservo qual?", en: "Saturday I have 9am or 10:30am. Which one should I book?" } },
     ],
     metrics: [
       { value: "20", label: { pt: "Profissionais", en: "Professionals" } },
@@ -228,47 +342,12 @@ export const projects: Project[] = [
       [{ t: "Dossiê", s: ".md + resumo" }],
       [{ t: "Tarefa", s: "na equipe" }, { t: "Prompt", s: "do agente" }],
     ],
-    visual: { kind: "flow" },
-  },
-  {
-    slug: "assistente-virtual",
-    category: "agente",
-    name: "Assistente virtual com demo ao vivo",
-    origin: "client",
-    status: "producao",
-    year: "2026",
-    tagline: { pt: "Secretária virtual que atende, qualifica e agenda — testável antes de contratar", en: "A virtual assistant that answers, qualifies and books — testable before buying" },
-    summary: {
-      pt: "Agente que interpreta texto, áudio e imagem, qualifica, agenda e retém. Apresentado numa página com chat ao vivo ligado ao fluxo real, para o cliente testar o produto antes de assinar.",
-      en: "An agent that handles text, audio and images, qualifies, books and retains. Presented on a page with a live chat wired to the real flow, so the client can try it before signing.",
-    },
-    stack: ["n8n", "GPT-4o-mini", "Whisper", "Postgres", "Redis"],
-    flow: [
-      [{ t: "Mensagem", s: "texto · áudio · foto" }],
-      [{ t: "Agente", s: "GPT-4o-mini", hot: true }],
-      [{ t: "Qualifica", s: "critérios" }, { t: "Agenda", s: "horários" }],
-      [{ t: "Demo pública", s: "fluxo real" }],
-    ],
-    visual: { kind: "flow" },
-  },
-  {
-    slug: "relatorio-cs",
-    category: "agente",
-    name: "Relatório de sucesso do cliente por agente",
-    origin: "client",
-    status: "dev",
-    year: "2026",
-    tagline: { pt: "Um mês de chamados vira leitura de negócio", en: "A month of tickets becomes a business reading" },
-    summary: {
-      pt: "Agente que coleta os chamados do mês pela API do helpdesk e escreve um relatório por cliente: motivos de contato, abertos e resolvidos, assuntos recorrentes, riscos de cancelamento e oportunidades.",
-      en: "An agent that pulls the month's tickets from the helpdesk API and writes a per-client report: contact reasons, open and resolved counts, recurring subjects, churn risks and opportunities.",
-    },
-    stack: ["n8n", "Helpdesk API", "OpenAI"],
-    flow: [
-      [{ t: "Helpdesk", s: "API" }],
-      [{ t: "Agrupamento", s: "por cliente" }],
-      [{ t: "Leitura", s: "LLM", hot: true }],
-      [{ t: "Relatório", s: "riscos · oportunidades" }],
+    chat: [
+      { who: "out", text: { pt: "Oi! Para começar: como você descreveria a sua clínica para um paciente novo?", en: "Hi! To start: how would you describe your clinic to a new patient?" } },
+      { who: "in", text: { pt: "Atendimento acolhedor, foco em dermatologia estética.", en: "Warm care, focused on aesthetic dermatology." } },
+      { who: "out", text: { pt: "Ótimo. E o que os pacientes mais perguntam antes de marcar?", en: "Great. And what do patients ask most before booking?" } },
+      { who: "in", text: { pt: "Preço e se aceita convênio.", en: "Price and whether insurance is accepted." } },
+      { who: "note", text: { pt: "dossiê gerado · tarefa criada para a equipe", en: "dossier generated · task created for the team" } },
     ],
     visual: { kind: "flow" },
   },
@@ -287,13 +366,13 @@ export const projects: Project[] = [
       en: "Multi-tenant SaaS for a medical marketing agency: each client reviews posts through a public link and, on approval, the app schedules and publishes via the Meta Graph API. Separate agency and client roles, per-project RLS and an auditable approval trail.",
     },
     stack: ["Next.js 16", "Supabase (RLS)", "Meta Graph API", "Vercel"],
-    flow: [
-      [{ t: "Post", s: "agência" }],
-      [{ t: "Link público", s: "cliente revisa" }],
-      [{ t: "Aprovação", s: "auditável", hot: true }],
-      [{ t: "Agenda", s: "data e hora" }, { t: "Graph API", s: "publica" }],
+    journey: [
+      { pt: "A agência sobe os posts do mês", en: "The agency uploads the month's posts" },
+      { pt: "O cliente revisa por um link, sem criar conta", en: "The client reviews through a link, no account needed" },
+      { pt: "Aprova ou pede ajuste com um toque", en: "Approves or asks for changes with one tap" },
+      { pt: "O app publica sozinho na data e hora marcadas", en: "The app publishes on its own at the set date and time" },
     ],
-    visual: { kind: "flow" },
+    visual: { kind: "sketch", sketch: "approval" },
   },
   {
     slug: "agenda-clinica",
@@ -308,12 +387,13 @@ export const projects: Project[] = [
       en: "An appointment calendar installable on the home screen, designed for the doctor's phone, with a public API for the CRMs clinics already use and Google Calendar mirroring.",
     },
     stack: ["Next.js", "PWA", "Supabase", "Google Calendar API"],
-    flow: [
-      [{ t: "CRM da clínica", s: "API pública" }],
-      [{ t: "Agenda", s: "PWA", hot: true }],
-      [{ t: "Google Agenda", s: "espelho" }, { t: "Celular", s: "tela inicial" }],
+    journey: [
+      { pt: "O paciente marca pelo sistema que a clínica já usa", en: "The patient books through the system the clinic already uses" },
+      { pt: "A consulta cai na agenda do médico na hora", en: "The appointment lands on the doctor's calendar right away" },
+      { pt: "Aparece também no Google Agenda", en: "It also shows up in Google Calendar" },
+      { pt: "O médico vê o dia no celular, como um app", en: "The doctor sees the day on their phone, like an app" },
     ],
-    visual: { kind: "flow" },
+    visual: { kind: "sketch", sketch: "calendar" },
   },
   {
     slug: "crm-agente",
@@ -328,13 +408,13 @@ export const projects: Project[] = [
       en: "A CRM module inside the platform: public chat with an agent, lead capture, medical-ethics and LGPD guardrails and consent logging. Per-conversation cost was measured against the API before shipping, to fit the agreed ceiling.",
     },
     stack: ["Next.js", "AI SDK", "gpt-5-mini", "Supabase (RLS por tenant)"],
-    flow: [
-      [{ t: "Visitante", s: "link público" }],
-      [{ t: "Agente", s: "gpt-5-mini", hot: true }, { t: "Guardrails", s: "ética · LGPD" }],
-      [{ t: "Consentimento", s: "registrado" }],
-      [{ t: "Lead", s: "no painel" }, { t: "Conversas", s: "auditáveis" }],
+    journey: [
+      { pt: "O visitante abre o chat pelo link da clínica", en: "The visitor opens the chat from the clinic's link" },
+      { pt: "O agente tira dúvidas dentro das regras de ética médica", en: "The agent answers questions within medical-ethics rules" },
+      { pt: "Pede consentimento antes de guardar o contato", en: "It asks for consent before saving the contact" },
+      { pt: "O lead chega ao painel com a conversa inteira", en: "The lead reaches the panel with the whole conversation" },
     ],
-    visual: { kind: "flow" },
+    visual: { kind: "sketch", sketch: "crm" },
   },
   {
     slug: "atendimento-vet",
@@ -349,13 +429,13 @@ export const projects: Project[] = [
       en: "SaaS with an AI specialized in the veterinary sector: an interface in the style of major AI chats, Supabase auth, database and realtime, and edge functions for user creation and audio transcription.",
     },
     stack: ["React", "TypeScript", "Supabase", "Edge Functions", "n8n"],
-    flow: [
-      [{ t: "Painel web", s: "equipe" }],
-      [{ t: "IA dedicada", s: "contexto do setor", hot: true }],
-      [{ t: "Edge Functions", s: "áudio · usuários" }],
-      [{ t: "Histórico", s: "por profissional" }],
+    journey: [
+      { pt: "O veterinário entra com a conta da clínica", en: "The vet signs in with the clinic's account" },
+      { pt: "Pergunta por texto ou áudio, como num chat de IA", en: "Asks by text or voice, like in an AI chat" },
+      { pt: "A IA responde com o contexto do setor", en: "The AI answers with the sector's context" },
+      { pt: "O histórico fica salvo para cada profissional", en: "The history is saved for each professional" },
     ],
-    visual: { kind: "flow" },
+    visual: { kind: "sketch", sketch: "chat" },
   },
   {
     slug: "suite-gtm",
@@ -370,17 +450,18 @@ export const projects: Project[] = [
       en: "A stage-based cadence engine that rolls back when a deal changes stage, Whisper call summaries logged to the deal, candidate screening, and lead-ads ingestion with segmented WhatsApp outreach.",
     },
     stack: ["n8n (128 nós)", "Pipedrive", "Kommo", "Whisper", "Meta Lead Ads"],
-    flow: [
-      [{ t: "Etapa muda", s: "CRM" }, { t: "Call gravada", s: "SDR" }],
-      [{ t: "Cadência", s: "128 nós · rollback", hot: true }, { t: "Whisper → GPT", s: "resumo" }],
-      [{ t: "Atividades", s: "por etapa e data" }, { t: "Nota", s: "no negócio" }],
-    ],
     metrics: [{ value: "128", label: { pt: "Nós no workflow", en: "Workflow nodes" } }],
-    visual: { kind: "flow" },
+    journey: [
+      { pt: "O negócio muda de etapa no CRM", en: "A deal changes stage in the CRM" },
+      { pt: "As tarefas da etapa nascem sozinhas — e somem se ele voltar", en: "The stage's tasks create themselves — and vanish if it moves back" },
+      { pt: "A ligação gravada vira resumo na ficha do negócio", en: "The recorded call becomes a summary on the deal" },
+      { pt: "O lead do anúncio chega já separado no WhatsApp", en: "The ad lead arrives already segmented on WhatsApp" },
+    ],
+    visual: { kind: "sketch", sketch: "pipeline" },
   },
   {
     slug: "dashboard-funil",
-    category: "plataforma",
+    category: "dados",
     name: "Dashboard de funil por eventos",
     origin: "client",
     status: "producao",
@@ -402,27 +483,6 @@ export const projects: Project[] = [
 
   // ------------------------------------------------------------ dados & busca
   {
-    slug: "fia",
-    category: "dados",
-    name: "FIA — finanças pessoais",
-    origin: "own",
-    status: "producao",
-    year: "2026",
-    tagline: { pt: "O primeiro app próprio: finanças com API para automação", en: "The first in-house app: personal finance with an automation API" },
-    summary: {
-      pt: "Web app completo: despesas recorrentes, parcelas, metas, taxas do Banco Central sincronizadas (CDI, Selic, IPCA), simulador de investimento e API REST versionada com chaves, consumida por automações externas.",
-      en: "A full web app: recurring expenses, installments, goals, synced Central Bank rates (CDI, Selic, IPCA), an investment simulator and a versioned REST API with keys, consumed by external automations.",
-    },
-    stack: ["Next.js 15", "Supabase (RLS)", "API REST", "Vercel"],
-    flow: [
-      [{ t: "Banco Central", s: "CDI · Selic · IPCA" }, { t: "Lançamentos", s: "app" }],
-      [{ t: "Next.js", s: "Supabase + RLS", hot: true }],
-      [{ t: "API REST", s: "chaves versionadas" }],
-      [{ t: "Metas", s: "simulador" }, { t: "Automação", s: "externa" }],
-    ],
-    visual: { kind: "flow" },
-  },
-  {
     slug: "busca-3d",
     category: "dados",
     name: "Busca semântica com verificação visual",
@@ -443,27 +503,6 @@ export const projects: Project[] = [
       [{ t: "Download", s: "sob demanda" }],
     ],
     metrics: [{ value: "1.266", label: { pt: "Bibliotecas indexadas", en: "Indexed libraries" } }],
-    visual: { kind: "flow" },
-  },
-  {
-    slug: "este-site",
-    category: "dados",
-    name: "Este site",
-    origin: "own",
-    status: "producao",
-    year: "2026",
-    tagline: { pt: "Um portfólio que também é projeto: cenas, motor de scroll e agente real", en: "A portfolio that is also a project: scenes, scroll engine and a real agent" },
-    summary: {
-      pt: "Next.js 16 bilíngue com motor de cenas próprio (scroll suave e progresso por seção, sem biblioteca de animação), assinatura animada da marca em canvas, agente de IA ao vivo, pedido de proposta e agenda. Segurança de API com rate limit, checagem de origem e consentimento LGPD.",
-      en: "A bilingual Next.js 16 site with its own scene engine (smooth scroll and per-section progress, no animation library), the brand's animated signature on canvas, a live AI agent, proposal requests and scheduling. API security with rate limiting, origin checks and LGPD consent.",
-    },
-    stack: ["Next.js 16", "React 19", "Tailwind v4", "Canvas 2D", "n8n"],
-    flow: [
-      [{ t: "Scroll", s: "roda → alvo" }],
-      [{ t: "Motor de cenas", s: "--p por seção", hot: true }],
-      [{ t: "CSS", s: "sem re-render" }, { t: "Canvas", s: "marca animada" }],
-      [{ t: "Agente", s: "n8n ao vivo" }],
-    ],
     visual: { kind: "flow" },
   },
 ];

@@ -40,7 +40,7 @@ export const ui = {
     projects: {
       label: "Projetos em destaque",
       title: "O que eu construí — e ainda estou construindo",
-      hint: "Aponte para ver a interface · clique para abrir",
+      hint: "Aponte para ver o site · clique para abrir",
       noLink: "Projeto pessoal — sem link público",
       open: "Abrir",
       details: "Detalhes",
@@ -49,6 +49,11 @@ export const ui = {
       client: "Para cliente",
       allTitle: "Todos os projetos",
       allSubtitle: "Produtos próprios e trabalhos para clientes — descritos pelo que fazem, sem nome de empresa.",
+      flow: "Fluxo",
+      chat: "Conversa",
+      chatHint: "aponte para ver a conversa",
+      illustrative: "conversa ilustrativa",
+      journey: "Como funciona para quem usa",
     },
     agent: {
       label: "Agentes de IA",
@@ -258,7 +263,7 @@ export const ui = {
     projects: {
       label: "Selected work",
       title: "What I've built — and am still building",
-      hint: "Point to see the interface · click to open",
+      hint: "Point to see the site · click to open",
       noLink: "Personal project — no public link",
       open: "Open",
       details: "Details",
@@ -267,6 +272,11 @@ export const ui = {
       client: "Client work",
       allTitle: "Every project",
       allSubtitle: "In-house products and client work — described by what they do, with no company names.",
+      flow: "Flow",
+      chat: "Conversation",
+      chatHint: "point to see the conversation",
+      illustrative: "illustrative conversation",
+      journey: "How it works for the people using it",
     },
     agent: {
       label: "AI agents",

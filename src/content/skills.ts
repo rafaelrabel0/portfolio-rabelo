@@ -92,7 +92,7 @@ export const skills: Skill[] = [
       en: "Apps that live in the background on Windows: global shortcuts, always-on-top windows, selection reading and auto-update.",
     },
     tools: ["Tauri 2", "Rust", "UI Automation", "DPAPI"],
-    proof: { pt: "uai? e Grudaí em beta", en: "uai? and Grudaí in beta" },
+    proof: { pt: "uai?, grudí, Sistere e Limiar", en: "uai?, grudí, Sistere and Limiar" },
   },
   {
     slug: "integracoes",
