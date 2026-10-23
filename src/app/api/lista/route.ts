@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { clientIp, rateLimit } from "@/lib/api-security";
 
 // Lista de novidades central (sites de apps *.deciban.com.br). Valida no
-// servidor, grava o texto do aceite no servidor e insere via REST do Supabase
-// (service key só aqui). Duplicado devolve 200 igual, sem revelar existência.
+// servidor, grava o texto do aceite no servidor e inscreve pela função
+// lista_inscrever do Supabase. Duplicado devolve 200 igual, sem revelar existência.
 
 const ACEITE_VERSAO = "2026-10-23";
 const NOMES: Record<string, string> = {
@@ -84,26 +84,25 @@ export async function POST(req: Request) {
   const idioma = data.idioma === "en" ? "en" : "pt";
   const origemRaw = typeof data.origem === "string" ? data.origem.trim().slice(0, 40) : "";
 
+  // Chave pública + segredo: só dá para chamar a função que inscreve (supabase/lista_espera.sql).
+  // A tabela mora num esquema que a API não expõe; nenhuma chave de serviço passa por aqui.
   const base = process.env.LISTA_SUPABASE_URL;
-  const key = process.env.LISTA_SUPABASE_SERVICE_KEY;
-  if (!base || !key) return respond({ erro: "indisponivel" }, 503, origin);
+  const key = process.env.LISTA_SUPABASE_ANON_KEY;
+  const segredo = process.env.LISTA_SEGREDO;
+  if (!base || !key || !segredo) return respond({ erro: "indisponivel" }, 503, origin);
 
   try {
-    const res = await fetch(`${base.replace(/\/+$/, "")}/rest/v1/lista_espera?on_conflict=email,produto`, {
+    const res = await fetch(`${base.replace(/\/+$/, "")}/rest/v1/rpc/lista_inscrever`, {
       method: "POST",
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-        Prefer: "resolution=ignore-duplicates,return=minimal",
-      },
+      headers: { apikey: key, "Content-Type": "application/json" },
       body: JSON.stringify({
-        email,
-        produto,
-        idioma,
-        origem: origemRaw || null,
-        aceite_texto: `Quero receber novidades do ${NOMES[produto]} por e-mail. Li a política de privacidade.`,
-        aceite_versao: ACEITE_VERSAO,
+        p_segredo: segredo,
+        p_email: email,
+        p_produto: produto,
+        p_idioma: idioma,
+        p_origem: origemRaw || null,
+        p_aceite_texto: `Quero receber novidades do ${NOMES[produto]} por e-mail. Li a política de privacidade.`,
+        p_aceite_versao: ACEITE_VERSAO,
       }),
       signal: AbortSignal.timeout(10_000),
     });
