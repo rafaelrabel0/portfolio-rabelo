@@ -3,10 +3,10 @@
 
 import type { Localized } from "@/content/profile";
 
-export type PrivacySection = { title: Localized; paragraphs: Localized[] };
+export type PrivacySection = { id?: string; title: Localized; paragraphs: Localized[] };
 
 export const privacy: { updated: string; intro: Localized; sections: PrivacySection[] } = {
-  updated: "2026-10-01",
+  updated: "2026-10-23",
 
   intro: {
     pt: "Esta Política de Privacidade explica, de forma transparente, como a deciban coleta, usa, armazena e protege os seus dados pessoais quando você navega em deciban.com.br, conversa com o nosso agente de IA ou solicita uma proposta comercial — em conformidade com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).",
@@ -133,7 +133,29 @@ export const privacy: { updated: string; intro: Localized; sections: PrivacySect
       ],
     },
     {
-      title: { pt: "11. Alterações desta política", en: "11. Changes to this policy" },
+      id: "lista",
+      title: { pt: "11. Lista de novidades dos apps", en: "11. App news list" },
+      paragraphs: [
+        {
+          pt: "Controlador: Deciban (contato@deciban.com.br). Quando você deixa o seu e-mail em \"Quero novidades\" no site de um dos nossos apps, tratamos estes dados: e-mail, app escolhido, idioma, data e hora do pedido e o texto do aceite que você deu.",
+          en: "Controller: Deciban (contato@deciban.com.br). When you leave your email in \"I want news\" on one of our app websites, we process this data: email, chosen app, language, date and time of the request and the text of the consent you gave.",
+        },
+        {
+          pt: "Finalidade: mandar novidades, prévias e o convite do app escolhido. Base legal: consentimento (LGPD, art. 7º, I), dado quando você marca o aceite no formulário. Você pode retirar o consentimento quando quiser.",
+          en: "Purpose: to send news, previews and the invitation for the chosen app. Legal basis: consent (LGPD art. 7, I), given when you tick the agreement box on the form. You may withdraw consent at any time.",
+        },
+        {
+          pt: "Retenção: guardamos os dados até o descadastro ou até 12 meses depois do lançamento do app, o que vier primeiro. Operadores: Supabase, para guardar os dados, e Resend, para enviar os e-mails.",
+          en: "Retention: we keep the data until you unsubscribe or until 12 months after the app launches, whichever comes first. Processors: Supabase, to store the data, and Resend, to send the emails.",
+        },
+        {
+          pt: "Descadastro: por link em todo e-mail enviado ou pelo contato contato@deciban.com.br. Direitos do titular (art. 18 da LGPD): confirmação do tratamento, acesso, correção, anonimização ou eliminação, portabilidade e informação sobre compartilhamento, pelo mesmo contato.",
+          en: "Unsubscribing: through the link in every email we send or by contacting contato@deciban.com.br. Data subject rights (LGPD art. 18): confirmation of processing, access, correction, anonymization or deletion, portability and information about sharing, through the same contact.",
+        },
+      ],
+    },
+    {
+      title: { pt: "12. Alterações desta política", en: "12. Changes to this policy" },
       paragraphs: [
         {
           pt: "Esta política pode ser atualizada para refletir mudanças no site ou na legislação. A data da última atualização aparece no topo da página; mudanças materiais serão destacadas aqui.",
