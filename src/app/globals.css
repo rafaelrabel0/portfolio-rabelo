@@ -1152,3 +1152,19 @@ footer[data-play="true"] .foot-in { animation: foot-in 0.8s var(--ease-out) var(
   .hero-scene .hero-tapes { opacity: 0.35; top: 34%; }
   .hero-scene .stage > div:last-of-type { gap: 28px; }
 }
+
+/* --- Link para site de produto com preview (SitePeek) --- */
+.site-peek {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border-strong);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s, color 0.2s;
+}
+.site-peek:hover { text-decoration-color: var(--color-accent); }
+.site-peek-arrow { color: var(--color-faint); transition: color 0.2s, transform 0.35s var(--spring); }
+.site-peek:hover .site-peek-arrow { color: var(--color-accent); transform: translate(2px, -2px); }
+.site-peek-card { width: 400px; height: 250px; z-index: 80; }
