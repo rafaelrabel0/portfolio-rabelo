@@ -1,14 +1,15 @@
 "use client";
 
-// Rodapé: a assinatura animada da deciban num bloco carvão e, ao lado, os
-// contatos aparecendo em sequência enquanto as fitas se encaixam. Fecha com
-// navegação, localização, CNPJ e os botões de contato.
+// Rodapé: carvão de ponta a ponta (nos dois temas), sem emenda. A assinatura
+// animada toca no centro ocupando o rodapé inteiro; quando termina, a marca
+// desliza para a esquerda e só então os contatos, a navegação e a empresa
+// entram do lado direito. No celular a marca fica em cima e os contatos embaixo.
 
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowDownToLine, ArrowUpRight, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from "@/components/icons";
-import { BrandSignature } from "@/components/ui/brand-signature";
+import { FooterSignature } from "@/components/ui/footer-signature";
 import { profile } from "@/content/profile";
 import { getUi } from "@/dictionaries/ui";
 import type { Locale } from "@/lib/i18n";
@@ -16,7 +17,7 @@ import type { World } from "@/components/Nav";
 
 export function Footer({ locale, world }: { locale: Locale; world: World }) {
   const ui = getUi(locale);
-  const [play, setPlay] = useState(false);
+  const [settled, setSettled] = useState(false);
   const year = new Date().getFullYear();
   const c = profile.contact;
   const wa = `https://wa.me/${c.phone.replace(/\D/g, "")}`;
@@ -46,19 +47,19 @@ export function Footer({ locale, world }: { locale: Locale; world: World }) {
         ];
 
   return (
-    <footer className="relative mt-10 border-t border-border" data-play={play}>
-      <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-        <BrandSignature
-          label="made by"
-          onStart={() => setPlay(true)}
-          canvasClassName="h-[260px] sm:h-[320px] lg:h-full lg:min-h-[420px]"
-          className="relative"
+    <footer className="force-dark relative mt-10" data-settled={settled}>
+      <div className="relative lg:grid lg:min-h-[560px] lg:grid-cols-2">
+        {/* a marca: no celular é um bloco em cima; no computador cobre o rodapé todo */}
+        <FooterSignature
+          onSettled={() => setSettled(true)}
+          className="block h-[280px] w-full sm:h-[320px] lg:absolute lg:inset-0 lg:h-full"
         />
+        <div aria-hidden className="hidden lg:block" />
 
-        <div className="flex flex-col justify-between gap-10 px-5 py-12 sm:px-8 lg:px-12">
+        <div className="relative z-10 flex flex-col justify-center gap-10 px-5 pb-12 pt-4 sm:px-8 lg:py-14 lg:pl-6 lg:pr-12">
           <ul className="grid gap-1">
             {contacts.map((k, i) => (
-              <li key={k.sub} className="foot-in" style={{ ["--d" as string]: `${2.9 + i * 0.32}s` }}>
+              <li key={k.sub} className="foot-in" style={{ ["--d" as string]: `${i * 0.12}s` }}>
                 <a
                   href={k.href}
                   {...(k.ext ? { target: "_blank", rel: "noreferrer" } : {})}
@@ -77,7 +78,7 @@ export function Footer({ locale, world }: { locale: Locale; world: World }) {
             ))}
           </ul>
 
-          <div className="foot-in grid gap-8 sm:grid-cols-[1fr_1fr_auto]" style={{ ["--d" as string]: "4.3s" }}>
+          <div className="foot-in grid gap-8 sm:grid-cols-[1fr_1fr_auto]" style={{ ["--d" as string]: "0.5s" }}>
             <nav aria-label={ui.footer.navigate} className="flex flex-col gap-2">
               <p className="label">{ui.footer.navigate}</p>
               {nav.map((n) => (
@@ -110,7 +111,7 @@ export function Footer({ locale, world }: { locale: Locale; world: World }) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 border-t border-border px-5 py-5 font-mono text-[11px] text-faint sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <div className="relative z-10 flex flex-col gap-2 border-t border-border px-5 py-5 font-mono text-[11px] text-faint sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <span>
           © {year} deciban · {profile.name}
         </span>
