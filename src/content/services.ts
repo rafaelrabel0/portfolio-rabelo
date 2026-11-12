@@ -10,16 +10,17 @@ type L = Localized;
 
 export const services = {
   hero: {
-    eyebrow: { pt: "deciban · automações e sistemas com IA", en: "deciban · AI automations and systems" } as L,
+    eyebrow: { pt: "deciban · produtos, automações e sistemas com IA", en: "deciban · AI products, automations and systems" } as L,
     lead: { pt: "Construímos", en: "We build" } as L,
     builds: [
       { pt: "agentes de IA", en: "AI agents" },
-      { pt: "web apps de IA", en: "AI web apps" },
+      { pt: "plataformas SaaS", en: "SaaS platforms" },
       { pt: "dashboards de funil", en: "funnel dashboards" },
       { pt: "visão computacional", en: "computer vision" },
       { pt: "automação de CRM", en: "CRM automation" },
       { pt: "busca semântica", en: "semantic search" },
       { pt: "apps de desktop", en: "desktop apps" },
+      { pt: "apps de celular", en: "mobile apps" },
     ] as L[],
     tail: { pt: "que funcionam em produção", en: "that run in production" } as L,
     sub: {

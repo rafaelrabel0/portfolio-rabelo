@@ -30,7 +30,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/[lang]/servicos">): Promise<Metadata> {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : "pt";
-  const title = locale === "pt" ? "deciban — automações e sistemas com IA" : "deciban — AI automations and systems";
+  const title = locale === "pt" ? "deciban — produtos, automações e sistemas com IA" : "deciban — AI products, automations and systems";
   const description = services.hero.sub[locale];
   return {
     title,

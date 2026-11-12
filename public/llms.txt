@@ -1,6 +1,6 @@
 # deciban — Rafael Rabelo
 
-> Automações e sistemas com IA. Este site tem dois lados: o portfólio de Rafael Rabelo (engenheiro de produto com IA, fundador da deciban) e a página de serviços da deciban.
+> Produtos, automações e sistemas com IA. Este site tem dois lados: o portfólio de Rafael Rabelo (engenheiro de produto com IA, fundador da deciban) e a página de serviços da deciban.
 
 ## Portfólio
 - [Portfólio (PT)](https://deciban.com.br/pt): percurso desde 2022, projetos em destaque (uai?, grudí, Sistere, Limiar), agente de IA ao vivo, skills e contato
