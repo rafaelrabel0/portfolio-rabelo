@@ -125,8 +125,8 @@ export const timeline: Milestone[] = [
     kicker: { pt: "Agora", en: "Now" },
     title: { pt: "deciban em operação", en: "deciban in operation" },
     text: {
-      pt: "Agentes e plataformas para clientes e oito produtos próprios, cada um com site no ar: uai?, grudí, Sistere, Limiar, Face Finder, Bora Jogar?! e CineFeed. Aberto a vagas de AI Automation Engineer e a novos projetos pela deciban.",
-      en: "Agents and platforms for clients and eight in-house products, each with a live site: uai?, grudí, Sistere, Limiar, Face Finder, Bora Jogar?! and CineFeed. Open to AI Automation Engineer roles and to new projects through deciban.",
+      pt: "Agentes e plataformas para clientes e oito produtos próprios, cada um com site no ar: uai?, grudí, Sistere, Limiar, Face Finder, Bora Jogar?! e CineFeed. Aberto a vagas de AI Product Engineer e a novos projetos pela deciban.",
+      en: "Agents and platforms for clients and eight in-house products, each with a live site: uai?, grudí, Sistere, Limiar, Face Finder, Bora Jogar?! and CineFeed. Open to AI Product Engineer roles and to new projects through deciban.",
     },
     tags: ["disponível"],
   },

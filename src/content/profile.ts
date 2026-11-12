@@ -8,27 +8,28 @@ export const profile = {
   shortName: "Rafael Rabelo",
   company: "deciban",
   role: {
-    pt: "Engenheiro de Automação com IA — Agentes de IA · Automação · Sistemas",
-    en: "AI Automation Engineer — AI Agents · Automation · Systems",
+    pt: "Engenheiro de Produto com IA — Agentes de IA · Produto Full-Stack · Automação",
+    en: "AI Product Engineer — AI Agents · Full-Stack Product · Workflow Automation",
   } satisfies Localized,
   headline: {
-    pt: "Construo agentes de IA e automações em produção que viram receita.",
-    en: "I build production AI agents and automations that turn into revenue.",
+    pt: "Construo o produto inteiro, com IA dentro — do banco ao app publicado.",
+    en: "I build the whole product, with AI inside — data model to shipped app.",
   } satisfies Localized,
   // Linha rotativa do hero — o que eu construo, em ordem de peso comercial.
   // Cada item precisa fazer sentido tanto para recrutador quanto para cliente.
   // Curtos de propósito: entram num display 5xl sem estourar o mobile.
   builds: [
     { pt: "agentes de IA", en: "AI agents" },
+    { pt: "plataformas SaaS", en: "SaaS platforms" },
+    { pt: "apps para Windows", en: "Windows apps" },
     { pt: "automação de CRM", en: "CRM automation" },
     { pt: "busca semântica", en: "semantic search" },
-    { pt: "web apps de IA", en: "AI web apps" },
     { pt: "dashboards de funil", en: "funnel dashboards" },
     { pt: "visão computacional", en: "computer vision" },
   ] satisfies Localized[],
   summary: {
-    pt: "Engenheiro de Automação com IA e fundador da deciban. Construo agentes de IA, workflows de automação e pipelines de dados que transformam contexto de negócio em ferramentas mensuráveis de receita. Atuo de ponta a ponta: orquestração de agentes em n8n, integração de LLMs (Claude, GPT), RAG com bancos vetoriais, automação de CRM e web apps de IA entregues do início ao fim. Fico naturalmente na interseção entre vendas, produto e engenharia de IA. Inglês C2 (certificado EF SET).",
-    en: "AI Automation Engineer and founder of deciban, building production AI agents, automation workflows, and data pipelines that turn business context into measurable revenue tools. Hands-on across the full stack: n8n agent orchestration, LLM integration (Claude, GPT), RAG with vector databases, CRM automation, and AI-powered web apps shipped end to end. I sit at the intersection of sales, product, and AI engineering. English C2 (EF SET Certified).",
+    pt: "Engenheiro de Produto com IA e fundador da deciban. Construo o produto inteiro, não só a camada de IA: modelo de dados, Postgres com RLS, API, interface, app nativo e publicação. Oito produtos próprios e onze sistemas para cliente — agentes de IA, SaaS multi-tenant, apps de Windows em Rust, um PWA de agendamento e um app de iPhone — em cima do trabalho de automação em n8n e RAG que me trouxe até aqui. Desenho o modelo de dados e as regras de permissão antes da primeira tela. Inglês C2 (certificado EF SET).",
+    en: "AI Product Engineer and founder of deciban. I build the whole product, not just the AI layer: data model, Postgres with row-level security, API, interface, native app, release. Eight in-house products and eleven client systems — AI agents, multi-tenant SaaS, native Windows apps in Rust, a scheduling PWA and an iOS app — on top of the n8n and RAG automation work that got me here. I design the data model and the permission rules before the first screen. English C2 (EF SET Certified).",
   } satisfies Localized,
   location: { pt: "Remoto · Brasil", en: "Remote · Brazil" } satisfies Localized,
   availability: {

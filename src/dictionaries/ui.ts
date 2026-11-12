@@ -17,7 +17,7 @@ export const ui = {
     },
     hero: {
       eyebrow: "Portfólio · 2026",
-      role: "Engenheiro de automação com IA",
+      role: "Engenheiro de produto com IA",
       line: "Agentes, plataformas e produtos com IA — em produção.",
       founder: "fundador da",
       scroll: "Role para começar",
@@ -240,7 +240,7 @@ export const ui = {
     },
     hero: {
       eyebrow: "Portfolio · 2026",
-      role: "AI Automation Engineer",
+      role: "AI Product Engineer",
       line: "AI agents, platforms and products — in production.",
       founder: "founder of",
       scroll: "Scroll to begin",

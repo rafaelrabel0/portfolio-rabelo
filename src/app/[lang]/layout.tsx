@@ -27,9 +27,9 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
     title,
     description,
     keywords: [
-      "Rafael Rabelo", "deciban", "AI Automation Engineer", "Engenheiro de IA",
-      "AI Agents", "n8n", "RAG", "Supabase pgvector", "LLM", "Next.js",
-      "automação de workflows", "prompt engineering", "AI engineer Brazil",
+      "Rafael Rabelo", "deciban", "AI Product Engineer", "Engenheiro de produto com IA",
+      "AI Agents", "n8n", "RAG", "Supabase pgvector", "LLM", "Next.js", "Rust", "Tauri",
+      "full-stack engineer", "automação de workflows", "prompt engineering", "AI engineer Brazil",
     ],
     authors: [{ name: profile.name }],
     openGraph: { title, description, type: "website", locale: locale === "pt" ? "pt_BR" : "en_US", url: `/${locale}`, siteName: "deciban", images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "deciban — AI agents & automation that turn into revenue" }] },
